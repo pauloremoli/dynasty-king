@@ -1,14 +1,8 @@
 import { useLoaderData } from "@remix-run/react";
-import {
-  useTable,
-  useSortBy,
-  useFilters,
-  useGlobalFilter,
-  useAsyncDebounce,
-} from "react-table";
 import { useMemo, useState } from "react";
-import GlobalFilter from "../components/rankings/GlobalFilter";
-import Navbar from "~/components/Navbar";
+import {
+  useSortBy, useTable
+} from "react-table";
 
 type Column = {
   accessor: string;
@@ -54,7 +48,7 @@ const csvToJson = (input: string) => {
   // header columns so we store them
   // in headers array
   let headers = data[0].split(",");
-  const columns = headers.map((item) => {
+  let columns = headers.map((item) => {
     item = item.replace(/"/g, "");
     const label = getLabel(item);
     return {
@@ -80,6 +74,22 @@ const csvToJson = (input: string) => {
     result.push(obj);
   }
 
+  
+  const hiddenColumns = [
+    "fp_id",
+    "scrape_date",
+    "draft_year",
+    "ecr_1qb",
+    "ecr_2qb",
+    "value_1qb",
+    "value_2qb",
+  ];
+  columns = columns.filter(
+    (col: Column) => !hiddenColumns.includes(col.accessor)
+  );
+
+  console.log(columns)
+
   return { columns, data: result };
 };
 
@@ -93,14 +103,6 @@ export const loader = async () => {
 
 export default function Index() {
   const data = useLoaderData();
-  const [filteredData, setFilteredData] = useState(data);
-  const hiddenColumns = [
-    "fp_id",
-    "scrape_date",
-    "draft_year",
-    "ecr_1qb",
-    "ecr_2qb",
-  ];
   const columns = useMemo(
     () => [
       {
@@ -112,13 +114,12 @@ export default function Index() {
         disableSortBy: true,
         disableFilters: true,
       },
-      ...data.columns.filter(
-        (col: Column) => !hiddenColumns.includes(col.accessor)
-      ),
+      ...data.columns
     ],
     [data]
   );
   const [playerName, setPlayerName] = useState("");
+  const [position, setPosition] = useState("");
 
   const {
     getTableProps,
@@ -129,17 +130,17 @@ export default function Index() {
     prepareRow,
   } = useTable({ columns, data: data.data }, useSortBy);
 
+
   return (
     <>
       <div className="w-full bg-slate-800 flex justify-center">
-        <Navbar />
-
         <div className="max-w-7xl text-gray-200 pt-14 w-full">
-          <h1 className="text-sans text-center p-10 text-white text-xl font-bold">
+          <h1 className="text-sans text-center p-10 text-xl font-bold">
             Dynasty Rankings {new Date().getFullYear()}{" "}
           </h1>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col ">
+            <input id="playerName" placeholder="Player name" value={playerName} onChange={(e) => setPlayerName(e.target.value)} />
             <table
               {...getTableProps()}
               className="min-w-full divide-y divide-gray-600"

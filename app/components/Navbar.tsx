@@ -12,12 +12,12 @@ const Navbar = () => {
           <h1 className="text-lg  font-bold ">DK</h1>
         </a>
       </div>
-      <div className="flex-end pr-20">
+      <div className="flex-end pr-20 font-extralight">
         <a href="/login">
-            <span className="px-8">LOGIN</span>
+            <span className="px-8 hover:font-bold">LOGIN</span>
         </a>
         <a href="/signup">
-            <span className="px-8">SIGN-UP</span>
+            <span className="px-8 hover:font-bold">SIGN-UP</span> 
         </a>
       </div>
     </div>
