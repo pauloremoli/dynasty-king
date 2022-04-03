@@ -131,64 +131,69 @@ export default function Index() {
 
   return (
     <>
-      <Navbar />
-      <div className="bg-slate-800 text-gray-200 pt-14">
-        <h1 className="text-sans text-center p-10 text-white text-xl font-bold">
-          Dynasty Rankings {new Date().getFullYear()}{" "}
-        </h1>
+      <div className="w-full bg-slate-800 flex justify-center">
+        <Navbar />
 
-        <div className="flex flex-col">
-          <table
-            {...getTableProps()}
-            className="min-w-full divide-y divide-gray-600"
-          >
-            <thead className="bg-slate-600">
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {}
-                  {headerGroup.headers.map((column) => (
-                    <th
-                      {...column.getHeaderProps(column.getSortByToggleProps())}
-                      {...column.getHeaderProps()}
-                      scope="col"
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider"
-                    >
-                      {column.render("Header")}
-                      <span>
-                        {column.isSorted
-                          ? column.isSortedDesc
-                            ? " ▼"
-                            : " ▲"
-                          : ""}
-                      </span>
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody
-              {...getTableBodyProps()}
-              className="bg-slate-800 divide-y divide-gray-700"
+        <div className="max-w-7xl text-gray-200 pt-14 w-full">
+          <h1 className="text-sans text-center p-10 text-white text-xl font-bold">
+            Dynasty Rankings {new Date().getFullYear()}{" "}
+          </h1>
+
+          <div className="flex flex-col">
+            <table
+              {...getTableProps()}
+              className="min-w-full divide-y divide-gray-600"
             >
-              {rows.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td
-                          {...cell.getCellProps()}
-                          className="px-6 py-4 whitespace-nowrap"
-                        >
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
+              <thead className="bg-slate-600">
+                {headerGroups.map((headerGroup) => (
+                  <tr {...headerGroup.getHeaderGroupProps()}>
+                    {}
+                    {headerGroup.headers.map((column) => (
+                      <th
+                        {...column.getHeaderProps(
+                          column.getSortByToggleProps()
+                        )}
+                        {...column.getHeaderProps()}
+                        scope="col"
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider"
+                      >
+                        {column.render("Header")}
+                        <span>
+                          {column.isSorted
+                            ? column.isSortedDesc
+                              ? " ▼"
+                              : " ▲"
+                            : ""}
+                        </span>
+                      </th>
+                    ))}
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                ))}
+              </thead>
+              <tbody
+                {...getTableBodyProps()}
+                className="bg-slate-800 divide-y divide-gray-700"
+              >
+                {rows.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <tr {...row.getRowProps()}>
+                      {row.cells.map((cell) => {
+                        return (
+                          <td
+                            {...cell.getCellProps()}
+                            className="px-6 py-4 whitespace-nowrap"
+                          >
+                            {cell.render("Cell")}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </>
