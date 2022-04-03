@@ -1,13 +1,13 @@
-import { FaCrown, FaHistory } from "react-icons/fa";
-import { ImListNumbered, ImStatsBars2, ImPower } from "react-icons/im";
-import { GiScales, GiPodium, GiSwordsPower } from "react-icons/gi";
+import { FaCrown } from "react-icons/fa";
+import { GiDuck, GiScales, GiFaceToFace } from "react-icons/gi";
+import { ImListNumbered, ImPower } from "react-icons/im";
 
 const Index = () => {
   return (
     <>
-      <div className="md:w-screen md:h-screen w-full h-full flex bg-slate-900 justify-center ">
-        <div className="max-w-7xl flex justify-center flex-col">
-          <div className="pt-12">
+      <div className=" w-full h-full flex bg-slate-900 justify-center ">
+        <div className="max-w-7xl flex justify-center flex-col py-20">
+          <div>
             <div className="flex justify-center">
               <FaCrown color="yellow" size={70} />
             </div>
@@ -60,7 +60,7 @@ const Index = () => {
                   </div>
 
                   <div className="flex items-center justify-center py-2">
-                    <GiSwordsPower size={40} color="#007ea7" />
+                    <GiFaceToFace size={40} color="#007ea7" />
                   </div>
                   <p className="text-gray-300 text-base pt-4">
                     H2H record against your league mates.
@@ -77,7 +77,7 @@ const Index = () => {
                   </div>
 
                   <div className="flex items-center justify-center py-2">
-                    <GiPodium size={40} color="#007ea7" />
+                    <GiDuck size={40} color="#007ea7" />
                   </div>
                   <p className="text-gray-300 text-base pt-4">
                     Cool statistics about your league.

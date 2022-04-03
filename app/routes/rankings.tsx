@@ -1,13 +1,7 @@
-import { useLoaderData } from "@remix-run/react";
-import { useMemo, useState } from "react";
-import {
-  useSortBy, useTable
-} from "react-table";
-
-type Column = {
-  accessor: string;
-  Header: string;
-};
+import { Outlet, useLoaderData } from "@remix-run/react";
+import { useEffect, useMemo, useState } from "react";
+import Table from "~/components/rankings/Table";
+import fuzzysort from "fuzzysort";
 
 const getLabel = (item: string) => {
   switch (item) {
@@ -38,6 +32,32 @@ const getLabel = (item: string) => {
     default:
       return item;
   }
+};
+
+const comparePlayer1QB = (a: any, b: any) => {
+  const aValue1qb = parseInt(a.value_1qb);
+  const bValue1qb = parseInt(b.value_1qb);
+
+  if (aValue1qb < bValue1qb) {
+    return 1;
+  }
+  if (aValue1qb > bValue1qb) {
+    return -1;
+  }
+  return 0;
+};
+
+const comparePlayer2QB = (a: any, b: any) => {
+  const aValue2qb = parseInt(a.value_2qb);
+  const bValue2qb = parseInt(b.value_2qb);
+
+  if (aValue2qb < bValue2qb) {
+    return 1;
+  }
+  if (aValue2qb > bValue2qb) {
+    return -1;
+  }
+  return 0;
 };
 
 const csvToJson = (input: string) => {
@@ -74,21 +94,14 @@ const csvToJson = (input: string) => {
     result.push(obj);
   }
 
-  
   const hiddenColumns = [
     "fp_id",
     "scrape_date",
     "draft_year",
     "ecr_1qb",
     "ecr_2qb",
-    "value_1qb",
-    "value_2qb",
   ];
-  columns = columns.filter(
-    (col: Column) => !hiddenColumns.includes(col.accessor)
-  );
-
-  console.log(columns)
+  columns = columns.filter((col) => !hiddenColumns.includes(col.accessor));
 
   return { columns, data: result };
 };
@@ -102,98 +115,109 @@ export const loader = async () => {
 };
 
 export default function Index() {
-  const data = useLoaderData();
-  const columns = useMemo(
-    () => [
-      {
-        Header: "#",
-        accessor: "",
-        Cell: (row: any) => {
-          return <div>{parseInt(row.row.id) + 1}</div>;
-        },
-        disableSortBy: true,
-        disableFilters: true,
-      },
-      ...data.columns
-    ],
-    [data]
-  );
   const [playerName, setPlayerName] = useState("");
   const [position, setPosition] = useState("");
+  const [format, setFormat] = useState("1QB");
+  const data = useLoaderData();
+  const [filteredData, setFilteredData] = useState(data.data || []);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    state,
-    prepareRow,
-  } = useTable({ columns, data: data.data }, useSortBy);
+  const filterData = () => {
+    let dataToFilter = data.data;
+    if (position) {
+      dataToFilter = dataToFilter.filter((item: any) => item.pos === position);
+    }
 
+    if (playerName) {
+      const result = fuzzysort.go(playerName, dataToFilter, { key: "player" });
+      dataToFilter = result.map((player) => player.obj);
+    }
+
+    if (format === "2QB") {
+      console.log("Sorting superflex");
+      
+      
+      setFilteredData([]);
+      dataToFilter = dataToFilter.sort(comparePlayer2QB);
+      console.log(dataToFilter);
+    } else {
+      
+      setFilteredData([]);
+      dataToFilter = dataToFilter.sort(comparePlayer1QB);
+      console.log(dataToFilter);
+      
+    }
+
+    setFilteredData(dataToFilter);
+  };
+
+  useEffect(() => {
+    filterData();
+  }, [position, format, data, playerName]);
+
+  useEffect(() => {
+    filterData();
+  }, []);
+
+  useEffect(() => {
+    if (filteredData) {
+      console.log("filteredData", filteredData);
+    } else {
+      console.log("no data");
+    }
+  }, [filteredData]);
 
   return (
     <>
-      <div className="w-full bg-slate-800 flex justify-center">
-        <div className="max-w-7xl text-gray-200 pt-14 w-full">
+      <div className="w-full h-full bg-slate-800 flex justify-center">
+        <div className="max-w-7xl text-gray-200 pt-14">
           <h1 className="text-sans text-center p-10 text-xl font-bold">
             Dynasty Rankings {new Date().getFullYear()}{" "}
           </h1>
+          <div className="flex p-4">
+            <h3 className=""> Format:</h3>
+            <div className="px-8">
+              <label>
+                <input
+                  type="radio"
+                  value="1QB"
+                  checked={format === "1QB"}
+                  onChange={(e) => setFormat(e.target.value)}
+                />
+                <span className="px-2">1QB</span>
+              </label>
+            </div>
 
-          <div className="flex flex-col ">
-            <input id="playerName" placeholder="Player name" value={playerName} onChange={(e) => setPlayerName(e.target.value)} />
-            <table
-              {...getTableProps()}
-              className="min-w-full divide-y divide-gray-600"
-            >
-              <thead className="bg-slate-600">
-                {headerGroups.map((headerGroup) => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {}
-                    {headerGroup.headers.map((column) => (
-                      <th
-                        {...column.getHeaderProps(
-                          column.getSortByToggleProps()
-                        )}
-                        {...column.getHeaderProps()}
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider"
-                      >
-                        {column.render("Header")}
-                        <span>
-                          {column.isSorted
-                            ? column.isSortedDesc
-                              ? " ▼"
-                              : " ▲"
-                            : ""}
-                        </span>
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody
-                {...getTableBodyProps()}
-                className="bg-slate-800 divide-y divide-gray-700"
-              >
-                {rows.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map((cell) => {
-                        return (
-                          <td
-                            {...cell.getCellProps()}
-                            className="px-6 py-4 whitespace-nowrap"
-                          >
-                            {cell.render("Cell")}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  value="2QB"
+                  checked={format === "2QB"}
+                  onChange={(e) => setFormat(e.target.value)}
+                />
+                
+                <span className="px-2">SuperFlex (2QBs)</span>
+                
+              </label>
+            </div>
+          </div>
+          <div className="p-4 flex items-center">
+            <label htmlFor="playerName" className="text-gray-200 pr-4">
+              Find player:
+            </label>
+            <input
+              id="playerName"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              className="text-black rounded border-0 p-2"
+            />
+          </div>
+          <div className="flex flex-col">
+            {filteredData ? (
+              <Table data={filteredData} columns={data.columns} />
+            ) : (
+              <h3>No data available</h3>
+            )}
           </div>
         </div>
       </div>
