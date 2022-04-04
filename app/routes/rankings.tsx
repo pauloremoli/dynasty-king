@@ -9,19 +9,10 @@ const sortMethod = (a: string, b: string) => {
   return valueA > valueB ? 1 : -1;
 };
 
-const comparePlayer1QB = (a: any, b: any) => {
-  return sortMethod(a.value_1qb, b.value_1qb);
-};
-
-const comparePlayer2QB = (a: any, b: any) => {
-  return sortMethod(a.value_2qb, b.value_2qb);
-};
-
 const getCustomProperties = (item: string) => {
   const result: any = {
     accessor: item,
   };
-  let label;
 
   switch (item) {
     case "player":
@@ -75,17 +66,12 @@ const csvToJson = (input: string) => {
   const data = input.split("\n");
   let result = [];
 
-  // The array[0] contains all the
-  // header columns so we store them
-  // in headers array
   let headers = data[0].split(",");
   let columns = headers.map((item) => {
     item = item.replace(/"/g, "");
     return getCustomProperties(item);
   });
 
-  // Since headers are separated, we
-  // need to traverse remaining n-1 rows.
   for (let i = 1; i < data.length - 1; i++) {
     let obj: any = {};
 
