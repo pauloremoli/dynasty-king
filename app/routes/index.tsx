@@ -1,5 +1,5 @@
 import { FaCrown } from "react-icons/fa";
-import { GiDuck, GiScales, GiFaceToFace } from "react-icons/gi";
+import { GiDuck, GiScales, GiFaceToFace, GiAmericanFootballPlayer } from "react-icons/gi";
 import { ImListNumbered, ImPower } from "react-icons/im";
 
 const Index = () => {
@@ -97,6 +97,21 @@ const Index = () => {
                   </div>
                   <p className="text-gray-300 text-base pt-4">
                     Team evaluation according to our rankings.
+                  </p>
+                </div>
+              </div>
+            </a>
+            <a href="/draft-report">
+              <div className="flex  rounded-lg overflow-hidden shadow-lg shadow-[#003450] bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
+                <div className="px-6 py-6">
+                  <div className="font-bold text-xl mb-2 text-center text-[#caf0f8]">
+                    Draft Report
+                  </div>
+                  <div className="flex items-center justify-center py-2">
+                    <GiAmericanFootballPlayer size={40} color="#007ea7" />
+                  </div>
+                  <p className="text-gray-300 text-base pt-4">
+                    Evaluate Hit/Miss per round for your past rookie drafts.
                   </p>
                 </div>
               </div>

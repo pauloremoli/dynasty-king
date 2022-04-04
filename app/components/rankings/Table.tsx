@@ -12,15 +12,15 @@ type TableProps = {
 };
 
 const Table: React.FC<TableProps> = ({ columns, data }) => {  
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    state,
-    prepareRow,
-  } = useTable({ columns, data }, useSortBy);
-
+  const hiddenColumns = [
+    "fp_id",
+    "scrape_date",
+    "draft_year",
+    "ecr_1qb",
+    "ecr_2qb",
+    "value_1qb",
+    "value_2qb",
+  ];
 
   const visibleColumns = useMemo(
     () => [
@@ -33,10 +33,20 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
         disableSortBy: true,
         disableFilters: true,
       },
-      ...columns,
+      ...columns.filter((col) => !hiddenColumns.includes(col.accessor))
     ],
-    [columns, data]
+    [columns]
   );
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    state,
+    prepareRow,
+  } = useTable({ columns: visibleColumns, data }, useSortBy);
+
+
 
   return (
     <div className="w-full h-full">

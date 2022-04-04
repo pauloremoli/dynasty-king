@@ -94,15 +94,6 @@ const csvToJson = (input: string) => {
     result.push(obj);
   }
 
-  const hiddenColumns = [
-    "fp_id",
-    "scrape_date",
-    "draft_year",
-    "ecr_1qb",
-    "ecr_2qb",
-  ];
-  columns = columns.filter((col) => !hiddenColumns.includes(col.accessor));
-
   return { columns, data: result };
 };
 
@@ -134,17 +125,14 @@ export default function Index() {
 
     if (format === "2QB") {
       console.log("Sorting superflex");
-      
-      
+
       setFilteredData([]);
       dataToFilter = dataToFilter.sort(comparePlayer2QB);
       console.log(dataToFilter);
     } else {
-      
       setFilteredData([]);
       dataToFilter = dataToFilter.sort(comparePlayer1QB);
       console.log(dataToFilter);
-      
     }
 
     setFilteredData(dataToFilter);
@@ -195,9 +183,8 @@ export default function Index() {
                   checked={format === "2QB"}
                   onChange={(e) => setFormat(e.target.value)}
                 />
-                
+
                 <span className="px-2">SuperFlex (2QBs)</span>
-                
               </label>
             </div>
           </div>
