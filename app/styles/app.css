@@ -831,16 +831,16 @@ select {
   padding-right: 0.5rem;
 }
 
+.pt-24 {
+  padding-top: 6rem;
+}
+
 .pb-20 {
   padding-bottom: 5rem;
 }
 
 .pt-20 {
   padding-top: 5rem;
-}
-
-.pt-24 {
-  padding-top: 6rem;
 }
 
 .pb-8 {

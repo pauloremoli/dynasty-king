@@ -3,61 +3,72 @@ import { useEffect, useMemo, useState } from "react";
 import Table from "~/components/rankings/Table";
 import fuzzysort from "fuzzysort";
 
-const getLabel = (item: string) => {
-  switch (item) {
-    case "player":
-      return "Player";
-    case "pos":
-      return "Position";
-    case "team":
-      return "Team";
-    case "age":
-      return "Age";
-    case "draft_year":
-      return "Year drafted";
-    case "ecr_1qb":
-      return "Avg ranking 1QB";
-    case "ecr_2qb":
-      return "Avg ranking 2QB";
-    case "ecr_pos":
-      return "Position ranking";
-    case "value_1qb":
-      return "Value 1QB";
-    case "value_2qb":
-      return "Value 2QB";
-    case "scrape_date":
-      return "Last update";
-    case "fp_id":
-      return "Id";
-    default:
-      return item;
-  }
+const sortMethod = (a: string, b: string) => {
+  const valueA = parseInt(a);
+  const valueB = parseInt(b);
+  return valueA > valueB ? 1 : -1;
 };
 
 const comparePlayer1QB = (a: any, b: any) => {
-  const aValue1qb = parseInt(a.value_1qb);
-  const bValue1qb = parseInt(b.value_1qb);
-
-  if (aValue1qb < bValue1qb) {
-    return 1;
-  }
-  if (aValue1qb > bValue1qb) {
-    return -1;
-  }
-  return 0;
+  return sortMethod(a.value_1qb, b.value_1qb);
 };
 
 const comparePlayer2QB = (a: any, b: any) => {
-  const aValue2qb = parseInt(a.value_2qb);
-  const bValue2qb = parseInt(b.value_2qb);
+  return sortMethod(a.value_2qb, b.value_2qb);
+};
 
-  if (aValue2qb < bValue2qb) {
-    return 1;
+const getCustomProperties = (item: string) => {
+  const result: any = {
+    accessor: item,
+  };
+  let label;
+
+  switch (item) {
+    case "player":
+      result["Header"] = "Player";
+      break;
+    case "pos":
+      result["Header"] = "Position";
+      break;
+    case "team":
+      result["Header"] = "Team";
+      break;
+    case "age":
+      result["Header"] = "Age";
+      break;
+    case "draft_year":
+      result["Header"] = "Year drafted";
+      break;
+    case "ecr_1qb":
+      result["Header"] = "Avg ranking 1QB";
+      break;
+    case "ecr_2qb":
+      result["Header"] = "Avg ranking 2QB";
+      break;
+    case "ecr_pos":
+      result["Header"] = "Position ranking";
+      break;
+    case "value_1qb":
+      result["Header"] = "Value 1QB";
+      result["sortMethod"] = sortMethod;
+      result["sortInverted"] = true;
+      break;
+    case "value_2qb":
+      result["Header"] = "Value 2QB";
+      result["sortMethod"] = sortMethod;
+      result["sortInverted"] = true;
+      break;
+    case "scrape_date":
+      result["Header"] = "Last update";
+      break;
+    case "fp_id":
+      result["Header"] = "Id";
+      break;
+    default:
+      result["Header"] = item;
+      break;
   }
-  if (aValue2qb > bValue2qb) {
-    return -1;
-  }
-  return 0;
+  return result;
 };
 
 const csvToJson = (input: string) => {
@@ -70,11 +81,7 @@ const csvToJson = (input: string) => {
   let headers = data[0].split(",");
   let columns = headers.map((item) => {
     item = item.replace(/"/g, "");
-    const label = getLabel(item);
-    return {
-      Header: label,
-      accessor: item,
-    };
+    return getCustomProperties(item);
   });
 
   // Since headers are separated, we
@@ -108,9 +115,9 @@ export const loader = async () => {
 export default function Index() {
   const [playerName, setPlayerName] = useState("");
   const [position, setPosition] = useState("");
-  const [format, setFormat] = useState("1QB");
+  const [format, setFormat] = useState("value_1qb");
   const data = useLoaderData();
-  const [filteredData, setFilteredData] = useState(data.data || []);
+  const [filteredData, setFilteredData] = useState(data.data);
 
   const filterData = () => {
     let dataToFilter = data.data;
@@ -123,36 +130,16 @@ export default function Index() {
       dataToFilter = result.map((player) => player.obj);
     }
 
-    if (format === "2QB") {
-      console.log("Sorting superflex");
-
-      setFilteredData([]);
-      dataToFilter = dataToFilter.sort(comparePlayer2QB);
-      console.log(dataToFilter);
-    } else {
-      setFilteredData([]);
-      dataToFilter = dataToFilter.sort(comparePlayer1QB);
-      console.log(dataToFilter);
-    }
-
     setFilteredData(dataToFilter);
   };
 
   useEffect(() => {
     filterData();
-  }, [position, format, data, playerName]);
+  }, [position, data, playerName]);
 
   useEffect(() => {
     filterData();
   }, []);
-
-  useEffect(() => {
-    if (filteredData) {
-      console.log("filteredData", filteredData);
-    } else {
-      console.log("no data");
-    }
-  }, [filteredData]);
 
   return (
     <>
@@ -167,8 +154,8 @@ export default function Index() {
               <label>
                 <input
                   type="radio"
-                  value="1QB"
-                  checked={format === "1QB"}
+                  value="value_1qb"
+                  checked={format === "value_1qb"}
                   onChange={(e) => setFormat(e.target.value)}
                 />
                 <span className="px-2">1QB</span>
@@ -179,8 +166,8 @@ export default function Index() {
               <label>
                 <input
                   type="radio"
-                  value="2QB"
-                  checked={format === "2QB"}
+                  value="value_2qb"
+                  checked={format === "value_2qb"}
                   onChange={(e) => setFormat(e.target.value)}
                 />
 
@@ -201,7 +188,11 @@ export default function Index() {
           </div>
           <div className="flex flex-col">
             {filteredData ? (
-              <Table data={filteredData} columns={data.columns} />
+              <Table
+                data={filteredData}
+                columns={data.columns}
+                format={format}
+              />
             ) : (
               <h3>No data available</h3>
             )}

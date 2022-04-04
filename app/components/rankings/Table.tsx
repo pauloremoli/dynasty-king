@@ -1,25 +1,20 @@
 import React, { useEffect, useMemo } from "react";
-import { useSortBy, useTable } from "react-table";
-
-type Column = {
-  accessor: string;
-  Header: string;
-};
+import { Column, Row, useSortBy, useTable } from "react-table";
 
 type TableProps = {
   columns: Column[];
-  data: any;
+  data: Row[];
+  format: string;
+  onSort: () => {};
 };
 
-const Table: React.FC<TableProps> = ({ columns, data }) => {  
+const Table: React.FC<TableProps> = ({ columns, data, format }) => {
   const hiddenColumns = [
     "fp_id",
     "scrape_date",
     "draft_year",
     "ecr_1qb",
     "ecr_2qb",
-    "value_1qb",
-    "value_2qb",
   ];
 
   const visibleColumns = useMemo(
@@ -33,20 +28,28 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
         disableSortBy: true,
         disableFilters: true,
       },
-      ...columns.filter((col) => !hiddenColumns.includes(col.accessor))
+      ...columns.filter(
+        (col) => !hiddenColumns.includes(col?.accessor?.toString()!)
+      ),
     ],
     [columns]
   );
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    state,
-    prepareRow,
-  } = useTable({ columns: visibleColumns, data }, useSortBy);
-
-
+  const { getTableProps, getTableBodyProps, headerGroups, rows, allColumns, prepareRow, setSortBy } =
+    useTable(
+      {
+        columns: visibleColumns,
+        data,
+        // initialState: { hiddenColumns: ["value_1qb", "value_2qb"] },
+      },
+      useSortBy
+    );
+  
+    useEffect(() => {      
+      const col = allColumns.find((col) => col.id === format);
+      col.toggleSortBy(false, false);
+      
+    }, [format])
+    
 
   return (
     <div className="w-full h-full">
