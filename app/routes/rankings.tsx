@@ -134,50 +134,52 @@ export default function Index() {
           <h1 className="text-sans text-center p-10 text-xl font-bold">
             Dynasty Rankings {new Date().getFullYear()}{" "}
           </h1>
-          <div className="flex p-4">
-            <h3 className=""> Format:</h3>
-            <div className="px-8">
-              <label>
-                <input
-                  type="radio"
-                  value="value_1qb"
-                  checked={format === "value_1qb"}
-                  onChange={(e) => setFormat(e.target.value)}
-                />
-                <span className="px-2">1QB</span>
-              </label>
-            </div>
+          <form method="POST">
+            <div className="flex p-4">
+              <h3 className=""> Format:</h3>
+              <div className="px-8">
+                <label>
+                  <input
+                    type="radio"
+                    value="value_1qb"
+                    checked={format === "value_1qb"}
+                    onChange={(e) => setFormat(e.target.value)}
+                  />
+                  <span className="px-2">1QB</span>
+                </label>
+              </div>
 
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="value_2qb"
-                  checked={format === "value_2qb"}
-                  onChange={(e) => setFormat(e.target.value)}
-                />
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="value_2qb"
+                    checked={format === "value_2qb"}
+                    onChange={(e) => setFormat(e.target.value)}
+                  />
 
-                <span className="px-2">SuperFlex (2QBs)</span>
-              </label>
+                  <span className="px-2">SuperFlex (2QBs)</span>
+                </label>
+              </div>
             </div>
-          </div>
-          <div className="p-4 flex items-center">
-            <label htmlFor="playerName" className="text-gray-200 pr-4">
-              Find player:
-            </label>
-            <input
-              id="playerName"
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-              className="text-black rounded border-0 p-2"
-            />
-          </div>
+            <div className="p-4 flex items-center">
+              <label htmlFor="playerName" className="text-gray-200 pr-4">
+                Find player:
+              </label>
+              <input
+                id="playerName"
+                value={playerName}
+                onChange={(e) => setPlayerName(e.target.value)}
+                className="text-black rounded border-0 p-2"
+              />
+            </div>
+          </form>
           <div className="flex flex-col">
             {filteredData ? (
               <Table
                 data={filteredData}
                 columns={data.columns}
-                format={format}
+                // format={format}
               />
             ) : (
               <h3>No data available</h3>

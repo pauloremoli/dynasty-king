@@ -4,11 +4,9 @@ import { Column, Row, useSortBy, useTable } from "react-table";
 type TableProps = {
   columns: Column[];
   data: Row[];
-  format: string;
-  onSort: () => {};
 };
 
-const Table: React.FC<TableProps> = ({ columns, data, format }) => {
+const Table: React.FC<TableProps> = ({ columns, data }) => {
   const hiddenColumns = [
     "fp_id",
     "scrape_date",
@@ -39,17 +37,11 @@ const Table: React.FC<TableProps> = ({ columns, data, format }) => {
       {
         columns: visibleColumns,
         data,
-        // initialState: { hiddenColumns: ["value_1qb", "value_2qb"] },
+        initialState: { hiddenColumns: ["value_1qb", "value_2qb"] },
       },
       useSortBy
     );
   
-    useEffect(() => {      
-      const col = allColumns.find((col) => col.id === format);
-      col.toggleSortBy(false, false);
-      
-    }, [format])
-    
 
   return (
     <div className="w-full h-full">
