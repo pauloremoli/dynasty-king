@@ -34,7 +34,7 @@ const Table: React.FC<TableProps> = ({ columns, data, format }) => {
     ],
     [columns]
   );
-  const { getTableProps, getTableBodyProps, headerGroups, rows, allColumns, prepareRow, setSortBy } =
+  const { getTableProps, getTableBodyProps, headerGroups, rows, allColumns, prepareRow } =
     useTable(
       {
         columns: visibleColumns,

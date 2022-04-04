@@ -1,7 +1,7 @@
-import { Outlet, useLoaderData } from "@remix-run/react";
-import { useEffect, useMemo, useState } from "react";
-import Table from "~/components/rankings/Table";
+import { useLoaderData } from "@remix-run/react";
 import fuzzysort from "fuzzysort";
+import { useEffect, useState } from "react";
+import Table from "~/components/rankings/Table";
 
 const sortMethod = (a: string, b: string) => {
   const valueA = parseInt(a);
