@@ -1,12 +1,8 @@
-import { ActionFunction } from "@remix-run/node";
 import {
   useLoaderData,
-  useParams,
-  useSubmit,
-  useSearchParams,
+  useParams
 } from "@remix-run/react";
-import fuzzysort from "fuzzysort";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Column } from "react-table";
 import Table from "~/components/rankings/Table";
@@ -133,7 +129,7 @@ const csvToJson = (input: string) => {
 };
 
 export const loader = async ({ params }) => {
-  const { format } = params;
+  const { format, position } = params;
 
   const response = await fetch(
     "https://raw.githubusercontent.com/dynastyprocess/data/master/files/values.csv"
@@ -141,19 +137,18 @@ export const loader = async ({ params }) => {
 
   let result = csvToJson(await response.text());
 
-  return filterDataByFormat(result, format);
-};
+  result = filterDataByFormat(result, format);
+  if (position && position !== "all") {
+    result = filterDataByPosition(result, position);
+  }
 
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-  console.log("formData", formData);
+  return result;
 };
 
 export default function Index() {
-  const submit = useSubmit();
   const data = useLoaderData();
   const params = useParams();
-  const format = params.format;
+  const [format, setFormat] = useState(params.format);
 
   return (
     <>
@@ -164,44 +159,67 @@ export default function Index() {
             Dynasty Rankings {new Date().getFullYear()}{" "}
           </h1>
           <div className="flex p-4">
-            <h3 className=""> Rankings:</h3>
+            <h3 className="">Format:</h3>
             <div className="px-4">
-              <Link to={"/rankings/format/1QB"}>
-                <a className="font-bold text-blue-100 hover:text-yellow-300">
-                  <span>1QB</span>
-                </a>
+              <Link
+                to={"/rankings/format/1QB/position/all"}
+                className="font-bold text-blue-100 hover:text-yellow-300"
+              >
+                <span>1QB</span>
               </Link>
             </div>
 
             <div>
-              <Link to={"/rankings/format/2QB"}>
-                <a className="font-bold text-blue-100 hover:text-yellow-300">
-                  <span>SuperFlex (2QBs)</span>
-                </a>
+              <Link
+                to={"/rankings/format/2QB/position/all"}
+                className="font-bold text-blue-100 hover:text-yellow-300"
+              >
+                <span>SuperFlex (2QBs)</span>
               </Link>
             </div>
           </div>
-          <div className="flex p-4 items-center">
-            <form method="GET">
-              <label htmlFor="position" className="pr-4">
-                Position:
-              </label>
-              <select
-                name="position"
-                className="text-gray-900 border-0 rounded-xl"
-                onChange={(e) => {
-                  submit(e.currentTarget.form);
-                }}
+          <div className="flex p-4 gap-4">
+            <h3 className="">Position:</h3>
+            <div>
+              <Link
+                to={`/rankings/format/${format}/position/all`}
+                className="font-bold text-blue-100 hover:text-yellow-300"
               >
-                <option selected value="All">
-                  All
-                </option>
-                <option value="QB">QB</option>
-                <option value="RB">RB</option>
-                <option value="WR">WR</option>
-                <option value="TE">TE</option>
-              </select>
-            </form>
+                <span>All</span>
+              </Link>
+            </div>
+            <div>
+              <Link
+                to={`/rankings/format/${format}/position/QB`}
+                className="font-bold text-blue-100 hover:text-yellow-300"
+              >
+                <span>QB</span>
+              </Link>
+            </div>
+            <div>
+              <Link
+                to={`/rankings/format/${format}/position/RB`}
+                className="font-bold text-blue-100 hover:text-yellow-300"
+              >
+                <span>RB</span>
+              </Link>
+            </div>
+            <div>
+              <Link
+                to={`/rankings/format/${format}/position/WR`}
+                className="font-bold text-blue-100 hover:text-yellow-300"
+              >
+                <span>WR</span>
+              </Link>
+            </div>
+            <div>
+              <Link
+                to={`/rankings/format/${format}/position/TE`}
+                className="font-bold text-blue-100 hover:text-yellow-300"
+              >
+                <span>TE</span>
+              </Link>
+            </div>
           </div>
 
           <div className="flex flex-col">
