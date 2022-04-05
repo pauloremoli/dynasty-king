@@ -20,7 +20,7 @@ const Index = () => {
           </div>
           <div className="flex gap-8 flex-wrap md:justify-center w-full text-white max-w-5xl">
             <a href="/rankings/format/1qb/position/all">
-              <div className="flex items-center justify-center rounded-lg overflow-hidden shadow-lg shadow-[#003450] bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
+              <div className="flex items-center justify-center rounded-lg overflow-hidden shadow-lg  bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
                 <div className="px-6 py-6">
                   <div className="font-bold text-xl mb-2 text-center text-[#caf0f8]">
                     Dynasty Rankings
@@ -36,7 +36,7 @@ const Index = () => {
             </a>
 
             <a href="/trade-calculator">
-              <div className="flex  rounded-lg overflow-hidden shadow-lg shadow-[#003450] bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
+              <div className="flex  rounded-lg overflow-hidden shadow-lg  bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
                 <div className="px-6 py-6">
                   <div className="font-bold text-xl mb-2 text-center text-[#caf0f8]">
                     Trade Calculator
@@ -53,7 +53,7 @@ const Index = () => {
             </a>
 
             <a href="/h2h">
-              <div className="flex  rounded-lg overflow-hidden shadow-lg shadow-[#003450] bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
+              <div className="flex  rounded-lg overflow-hidden shadow-lg  bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
                 <div className="px-6 py-6">
                   <div className="font-bold text-xl mb-2 text-center text-[#caf0f8]">
                     H2H Report
@@ -70,7 +70,7 @@ const Index = () => {
             </a>
 
             <a href="/duck-report">
-              <div className="flex  rounded-lg overflow-hidden shadow-lg shadow-[#003450] bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
+              <div className="flex  rounded-lg overflow-hidden shadow-lg  bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
                 <div className="px-6 py-6">
                   <div className="font-bold text-xl mb-2 text-center text-[#caf0f8]">
                     Duck Report
@@ -87,7 +87,7 @@ const Index = () => {
             </a>
 
             <a href="/power-rankings">
-              <div className="flex  rounded-lg overflow-hidden shadow-lg shadow-[#003450] bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
+              <div className="flex  rounded-lg overflow-hidden shadow-lg  bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
                 <div className="px-6 py-6">
                   <div className="font-bold text-xl mb-2 text-center text-[#caf0f8]">
                     Power Rankings
@@ -102,7 +102,7 @@ const Index = () => {
               </div>
             </a>
             <a href="/draft-report">
-              <div className="flex  rounded-lg overflow-hidden shadow-lg shadow-[#003450] bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
+              <div className="flex  rounded-lg overflow-hidden shadow-lg  bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
                 <div className="px-6 py-6">
                   <div className="font-bold text-xl mb-2 text-center text-[#caf0f8]">
                     Draft Report

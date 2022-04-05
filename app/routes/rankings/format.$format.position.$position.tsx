@@ -1,11 +1,8 @@
-import {
-  useLoaderData,
-  useParams
-} from "@remix-run/react";
+import { useLoaderData, useParams } from "@remix-run/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Column } from "react-table";
 import Table from "~/components/rankings/Table";
+import { csvToJson } from "~/utils/csvToJson";
 
 const sortMethod = (a: string, b: string) => {
   const valueA = parseInt(a);
@@ -25,7 +22,7 @@ const sortFor2QB = (a: any, b: any) => {
   return sortMethod(valueA, valueB);
 };
 
-const getCustomProperties = (item: string) => {
+const createReactTableColumn = (item: string) => {
   const result: any = {
     accessor: item,
   };
@@ -78,54 +75,22 @@ const getCustomProperties = (item: string) => {
   return result;
 };
 
-const filterDataByPosition = (result: any, position: string) => {
+const filterDataByPosition = (data: any, position: string) => {
   if (position && position !== "all") {
-    result.data = result.data.filter((item: any) => item.pos === position);
+    data = data.filter((item: any) => item.pos === position);
   }
 
-  return result;
+  return data;
 };
 
-const filterDataByFormat = (result: any, format: string) => {
+const filterDataByFormat = (data: any, format: string) => {
   if (format == "2QB") {
-    result.columns = result.columns.filter(
-      (col: Column) => col.accessor !== "value_1qb"
-    );
-    result.data.sort(sortFor2QB);
+    data.sort(sortFor2QB);
   } else {
-    result.columns.filter((col: Column) => col.accessor !== "value_2qb");
-    result.data.sort(sortFor1QB);
+    data.sort(sortFor1QB);
   }
 
-  return result;
-};
-
-const csvToJson = (input: string) => {
-  const data = input.split("\n");
-  let result = [];
-
-  let headers = data[0].split(",");
-  let columns = headers.map((item) => {
-    item = item.replace(/"/g, "");
-    return getCustomProperties(item);
-  });
-
-  for (let i = 1; i < data.length - 1; i++) {
-    let obj: any = {};
-
-    let str = data[i];
-    str = str.replace(/"/g, "");
-
-    let properties = str.split(",");
-    columns.map((item, index) => {
-      const value = properties[index].replace(/"/g, "");
-      obj[item.accessor] = value;
-    });
-
-    result.push(obj);
-  }
-
-  return { columns, data: result };
+  return data;
 };
 
 export const loader = async ({ params }) => {
@@ -137,9 +102,13 @@ export const loader = async ({ params }) => {
 
   let result = csvToJson(await response.text());
 
-  result = filterDataByFormat(result, format);
+  result.columns = result.columns.map((item) => {
+    return createReactTableColumn(item);
+  });
+
+  result.data = filterDataByFormat(result, format);
   if (position && position !== "all") {
-    result = filterDataByPosition(result, position);
+    result.data = filterDataByPosition(result, position);
   }
 
   return result;
