@@ -35,7 +35,7 @@ const TradeCalculator = () => {
           <form>
             <div className="flex w-full justify-around gap-4">
               <div className="shadow-lg bg-[#003459] rounded-2xl py-8 px-12">
-                <h2 className="pb-8 text-2xl font-bold text-center ">
+                <h2 className="pb-8 text-2xl font-semibold text-center ">
                   Team A
                 </h2>
                 <div className="flex w-full justify-around gap-4 items-center text-gray-900">
@@ -49,14 +49,14 @@ const TradeCalculator = () => {
                       return (q) => filter(q).slice(0, 12);
                     }}
                   />
-                  <button className="bg-blue-400 text-white px-8 py-2 rounded-xl">
+                  <button className="bg-blue-500 hover:scale-105 hover:bg-blue-600 text-white px-8 py-2 rounded-xl">
                     Add
                   </button>
                 </div>
               </div>
 
               <div className="shadow-lg  bg-[#003459] rounded-2xl py-8 px-12">
-                <h2 className="pb-8 text-2xl font-bold text-center ">
+                <h2 className="pb-8 text-2xl font-semibold text-center ">
                   Team B
                 </h2>
                 <div className="flex w-full justify-around gap-4 items-center text-gray-900">
@@ -70,7 +70,7 @@ const TradeCalculator = () => {
                       return (q) => filter(q).slice(0, 12);
                     }}
                   />
-                  <button className="bg-blue-400 text-white px-8 py-2 rounded-xl">
+                  <button className="bg-blue-500 hover:bg-blue-600 hover:scale-105 text-white px-8 py-2 rounded-xl">
                     Add
                   </button>
                 </div>

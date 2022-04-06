@@ -1,5 +1,5 @@
 import { useLoaderData, useParams } from "@remix-run/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Table from "~/components/rankings/Table";
 import { csvToJson } from "~/utils/csvToJson";
@@ -106,9 +106,9 @@ export const loader = async ({ params }) => {
     return createReactTableColumn(item);
   });
 
-  result.data = filterDataByFormat(result, format);
+  result.data = filterDataByFormat(result.data, format);
   if (position && position !== "all") {
-    result.data = filterDataByPosition(result, position);
+    result.data = filterDataByPosition(result.data, position);
   }
 
   return result;
@@ -118,6 +118,12 @@ export default function Index() {
   const data = useLoaderData();
   const params = useParams();
   const [format, setFormat] = useState(params.format);
+  const [position, setPosition] = useState(params.position);
+
+  useEffect(() => {
+    setFormat(params.format);
+    setPosition(params.position);
+  }, [params]);
 
   return (
     <>
@@ -132,7 +138,9 @@ export default function Index() {
             <div className="px-4">
               <Link
                 to={"/rankings/format/1QB/position/all"}
-                className="font-bold text-blue-100 hover:text-yellow-300"
+                className={`font-semibold hover:text-yellow-300 ${
+                  format === "1QB" ? "text-blue-400" : "text-blue-100"
+                }`}
               >
                 <span>1QB</span>
               </Link>
@@ -141,7 +149,9 @@ export default function Index() {
             <div>
               <Link
                 to={"/rankings/format/2QB/position/all"}
-                className="font-bold text-blue-100 hover:text-yellow-300"
+                className={`font-semibold hover:text-yellow-300 ${
+                  format === "2QB" ? "text-blue-400" : "text-blue-100"
+                }`}
               >
                 <span>SuperFlex (2QBs)</span>
               </Link>
@@ -152,7 +162,9 @@ export default function Index() {
             <div>
               <Link
                 to={`/rankings/format/${format}/position/all`}
-                className="font-bold text-blue-100 hover:text-yellow-300"
+                className={`font-semibold hover:text-yellow-300 ${
+                  position === "all" ? "text-blue-400" : "text-blue-100"
+                }`}
               >
                 <span>All</span>
               </Link>
@@ -160,7 +172,9 @@ export default function Index() {
             <div>
               <Link
                 to={`/rankings/format/${format}/position/QB`}
-                className="font-bold text-blue-100 hover:text-yellow-300"
+                className={`font-semibold hover:text-yellow-300 ${
+                  position === "QB" ? "text-blue-400" : "text-blue-100"
+                }`}
               >
                 <span>QB</span>
               </Link>
@@ -168,7 +182,9 @@ export default function Index() {
             <div>
               <Link
                 to={`/rankings/format/${format}/position/RB`}
-                className="font-bold text-blue-100 hover:text-yellow-300"
+                className={`font-semibold hover:text-yellow-300 ${
+                  position === "RB" ? "text-blue-400" : "text-blue-100"
+                }`}
               >
                 <span>RB</span>
               </Link>
@@ -176,7 +192,9 @@ export default function Index() {
             <div>
               <Link
                 to={`/rankings/format/${format}/position/WR`}
-                className="font-bold text-blue-100 hover:text-yellow-300"
+                className={`font-semibold hover:text-yellow-300 ${
+                  position === "WR" ? "text-blue-400" : "text-blue-100"
+                }`}
               >
                 <span>WR</span>
               </Link>
@@ -184,7 +202,9 @@ export default function Index() {
             <div>
               <Link
                 to={`/rankings/format/${format}/position/TE`}
-                className="font-bold text-blue-100 hover:text-yellow-300"
+                className={`font-semibold hover:text-yellow-300 ${
+                  position === "TE" ? "text-blue-400" : "text-blue-100"
+                }`}
               >
                 <span>TE</span>
               </Link>

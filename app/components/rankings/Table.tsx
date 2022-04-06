@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Column, Row, useSortBy, useTable } from "react-table";
 
 type TableProps = {
@@ -13,6 +13,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
     "draft_year",
     "ecr_1qb",
     "ecr_2qb",
+    "ecr_pos",
   ];
 
   const visibleColumns = useMemo(
