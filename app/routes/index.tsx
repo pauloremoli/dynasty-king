@@ -5,13 +5,13 @@ import { ImListNumbered, ImPower } from "react-icons/im";
 const Index = () => {
   return (
     <>
-      <div className=" w-full h-full flex bg-slate-900 justify-center ">
+      <div className=" w-full h-full md:h-screen md:w-screen flex bg-slate-900 justify-center ">
         <div className="max-w-7xl flex justify-center flex-col py-20">
           <div>
             <div className="flex justify-center">
               <FaCrown color="yellow" size={70} />
             </div>
-            <h1 className="text-4xl font-bold text-center text-white pb-8">
+            <h1 className="text-4xl font-bold tracking-wider text-center text-white pb-8">
               Dynasty King
             </h1>
             <p  className="text-xl font-thin text-center text-[#caf0f8] pb-20">
@@ -35,7 +35,7 @@ const Index = () => {
               </div>
             </a>
 
-            <a href="/trade-calculator">
+            <a href="/trade-calculator/format/1QB">
               <div className="flex  rounded-lg overflow-hidden shadow-lg  bg-[#003459] flex-col w-full md:w-64 h-56  hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300">
                 <div className="px-6 py-6">
                   <div className="font-semibold text-xl mb-2 text-center text-[#caf0f8]">

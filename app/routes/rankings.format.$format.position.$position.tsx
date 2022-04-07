@@ -2,25 +2,14 @@ import { useLoaderData, useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Table from "~/components/rankings/Table";
+import { Format } from "~/models/Format";
+import { Position } from "~/models/Position";
 import { csvToJson } from "~/utils/csvToJson";
-
-const sortMethod = (a: string, b: string) => {
-  const valueA = parseInt(a);
-  const valueB = parseInt(b);
-  return valueA > valueB ? -1 : 1;
-};
-
-const sortFor1QB = (a: any, b: any) => {
-  const valueA = a.value_1qb;
-  const valueB = b.value_1qb;
-  return sortMethod(valueA, valueB);
-};
-
-const sortFor2QB = (a: any, b: any) => {
-  const valueA = a.value_2qb;
-  const valueB = b.value_2qb;
-  return sortMethod(valueA, valueB);
-};
+import {
+  filterDataByFormat,
+  filterDataByPosition,
+  sortMethod,
+} from "~/utils/players";
 
 const createReactTableColumn = (item: string) => {
   const result: any = {
@@ -75,24 +64,6 @@ const createReactTableColumn = (item: string) => {
   return result;
 };
 
-const filterDataByPosition = (data: any, position: string) => {
-  if (position && position !== "all") {
-    data = data.filter((item: any) => item.pos === position);
-  }
-
-  return data;
-};
-
-const filterDataByFormat = (data: any, format: string) => {
-  if (format == "2QB") {
-    data.sort(sortFor2QB);
-  } else {
-    data.sort(sortFor1QB);
-  }
-
-  return data;
-};
-
 export const loader = async ({ params }) => {
   const { format, position } = params;
 
@@ -106,9 +77,9 @@ export const loader = async ({ params }) => {
     return createReactTableColumn(item);
   });
 
-  result.data = filterDataByFormat(result.data, format);
-  if (position && position !== "all") {
-    result.data = filterDataByPosition(result.data, position);
+  result.data = filterDataByFormat(result.data, format as Format);
+  if (position && position !== Position.ALL) {
+    result.data = filterDataByPosition(result.data, position as Position);
   }
 
   return result;
@@ -117,12 +88,12 @@ export const loader = async ({ params }) => {
 export default function Index() {
   const data = useLoaderData();
   const params = useParams();
-  const [format, setFormat] = useState(params.format);
-  const [position, setPosition] = useState(params.position);
+  const [format, setFormat] = useState(params.format as Format);
+  const [position, setPosition] = useState(params.position as Position);
 
   useEffect(() => {
-    setFormat(params.format);
-    setPosition(params.position);
+    setFormat(params.format as Format);
+    setPosition(params.position as Position);
   }, [params]);
 
   return (
@@ -130,7 +101,7 @@ export default function Index() {
       <div className="w-full h-full bg-slate-800 flex justify-center">
         <div className="max-w-7xl text-gray-200 pt-14">
           <h1 className="text-sans text-center p-10 text-xl font-bold">
-            {format == "1QB" ? "1QB " : "SuperFlex "}
+            {format == Format.FORMAT_1QB ? "1QB " : "SuperFlex "}
             Dynasty Rankings {new Date().getFullYear()}{" "}
           </h1>
           <div className="flex p-4">
@@ -139,7 +110,9 @@ export default function Index() {
               <Link
                 to={"/rankings/format/1QB/position/all"}
                 className={`font-semibold hover:text-yellow-300 ${
-                  format === "1QB" ? "text-blue-400" : "text-blue-100"
+                  format === Format.FORMAT_1QB
+                    ? "text-blue-400"
+                    : "text-blue-100"
                 }`}
               >
                 <span>1QB</span>
@@ -150,7 +123,9 @@ export default function Index() {
               <Link
                 to={"/rankings/format/2QB/position/all"}
                 className={`font-semibold hover:text-yellow-300 ${
-                  format === "2QB" ? "text-blue-400" : "text-blue-100"
+                  format === Format.FORMAT_2QB
+                    ? "text-blue-400"
+                    : "text-blue-100"
                 }`}
               >
                 <span>SuperFlex (2QBs)</span>
@@ -163,7 +138,7 @@ export default function Index() {
               <Link
                 to={`/rankings/format/${format}/position/all`}
                 className={`font-semibold hover:text-yellow-300 ${
-                  position === "all" ? "text-blue-400" : "text-blue-100"
+                  position === Position.ALL ? "text-blue-400" : "text-blue-100"
                 }`}
               >
                 <span>All</span>
@@ -173,7 +148,7 @@ export default function Index() {
               <Link
                 to={`/rankings/format/${format}/position/QB`}
                 className={`font-semibold hover:text-yellow-300 ${
-                  position === "QB" ? "text-blue-400" : "text-blue-100"
+                  position === Position.QB ? "text-blue-400" : "text-blue-100"
                 }`}
               >
                 <span>QB</span>
@@ -183,7 +158,7 @@ export default function Index() {
               <Link
                 to={`/rankings/format/${format}/position/RB`}
                 className={`font-semibold hover:text-yellow-300 ${
-                  position === "RB" ? "text-blue-400" : "text-blue-100"
+                  position === Position.RB ? "text-blue-400" : "text-blue-100"
                 }`}
               >
                 <span>RB</span>
@@ -193,7 +168,7 @@ export default function Index() {
               <Link
                 to={`/rankings/format/${format}/position/WR`}
                 className={`font-semibold hover:text-yellow-300 ${
-                  position === "WR" ? "text-blue-400" : "text-blue-100"
+                  position === Position.WR ? "text-blue-400" : "text-blue-100"
                 }`}
               >
                 <span>WR</span>
@@ -203,7 +178,7 @@ export default function Index() {
               <Link
                 to={`/rankings/format/${format}/position/TE`}
                 className={`font-semibold hover:text-yellow-300 ${
-                  position === "TE" ? "text-blue-400" : "text-blue-100"
+                  position === Position.TE ? "text-blue-400" : "text-blue-100"
                 }`}
               >
                 <span>TE</span>

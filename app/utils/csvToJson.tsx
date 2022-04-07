@@ -21,8 +21,6 @@ export const csvToJson = (input: string) => {
 
     result.push(obj);
   }
-
-  console.log(result.slice(0, 1));
   
   return { columns, data: result };
 };
