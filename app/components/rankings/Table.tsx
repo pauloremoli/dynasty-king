@@ -1,5 +1,6 @@
 import React, { useMemo } from "react";
 import { Column, Row, useSortBy, useTable } from "react-table";
+import { getTag } from "~/utils/players";
 
 type TableProps = {
   columns: Column[];
@@ -33,16 +34,21 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
     ],
     [columns]
   );
-  const { getTableProps, getTableBodyProps, headerGroups, rows, allColumns, prepareRow } =
-    useTable(
-      {
-        columns: visibleColumns,
-        data,
-        initialState: { hiddenColumns: ["value_1qb", "value_2qb"] },
-      },
-      useSortBy
-    );
-  
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    allColumns,
+    prepareRow,
+  } = useTable(
+    {
+      columns: visibleColumns,
+      data,
+      initialState: { hiddenColumns: ["value_1qb", "value_2qb"] },
+    },
+    useSortBy
+  );
 
   return (
     <div className="w-full h-full">
@@ -61,7 +67,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider"
                 >
-                  {column.render("Header")}
+                  <span className="text-left">{column.render("Header")}</span>
                   <span>
                     {column.isSorted ? (column.isSortedDesc ? " ▼" : " ▲") : ""}
                   </span>
@@ -80,11 +86,16 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <td
-                      {...cell.getCellProps()}
-                      className="px-6 py-4 whitespace-nowrap"
-                    >
-                      {cell.render("Cell")}
+                    <td {...cell.getCellProps()} className="py-2">
+                      <div
+                        className={`${
+                          cell.column.id === "pos"
+                            ? getTag(cell.row.original.pos) + "px-6 justify-center"
+                            : "px-6 my-4 py-2 "
+                        }`}
+                      >
+                        {cell.render("Cell")}
+                      </div>
                     </td>
                   );
                 })}

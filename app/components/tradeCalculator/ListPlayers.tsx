@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Format } from "~/models/Format";
 import { Player } from "~/models/Player";
 import { Position } from "~/models/Position";
-import { getPlayerValue } from "~/utils/players";
+import { getPlayerValue, getTag } from "~/utils/players";
 
 interface ListPlayersProps {
   players: Player[];
@@ -10,22 +10,6 @@ interface ListPlayersProps {
   handleDelete: (e: MouseEvent) => void;
 }
 
-const getTag = (position: Position) => {
-  const tag =
-    " text-xs inline-flex items-center justify-center font-bold leading-sm uppercase px-3 py-1 w-10 rounded-full ";
-  switch (position) {
-    case Position.QB:
-      return tag + "bg-green-200 text-green-700 ";
-    case Position.RB:
-      return tag + "bg-violet-200 text-violet-700 ";
-    case Position.WR:
-      return tag + "bg-red-200 text-red-700 ";
-    case Position.TE:
-      return tag + "bg-blue-200 text-blue-700 ";
-    default:
-      return tag + "bg-white text-gray-700 ";
-  }
-};
 
 const ListPlayers = ({ players, format, handleDelete }: ListPlayersProps) => {
   return (

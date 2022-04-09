@@ -43,3 +43,20 @@ export const getPlayerValue = (player: Player, format: Format) => {
     format === Format.FORMAT_1QB ? player.value_1qb : player.value_2qb
   );
 };
+
+export const getTag = (position: Position) => {
+  const tag =
+    " text-xs inline-flex items-center justify-center font-bold leading-sm uppercase py-1 w-10 rounded-full ";
+  switch (position) {
+    case Position.QB:
+      return tag + "bg-green-200 text-green-700 ";
+    case Position.RB:
+      return tag + "bg-violet-200 text-violet-700 ";
+    case Position.WR:
+      return tag + "bg-red-200 text-red-700 ";
+    case Position.TE:
+      return tag + "bg-blue-200 text-blue-700 ";
+    default:
+      return tag + "bg-white text-gray-700 ";
+  }
+};

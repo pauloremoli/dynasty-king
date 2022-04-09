@@ -29,7 +29,7 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
   }, [selectedPlayers]);
 
   const players: SelectSearchOption[] = allPlayers.map((item: Player) => ({
-    name: `${item.player} ${item.pos} ${item.team}`,
+    name: `${item.player} - ${item.pos} ${item.team}`,
     value: item.player,
   }));
 
