@@ -50,7 +50,7 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
 
   return (
     <>
-      <div className="flex flex-col shadow-lg  bg-[#003459] rounded-2xl py-8 px-12">
+      <div className="flex flex-col border-2 rounded-2xl py-8 px-12">
         <h2
           className={`pb-8 text-2xl font-semibold text-center ${
             team === "A" ? "text-blue-600" : "text-red-600"

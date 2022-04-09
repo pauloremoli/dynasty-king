@@ -15,8 +15,8 @@ const TradeAnalysis = ({ totalValueA, totalValueB }: TradeAnalysisProps) => {
   if (totalValueA == 0 || totalValueB == 0) return null;
 
   return (
-    <div className="flex flex-col p-8 bg-blue-900 rounded-xl  w-80 h-full my-12 ">
-      <h1 className="text-center pb-2 font-semibold ">Trade Analysis</h1>
+    <div className="flex flex-col p-8 border-2 shadow-md shadow-slate-300 rounded-xl  w-80 h-full my-12 ">
+      <h1 className="text-center pb-2 text-2xl font-semibold ">Trade Analysis</h1>
       <div className="flex flex-col justify-center items-center">
         {(Math.round(difference * 100) / 100).toFixed(0) === "0" ? (
           <span className="text-3xl">Fair trade</span>
