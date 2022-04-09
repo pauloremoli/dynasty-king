@@ -5,7 +5,7 @@ import { ImListNumbered, ImPower } from "react-icons/im";
 const Index = () => {
   return (
     <>
-      <div className=" w-full h-full md:h-screen md:w-screen flex bg-slate-900 justify-center ">
+      <div className="min-h-screen w-full h-full flex bg-slate-900 justify-center ">
         <div className="max-w-7xl flex justify-center flex-col py-20">
           <div>
             <div className="flex justify-center">
