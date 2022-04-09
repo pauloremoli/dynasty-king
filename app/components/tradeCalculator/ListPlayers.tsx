@@ -1,27 +1,58 @@
 import React, { useEffect, useState } from "react";
 import { Format } from "~/models/Format";
 import { Player } from "~/models/Player";
+import { Position } from "~/models/Position";
+import { getPlayerValue } from "~/utils/players";
 
 interface ListPlayersProps {
   players: Player[];
   format: Format;
+  handleDelete: (e: MouseEvent) => void;
 }
 
-const ListPlayers = ({ players, format }: ListPlayersProps) => {
+const getTag = (position: Position) => {
+  const tag =
+    " text-xs inline-flex items-center justify-center font-bold leading-sm uppercase px-3 py-1 w-10 rounded-full ";
+  switch (position) {
+    case Position.QB:
+      return tag + "bg-green-200 text-green-700 ";
+    case Position.RB:
+      return tag + "bg-violet-200 text-violet-700 ";
+    case Position.WR:
+      return tag + "bg-red-200 text-red-700 ";
+    case Position.TE:
+      return tag + "bg-blue-200 text-blue-700 ";
+    default:
+      return tag + "bg-white text-gray-700 ";
+  }
+};
 
+const ListPlayers = ({ players, format, handleDelete }: ListPlayersProps) => {
   return (
     <>
       {players.length > 0 && (
         <div className="py-4">
-          <h3 className="pt-4 font-semibold text-blue-300">Players:</h3>
+          {/* <h3 className="pt-4 font-semibold text-blue-300">Players:</h3> */}
           <ul className="text-gray-100">
             {players.map((player: Player) => (
               <li key={player.fp_id}>
-                {`${player.player} ${player.pos} ${player.team} [${
-                  format === Format.FORMAT_1QB
-                    ? player.value_1qb
-                    : player.value_2qb
-                }]`}
+                <div className="flex gap-2 py-2 items-center">
+                  <span className={`${getTag(player.pos as Position)}`}>
+                    {player.pos}
+                  </span>
+                  <span className="mr-auto">{player.player}</span>
+
+                  <span className="font-semibold">
+                    {getPlayerValue(player, format)}
+                  </span>
+                  <button
+                    className="border-0 bg-transparent text-red-600 hover:text-red-900 ml-4 font-bold"
+                    name={player.player}
+                    onClick={handleDelete}
+                  >
+                    x
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

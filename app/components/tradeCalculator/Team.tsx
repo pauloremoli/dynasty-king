@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import SelectSearch, {
   fuzzySearch,
-  SelectSearchOption
+  SelectSearchOption,
 } from "react-select-search";
 import { Format } from "~/models/Format";
 import { Player } from "~/models/Player";
+import { getPlayerValue } from "~/utils/players";
 import ListPlayers from "./ListPlayers";
 
 interface TeamProps {
@@ -15,14 +16,13 @@ interface TeamProps {
 }
 
 const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
-  const [selectedPlayer, setSelectedPlayer] = useState<string>();
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
     let sum = 0;
     selectedPlayers.map(
-      (current: Player) => (sum += parseInt(current.value_1qb))
+      (current: Player) => (sum += getPlayerValue(current, format))
     );
     setTotal(sum);
     setTotalValue(team, sum);
@@ -33,21 +33,24 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
     value: item.player,
   }));
 
-  const handleClickTeam = (e: React.MouseEvent<HTMLButtonElement>) => {    
-    if (selectedPlayer) {
-      const player = allPlayers.find(
-        (player: Player) => player.player === selectedPlayer
-      );
+  const handleSelection = (e: string) => {
+    if (e) {
+      const player = allPlayers.find((player: Player) => player.player === e);
       if (player) {
         setSelectedPlayers([...selectedPlayers, player]);
-        setSelectedPlayer("");
       }
     }
   };
 
+  const handleDelete = (e) => {
+    setSelectedPlayers((players) =>
+      players.filter((player: Player) => player.player !== e.target.name)
+    );
+  };
+
   return (
     <>
-      <div className="shadow-lg  bg-[#003459] rounded-2xl py-8 px-12">
+      <div className="flex flex-col shadow-lg  bg-[#003459] rounded-2xl py-8 px-12">
         <h2
           className={`pb-8 text-2xl font-semibold text-center ${
             team === "A" ? "text-blue-600" : "text-red-600"
@@ -55,35 +58,31 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
         >
           Team {team}
         </h2>
-        <div className="flex w-full justify-around gap-4 items-center text-gray-900">
+        <div className="flex w-full justify-start gap-4 items-center text-gray-900">
           <SelectSearch
             options={players}
             multiple={false}
             search
             placeholder="Select a player"
-            value={selectedPlayer}
-            onChange={(e: any) => {
-              setSelectedPlayer(e);
-            }}
+            onChange={handleSelection}
             filterOptions={(options) => {
               const filter = fuzzySearch(options);
+              console.log(filter);
               return (q) => filter(q).slice(0, 12);
             }}
           />
-          <button
-            className={`${
-              team === "A" ? "bg-blue-600 hover:bg-blue-600" : "bg-red-600 hover:bg-red-700"
-            }  hover:scale-105 text-white px-8 py-2 rounded-xl`}
-            onClick={handleClickTeam}
-          >
-            Add
-          </button>
         </div>
-        <ListPlayers players={selectedPlayers} format={format} />
+        <ListPlayers
+          players={selectedPlayers}
+          format={format}
+          handleDelete={handleDelete}
+        />
         {total !== 0 && (
-          <div>
-            <h3 className="pt-8 font-semibold text-blue-300">Total value: </h3>{" "}
-            <h3>{total} </h3>
+          <div className="mt-auto flex items-center justify-between text-2xl pt-16">
+            <h3 className="font-semibold items-center text-blue-300">
+              Total value:{" "}
+            </h3>{" "}
+            <h3 className=" font-semibold justify-end">{total} </h3>
           </div>
         )}
       </div>

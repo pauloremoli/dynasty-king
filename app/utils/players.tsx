@@ -1,4 +1,5 @@
 import { Format } from "~/models/Format";
+import { Player } from "~/models/Player";
 import { Position } from "~/models/Position";
 
 export const filterDataByFormat = (data: any, format: Format) => {
@@ -35,4 +36,10 @@ export const sortFor2QB = (a: any, b: any) => {
   const valueA = a.value_2qb;
   const valueB = b.value_2qb;
   return sortMethod(valueA, valueB);
+};
+
+export const getPlayerValue = (player: Player, format: Format) => {
+  return parseInt(
+    format === Format.FORMAT_1QB ? player.value_1qb : player.value_2qb
+  );
 };
