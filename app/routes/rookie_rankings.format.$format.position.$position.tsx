@@ -10,8 +10,10 @@ import {
   createReactTableColumn,
   filterDataByFormat,
   filterDataByPosition,
+  filterDataByRookie,
   sortMethod,
 } from "~/utils/players";
+
 
 export const loader = async ({ params }) => {
   const { format, position } = params;
@@ -22,9 +24,13 @@ export const loader = async ({ params }) => {
 
   let result = csvToJson(await response.text());
 
+
+  
   result.columns = result.columns.map((item) => {
     return createReactTableColumn(item);
   });
+
+  result.data = filterDataByRookie(result.data);
 
   result.data = filterDataByFormat(result.data, format as Format);
   if (position && position !== Position.ALL) {
@@ -51,9 +57,9 @@ export default function Index() {
         <div className="max-w-7xl text-gray-200 pt-14">
           <h1 className="text-sans text-center p-10 text-xl font-bold">
             {format == Format.FORMAT_1QB ? "1QB " : "SuperFlex "}
-            Dynasty Rankings {new Date().getFullYear()}{" "}
+            Dynasty Rookie {position !== Position.ALL ? position : ""} Rankings {new Date().getFullYear()}{" "}
           </h1>
-          <Filters format={format} position={position} />
+          <Filters format={format} position={position} onlyRookies />
           <div className="flex flex-col">
             {data ? (
               <Table data={data.data} columns={data.columns} />

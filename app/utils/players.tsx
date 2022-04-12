@@ -12,6 +12,10 @@ export const filterDataByFormat = (data: any, format: Format) => {
   return data;
 };
 
+export const filterDataByRookie = (data: any) => {
+  return data.filter((item: any) => item.draft_year === "NA" && item.pos !== "PICK");
+};
+
 export const filterDataByPosition = (data: any, position: Position) => {
   if (position && position !== Position.ALL) {
     data = data.filter((item: any) => item.pos === position);
@@ -59,4 +63,58 @@ export const getTag = (position: Position) => {
     default:
       return tag + "bg-white text-gray-700 ";
   }
+};
+
+
+export const createReactTableColumn = (item: string) => {
+  const result: any = {
+    accessor: item,
+  };
+
+  switch (item) {
+    case "player":
+      result["Header"] = "Player";
+      break;
+    case "pos":
+      result["Header"] = "Position";
+      break;
+    case "team":
+      result["Header"] = "Team";
+      break;
+    case "age":
+      result["Header"] = "Age";
+      break;
+    case "draft_year":
+      result["Header"] = "Year drafted";
+      break;
+    case "ecr_1qb":
+      result["Header"] = "Avg ranking 1QB";
+      break;
+    case "ecr_2qb":
+      result["Header"] = "Avg ranking 2QB";
+      break;
+    case "ecr_pos":
+      result["Header"] = "Position ranking";
+      break;
+    case "value_1qb":
+      result["Header"] = "Value 1QB";
+      result["sortMethod"] = sortMethod;
+      result["sortInverted"] = true;
+      break;
+    case "value_2qb":
+      result["Header"] = "Value 2QB";
+      result["sortMethod"] = sortMethod;
+      result["sortInverted"] = true;
+      break;
+    case "scrape_date":
+      result["Header"] = "Last update";
+      break;
+    case "fp_id":
+      result["Header"] = "Id";
+      break;
+    default:
+      result["Header"] = item;
+      break;
+  }
+  return result;
 };
