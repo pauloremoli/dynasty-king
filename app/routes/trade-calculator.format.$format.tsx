@@ -1,19 +1,13 @@
-import { useLoaderData, useParams } from "@remix-run/react";
-import React, { useEffect, useRef, useState } from "react";
-import SelectSearch, {
-  fuzzySearch,
-  SelectedOptionValue,
-  SelectSearchOption,
-} from "react-select-search";
+import { useLoaderData, useParams, Link } from "@remix-run/react";
+import React, { useEffect, useState } from "react";
 import Navbar from "~/components/Navbar";
-import { csvToJson } from "~/utils/csvToJson";
-import styles from "~/styles/customSelect.css";
-import { Player } from "~/models/Player";
-import { filterDataByFormat } from "~/utils/players";
-import { Format } from "~/models/Format";
-import ListPlayers from "~/components/tradeCalculator/ListPlayers";
+import Settings from "~/components/tradeCalculator/Settings";
 import Team from "~/components/tradeCalculator/Team";
 import TradeAnalysis from "~/components/tradeCalculator/TradeAnalysis";
+import { Format } from "~/models/Format";
+import styles from "~/styles/customSelect.css";
+import { csvToJson } from "~/utils/csvToJson";
+import { filterDataByFormat } from "~/utils/players";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -52,12 +46,13 @@ const TradeCalculator = () => {
     <>
       <div className="bg-slate-900 text-gray-200 h-full min-h-screen w-screen flex justify-center">
         <Navbar />
-        <div className="max-w-7xl flex flex-col h-full w-full items-center pt-24">
-          <h1 className="text-4xl font-semibold tracking-wide text-center pb-20">
+        <div className="max-w-7xl flex flex-col h-full w-full items-center my-24">
+          <h1 className="text-4xl font-semibold tracking-wide text-center pb-8">
             Trade Calculator
           </h1>
 
-          <div className="flex  w-full justify-center gap-4">
+          <Settings format={format} />
+          <div className="flex max-w-5xl w-full justify-center gap-4 mb-12">
             <Team
               allPlayers={data}
               team={"A"}

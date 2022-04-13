@@ -53,7 +53,7 @@ export default function Index() {
             {format == Format.FORMAT_1QB ? "1QB " : "SuperFlex "}
             Dynasty Rankings {new Date().getFullYear()}{" "}
           </h1>
-          <Filters format={format} position={position} />
+          <Filters format={format} position={position} onlyRookies={false} />
           <div className="flex flex-col">
             {data ? (
               <Table data={data.data} columns={data.columns} />

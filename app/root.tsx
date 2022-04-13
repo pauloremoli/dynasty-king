@@ -5,11 +5,11 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration,
+  ScrollRestoration
 } from "@remix-run/react";
 import Layout from "./components/Layout";
-
 import styles from "./styles/app.css";
+
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
