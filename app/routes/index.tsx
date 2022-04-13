@@ -50,7 +50,7 @@ const Index = () => {
                   <GiScales size={40} color="#007ea7" />
                 </div>
                 <p className="text-gray-300 text-base pt-4">
-                  Ajust calculator according to your preferences and league
+                  Adjust calculator settings according to your preferences and league
                   settings.
                 </p>
               </div>

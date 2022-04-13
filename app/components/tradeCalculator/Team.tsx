@@ -67,7 +67,6 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
             onChange={handleSelection}
             filterOptions={(options) => {
               const filter = fuzzySearch(options);
-              console.log(filter);
               return (q) => filter(q).slice(0, 12);
             }}
           />
