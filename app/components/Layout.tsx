@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 
-interface LayoutProps {}
 
-const Layout: React.PropsWithChildren<LayoutProps> = ({ children }: any) => {
-  const [darkMode, setDarkMode] = useState(false);
+const Layout : React.FC<{}> = ({ children }: any) => {
+  const [darkMode, setDarkMode] = useState(true);
   return (
     <>
       <div

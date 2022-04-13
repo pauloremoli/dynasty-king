@@ -51,12 +51,12 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
   );
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full max-w-5xl">
       <table
         {...getTableProps()}
         className="min-w-full divide-y divide-gray-600"
       >
-        <thead className="bg-slate-600">
+        <thead className="bg-slate-800">
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {}
@@ -78,7 +78,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
         </thead>
         <tbody
           {...getTableBodyProps()}
-          className="bg-slate-800 divide-y divide-gray-700"
+          className="divide-y divide-gray-700"
         >
           {rows.map((row) => {
             prepareRow(row);

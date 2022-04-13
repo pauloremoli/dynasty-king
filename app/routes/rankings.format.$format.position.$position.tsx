@@ -47,10 +47,15 @@ export default function Index() {
 
   return (
     <>
-      <div className="max-w-7xl text-gray-200 pt-14">
+      <div className="w-full max-w-5xl text-gray-200 pt-14 bg-slate-900">
         <h1 className="text-sans text-center p-10 text-xl font-bold">
-          {format == Format.FORMAT_1QB ? "1QB " : "SuperFlex "}
-          Dynasty Rankings {new Date().getFullYear()}{" "}
+          {position === Position.ALL
+            ? format == Format.FORMAT_1QB
+              ? "1QB "
+              : "SuperFlex "
+            : ""}
+          Dynasty {position !== Position.ALL ? position : ""} Rankings{" "}
+          {new Date().getFullYear()}{" "}
         </h1>
         <Filters format={format} position={position} onlyRookies={false} />
         <div className="flex flex-col">

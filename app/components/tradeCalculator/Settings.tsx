@@ -35,10 +35,10 @@ const Settings: React.FC<SettingsProps> = ({ format }) => {
         </div>
       </div>
 
-      <div className="relative pt-1 flex flex-nowrap whitespace-nowrap items-center">
+      <div className="relative pt-1 flex flex-col flex-nowrap whitespace-nowrap items-center text-left flext-start">
         <span
           className="p-4 
-            flex-grow-1 mix-w-xs"
+           text-left mix-w-xs"
         >
           Rookie Optimism:
         </span>
@@ -48,7 +48,6 @@ const Settings: React.FC<SettingsProps> = ({ format }) => {
             flex-grow-2
             p-0
             form-range
-            appearance-none
             w-full
             h-6
             focus:outline-none focus:ring-0 focus:shadow-none

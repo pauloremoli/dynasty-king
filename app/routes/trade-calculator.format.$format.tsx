@@ -44,7 +44,7 @@ const TradeCalculator = () => {
 
   return (
     <>
-      <div className="max-w-7xl flex flex-col h-full w-full items-center my-24">
+      <div className="max-w-7xl flex flex-col h-full w-full items-center my-24 text-white">
         <h1 className="text-4xl font-semibold tracking-wide text-center pb-8">
           Trade Calculator
         </h1>

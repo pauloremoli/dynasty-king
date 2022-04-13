@@ -13,7 +13,12 @@ export const filterDataByFormat = (data: any, format: Format) => {
 };
 
 export const filterDataByRookie = (data: any) => {
-  return data.filter((item: any) => item.draft_year === "NA" && item.pos !== "PICK");
+  return data.filter(
+    (item: any) =>
+      (item.draft_year === "NA" ||
+        item.draft_year === new Date().getFullYear()) &&
+      item.pos !== "PICK"
+  );
 };
 
 export const filterDataByPosition = (data: any, position: Position) => {
@@ -64,7 +69,6 @@ export const getTag = (position: Position) => {
       return tag + "bg-white text-gray-700 ";
   }
 };
-
 
 export const createReactTableColumn = (item: string) => {
   const result: any = {
