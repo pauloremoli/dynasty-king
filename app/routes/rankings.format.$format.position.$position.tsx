@@ -47,20 +47,18 @@ export default function Index() {
 
   return (
     <>
-      <div className="min-h-screen w-full h-full bg-slate-800 flex justify-center">
-        <div className="max-w-7xl text-gray-200 pt-14">
-          <h1 className="text-sans text-center p-10 text-xl font-bold">
-            {format == Format.FORMAT_1QB ? "1QB " : "SuperFlex "}
-            Dynasty Rankings {new Date().getFullYear()}{" "}
-          </h1>
-          <Filters format={format} position={position} onlyRookies={false} />
-          <div className="flex flex-col">
-            {data ? (
-              <Table data={data.data} columns={data.columns} />
-            ) : (
-              <h3>No data available</h3>
-            )}
-          </div>
+      <div className="max-w-7xl text-gray-200 pt-14">
+        <h1 className="text-sans text-center p-10 text-xl font-bold">
+          {format == Format.FORMAT_1QB ? "1QB " : "SuperFlex "}
+          Dynasty Rankings {new Date().getFullYear()}{" "}
+        </h1>
+        <Filters format={format} position={position} onlyRookies={false} />
+        <div className="flex flex-col">
+          {data ? (
+            <Table data={data.data} columns={data.columns} />
+          ) : (
+            <h3>No data available</h3>
+          )}
         </div>
       </div>
     </>

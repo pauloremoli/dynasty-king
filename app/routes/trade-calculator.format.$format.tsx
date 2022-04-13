@@ -44,31 +44,28 @@ const TradeCalculator = () => {
 
   return (
     <>
-      <div className="bg-slate-900 text-gray-200 h-full min-h-screen w-screen flex justify-center">
-        <Navbar />
-        <div className="max-w-7xl flex flex-col h-full w-full items-center my-24">
-          <h1 className="text-4xl font-semibold tracking-wide text-center pb-8">
-            Trade Calculator
-          </h1>
+      <div className="max-w-7xl flex flex-col h-full w-full items-center my-24">
+        <h1 className="text-4xl font-semibold tracking-wide text-center pb-8">
+          Trade Calculator
+        </h1>
 
-          <Settings format={format} />
-          <div className="flex max-w-5xl w-full justify-center gap-4 mb-12">
-            <Team
-              allPlayers={data}
-              team={"A"}
-              format={format}
-              setTotalValue={setTotalValue}
-            />
-            <Team
-              allPlayers={data}
-              team={"B"}
-              format={format}
-              setTotalValue={setTotalValue}
-            />
-          </div>
-
-          <TradeAnalysis totalValueA={totalValueA} totalValueB={totalValueB} />
+        <Settings format={format} />
+        <div className="flex max-w-5xl w-full justify-center gap-4 mb-12">
+          <Team
+            allPlayers={data}
+            team={"A"}
+            format={format}
+            setTotalValue={setTotalValue}
+          />
+          <Team
+            allPlayers={data}
+            team={"B"}
+            format={format}
+            setTotalValue={setTotalValue}
+          />
         </div>
+
+        <TradeAnalysis totalValueA={totalValueA} totalValueB={totalValueB} />
       </div>
     </>
   );
