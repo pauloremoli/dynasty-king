@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import React from "react";
-import { Format } from "~/models/Format";
+import { Format } from "~/types/Format";
 
 interface SettingsProps {
   format: Format;

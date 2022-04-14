@@ -1,7 +1,14 @@
 node_modules
 
-/.cache
+/build
 /public/build
-/.netlify
 .env
-/app/tailwind.css
+
+/cypress/screenshots
+/cypress/videos
+/prisma/data.db
+/prisma/data.db-journal
+
+/app/styles/tailwind.css
+/.cache
+/.netlify

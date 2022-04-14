@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Format } from "~/models/Format";
-import { Player } from "~/models/Player";
-import { Position } from "~/models/Position";
+import { Format } from "~/types/Format";
+import { Player } from "~/types/Player";
+import { Position } from "~/types/Position";
 import { getPlayerValue, getTag } from "~/utils/players";
 
 interface ListPlayersProps {

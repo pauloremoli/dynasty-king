@@ -1,6 +1,6 @@
-import { Format } from "~/models/Format";
-import { Player } from "~/models/Player";
-import { Position } from "~/models/Position";
+import { Format } from "~/types/Format";
+import { Player } from "~/types/Player";
+import { Position } from "~/types/Position";
 
 export const filterDataByFormat = (data: any, format: Format) => {
   if (format == Format.FORMAT_2QB) {

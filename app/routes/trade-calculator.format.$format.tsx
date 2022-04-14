@@ -4,7 +4,7 @@ import Navbar from "~/components/Navbar";
 import Settings from "~/components/tradeCalculator/Settings";
 import Team from "~/components/tradeCalculator/Team";
 import TradeAnalysis from "~/components/tradeCalculator/TradeAnalysis";
-import { Format } from "~/models/Format";
+import { Format } from "~/types/Format";
 import styles from "~/styles/customSelect.css";
 import { csvToJson } from "~/utils/csvToJson";
 import { filterDataByFormat } from "~/utils/players";

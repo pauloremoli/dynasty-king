@@ -3,8 +3,8 @@ import SelectSearch, {
   fuzzySearch,
   SelectSearchOption,
 } from "react-select-search";
-import { Format } from "~/models/Format";
-import { Player } from "~/models/Player";
+import { Format } from "~/types/Format";
+import { Player } from "~/types/Player";
 import { getPlayerValue } from "~/utils/players";
 import ListPlayers from "./ListPlayers";
 

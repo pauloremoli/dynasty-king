@@ -1,6 +1,6 @@
 import React from "react";
-import { Position } from "~/models/Position";
-import { Format } from "~/models/Format";
+import { Position } from "~/types/Position";
+import { Format } from "~/types/Format";
 import { Link } from "@remix-run/react";
 
 interface FiltersProps {

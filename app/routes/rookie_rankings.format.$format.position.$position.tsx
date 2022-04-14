@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Filters from "~/components/rankings/Filters";
 import Table from "~/components/rankings/Table";
-import { Format } from "~/models/Format";
-import { Position } from "~/models/Position";
+import { Format } from "~/types/Format";
+import { Position } from "~/types/Position";
 import { csvToJson } from "~/utils/csvToJson";
 import {
   createReactTableColumn,
