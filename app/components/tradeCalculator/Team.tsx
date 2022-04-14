@@ -26,7 +26,9 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
     );
     setTotal(sum);
     setTotalValue(team, sum);
-  }, [selectedPlayers]);
+  }, [selectedPlayers, format]);
+
+
 
   const players: SelectSearchOption[] = allPlayers.map((item: Player) => ({
     name: `${item.player} - ${item.pos} ${item.team}`,
@@ -50,7 +52,7 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
 
   return (
     <>
-      <div className="flex flex-col w-full border-2 rounded-2xl py-8 px-12">
+      <div className="flex flex-col w-full border-2 rounded-2xl py-4 px-4 md:py-8 md:px-12">
         <h2
           className={`pb-8 text-2xl font-semibold text-center ${
             team === "A" ? "text-blue-600" : "text-red-600"

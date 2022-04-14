@@ -51,7 +51,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
   );
 
   return (
-    <div className="w-full h-full max-w-5xl">
+    <div className="w-full h-full max-w-5xl p-4">
       <table
         {...getTableProps()}
         className="min-w-full divide-y divide-gray-600"
@@ -65,7 +65,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   {...column.getHeaderProps()}
                   scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-100 uppercase tracking-wider"
+                  className="md:px-6 md:py-3 px-2 py-2 text-left text-xs font-medium text-gray-100 uppercase tracking-wider"
                 >
                   <span className="text-left">{column.render("Header")}</span>
                   <span>
@@ -90,8 +90,8 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                       <div
                         className={`${
                           cell.column.id === "pos"
-                            ? getTag(cell.row.original.pos) + "px-6 justify-center"
-                            : "px-6 my-4 py-2 "
+                            ? getTag(cell.row.original.pos) + " md:px-6 px-2 justify-center"
+                            : "md:px-6 md:my-4 px-2 my-2 py-2"
                         }`}
                       >
                         {cell.render("Cell")}

@@ -3,7 +3,7 @@ import { FaCrown } from "react-icons/fa";
 
 const Hero = () => {
   return (
-    <div className="flex w-full max-w-7xl justify-center p-4">
+    <div className="flex w-full max-w-7xl justify-center p-4 pt-20 ">
       <div>
         <div className="flex justify-center">
           <FaCrown color="yellow" size={70} />

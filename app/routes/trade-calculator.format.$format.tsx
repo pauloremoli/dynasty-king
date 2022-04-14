@@ -44,13 +44,13 @@ const TradeCalculator = () => {
 
   return (
     <>
-      <div className="max-w-7xl flex flex-col h-full w-full items-center my-24 text-white">
+      <div className="max-w-7xl flex flex-col h-full w-full items-center my-24 text-white p-2">
         <h1 className="text-4xl font-semibold tracking-wide text-center pb-8">
           Trade Calculator
         </h1>
 
         <Settings format={format} />
-        <div className="flex max-w-5xl w-full justify-center gap-4 mb-12">
+        <div className="flex flex-col md:flex-row max-w-5xl w-full justify-center gap-4 mb-4">
           <Team
             allPlayers={data}
             team={"A"}

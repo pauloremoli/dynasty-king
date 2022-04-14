@@ -1,6 +1,5 @@
 import { useLoaderData, useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Filters from "~/components/rankings/Filters";
 import Table from "~/components/rankings/Table";
 import { Format } from "~/types/Format";
@@ -9,8 +8,7 @@ import { csvToJson } from "~/utils/csvToJson";
 import {
   createReactTableColumn,
   filterDataByFormat,
-  filterDataByPosition,
-  sortMethod,
+  filterDataByPosition
 } from "~/utils/players";
 
 export const loader = async ({ params }) => {
