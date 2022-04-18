@@ -1,10 +1,7 @@
 import { ActionFunction, json, redirect } from "@remix-run/node";
 import { Form, Outlet, useActionData, useTransition } from "@remix-run/react";
 import React from "react";
-
-export function validateEmail(email: unknown): email is string {
-  return typeof email === "string" && email.length > 3 && email.includes("@");
-}
+import { validateEmail } from "~/utils/userUtils";
 
 interface ActionData {
   errors: {
@@ -23,7 +20,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  return redirect(`/duck-report/email/${email}`);
+  return redirect(`/team-selection/email/${email}`);
 };
 
 const DuckReport = () => {

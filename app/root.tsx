@@ -1,17 +1,15 @@
-import type {
-  LinksFunction, MetaFunction
-} from "@remix-run/node";
+import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
 } from "@remix-run/react";
 import Layout from "./components/Layout";
+import { getUser } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
-
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -22,6 +20,17 @@ export const meta: MetaFunction = () => ({
   title: "Dynasty King",
   viewport: "width=device-width,initial-scale=1",
 });
+
+
+type LoaderData = {
+  user: Awaited<ReturnType<typeof getUser>>;
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+  return json<LoaderData>({
+    user: await getUser(request),
+  });
+};
 
 export default function App() {
   return (
