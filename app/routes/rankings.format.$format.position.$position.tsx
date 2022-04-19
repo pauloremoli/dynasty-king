@@ -8,7 +8,7 @@ import { csvToJson } from "~/utils/csvToJson";
 import {
   createReactTableColumn,
   filterDataByFormat,
-  filterDataByPosition
+  filterDataByPosition,
 } from "~/utils/players";
 
 export const loader = async ({ params }) => {
@@ -44,7 +44,7 @@ export default function Index() {
   }, [params]);
 
   return (
-    <>
+    <div className="w-full flex justify-center bg-slate-900">
       <div className="w-full max-w-5xl text-gray-200 pt-14 bg-slate-900">
         <h1 className="text-sans text-center p-10 text-xl font-bold">
           {position === Position.ALL
@@ -64,6 +64,6 @@ export default function Index() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -37,14 +37,16 @@ const DuckReport = () => {
   return (
     <>
       <div className="flex flex-col w-full h-full items-center pt-24 text-white">
-        <h1 className="text-4xl font-bold text-center pb-20">Duck Report</h1>
+        <h1 className="text-4xl font-bold text-center pb-20">
+          Find your leagues
+        </h1>
 
         <div className="flex flex-col">
           <Form method="post" className="space-y-6">
             <fieldset disabled={transition.state === "submitting"}>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium "
               >
                 Email address
               </label>
@@ -61,7 +63,7 @@ const DuckReport = () => {
                     autoComplete="email"
                     aria-invalid={actionData?.errors?.email ? true : undefined}
                     aria-describedby="email-error"
-                    className="rounded border border-gray-500 px-2 py-2 text-lg"
+                    className="rounded border border-gray-500 px-2 py-2 text-lg text-gray-700"
                   />
                   {actionData?.errors?.email && (
                     <div className="pt-1 text-red-700" id="email-error">
@@ -69,16 +71,17 @@ const DuckReport = () => {
                     </div>
                   )}
                 </div>
-
                 <button
                   type="submit"
-                  className="w-full rounded bg-blue-500 my-2 py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
+                  className="w-full rounded bg-blue-500 my-2 py-2 px-12 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
                 >
                   {transition.state === "submitting" ? "Loading..." : "OK"}
                 </button>
+
               </div>
             </fieldset>
           </Form>
+                <p className="text-sm pt-4">* it works only with Fleaflicker at the moment</p>
           <div className="py-8">
             <Outlet />
           </div>
