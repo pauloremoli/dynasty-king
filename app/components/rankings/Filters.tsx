@@ -16,7 +16,7 @@ const Filters: React.FC<FiltersProps> = ({ format, position, onlyRookies }) => {
         <h3 className="">Format:</h3>
         <div className="px-4">
           <Link
-            to={"/rankings/format/1QB/position/all"}
+            to={`/${onlyRookies ? "rookie_rankings" : "rankings"}/format/1QB/position/${position}`}
             className={`font-semibold hover:text-yellow-300 ${
               format === Format.FORMAT_1QB ? "text-blue-400" : "text-blue-100"
             }`}
@@ -27,7 +27,7 @@ const Filters: React.FC<FiltersProps> = ({ format, position, onlyRookies }) => {
 
         <div>
           <Link
-            to={"/rankings/format/2QB/position/all"}
+            to={`/${onlyRookies ? "rookie_rankings" : "rankings"}/format/2QB/position/${position}`}
             className={`font-semibold hover:text-yellow-300 ${
               format === Format.FORMAT_2QB ? "text-blue-400" : "text-blue-100"
             }`}
