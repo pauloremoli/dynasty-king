@@ -12,10 +12,14 @@ const Layout: React.FC<{}> = ({ children }: any) => {
         }`}
       >
         <Navbar />
-        <div className="flex justify-center h-full w-full">{children}</div>
+        <div className="flex flex-col min-h-screen">
+          <div className="flex justify-center h-full w-full mb-auto">
+            {children}
+          </div>
 
-        <div className="flex justify-center h-full w-full">
-          <Footer />
+          <div className="flex justify-center h-full w-full">
+            <Footer />
+          </div>
         </div>
       </div>
     </>

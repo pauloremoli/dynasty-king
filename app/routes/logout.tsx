@@ -4,7 +4,7 @@ import { redirect } from "@remix-run/node";
 import { logout } from "~/session.server";
 
 export const action: ActionFunction = async ({ request }) => {
-  console.log("calling logout from logout route");
+  console.log("ActionFunction logout");
   
   return logout(request);
 };

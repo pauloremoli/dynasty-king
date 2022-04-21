@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import React, { useState } from "react";
 import { FaCrown } from "react-icons/fa";
 import { useOptionalUser } from "~/utils/userUtils";
@@ -54,11 +54,14 @@ const Navbar = () => {
                 <h3 className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
                   {user.username}
                 </h3>
-                <Link to="/logout">
-                  <span className="pl-4 hover:text-yellow-400 hover:underline md:text-sm md:font-medium">
-                    ( logout )
-                  </span>
-                </Link>
+                <Form action="/logout" method="post">
+                  <button
+                    type="submit"
+                    className="rounded bg-slate-600 py-2 px-4 text-blue-100 hover:bg-blue-500 active:bg-blue-600"
+                  >
+                    Logout
+                  </button>
+                </Form>
               </div>
             ) : (
               <div className="mt-4 md:flex-row  md:mt-0 md:text-sm md:font-medium">
@@ -66,13 +69,13 @@ const Navbar = () => {
                   href="/login"
                   className="mx-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Login
+                  Log In
                 </a>
                 <a
                   href="/signup"
-                  className="mx-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="mx-4 bg-white text-blue-700 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:white dark:hover:bg-blue-100 dark:focus:ring-blue-800"
                 >
-                  Sign-up
+                  Sign Up
                 </a>
               </div>
             )}
