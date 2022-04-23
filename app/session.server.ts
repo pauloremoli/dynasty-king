@@ -27,10 +27,7 @@ export async function getSession(request: Request) {
 
 export async function getUserId(request: Request): Promise<string | undefined> {
   const session = await getSession(request);
-  const userId = session.get(USER_SESSION_KEY);
-  console.log("User id from session:", userId);
-
-  return userId;
+  return session.get(USER_SESSION_KEY);
 }
 
 export async function getUser(request: Request): Promise<null | User> {
@@ -92,7 +89,6 @@ export async function logout(request: Request) {
   const session = await getSession(request);
   const cookie = await sessionStorage.destroySession(session);
 
-  console.log("logout", cookie);
   return redirect("/", {
     headers: {
       "Set-Cookie": cookie,

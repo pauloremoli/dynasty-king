@@ -57,7 +57,7 @@ const Navbar = () => {
                 <Form action="/logout" method="post">
                   <button
                     type="submit"
-                    className="rounded bg-slate-600 py-2 px-4 text-blue-100 hover:bg-blue-500 active:bg-blue-600"
+                    className="mx-4 text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-slate-500 dark:hover:bg-slate-700 dark:focus:ring-slate-800"
                   >
                     Logout
                   </button>

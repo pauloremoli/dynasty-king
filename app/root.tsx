@@ -28,8 +28,6 @@ type LoaderData = {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
-  console.log("loaded");
-  
   return json<LoaderData>({
     user: await getUser(request),
   });

@@ -63,8 +63,6 @@ const Tools = () => {
               </div>
             </div>
           </Link>
-        </div>
-        <div className="flex md:flex-row flex-col gap-4 p-4 w-full pt-0  justify-center">
           <Link to="/h2h">
             <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
               <div className="px-6 py-6">
@@ -81,6 +79,8 @@ const Tools = () => {
               </div>
             </div>
           </Link>
+        </div>
+        <div className="flex md:flex-row flex-col gap-4 p-4 w-full pt-0  justify-center">
           <Link to="/duck-report">
             <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
               <div className="px-6 py-6">
@@ -107,13 +107,11 @@ const Tools = () => {
                   <GiAmericanFootballPlayer size={40} color="#007ea7" />
                 </div>
                 <p className="pt-4 text-base text-gray-300 text-center">
-                  Evaluate Hit/Miss per round for your past rookie drafts.
+                  Evaluate your Hit/Miss rate based on your drafted rookies. 
                 </p>
               </div>
             </div>
           </Link>
-        </div>
-        <div className="flex md:flex-row flex-col gap-4 p-4 w-full pt-0  justify-center">
           <Link to="/fa-tracker">
             <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
               <div className="px-6 py-6">
@@ -131,21 +129,6 @@ const Tools = () => {
             </div>
           </Link>
 
-          <Link to="/live-score">
-            <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-              <div className="px-6 py-6">
-                <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
-                  Live Score
-                </div>
-                <div className="flex items-center justify-center py-2">
-                  <MdLiveTv size={40} color="#007ea7" />
-                </div>
-                <p className="pt-4 text-base text-gray-300 text-center">
-                  Check the score of all your games in one place.
-                </p>
-              </div>
-            </div>
-          </Link>
           <Link to="/lineup-tracker">
             <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
               <div className="px-6 py-6">

@@ -109,7 +109,7 @@ export default function SignUp() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col mt-20 justify-center max-w-sm w-full">
+    <div className="flex min-h-full flex-col mt-20 justify-center max-w-md w-full">
       <div className="mx-auto w-full px-8">
         <h1 className="text-2xl text-center py-4 md:py-12 dark:text-gray-200 text-gray-900 font-semibold">
           Sign Up
@@ -118,7 +118,7 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-thin dark:text-gray-100 text-gray-900"
+              className="block text-sm  dark:text-gray-100 text-gray-900"
             >
               Email address
             </label>
@@ -145,7 +145,7 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="username"
-              className="block text-sm font-thin dark:text-gray-100 text-gray-900"
+              className="block text-sm  dark:text-gray-100 text-gray-900"
             >
               Username
             </label>
@@ -173,7 +173,7 @@ export default function SignUp() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-thin dark:text-gray-100 text-gray-900"
+              className="block text-sm  dark:text-gray-100 text-gray-900"
             >
               Password
             </label>
@@ -204,7 +204,7 @@ export default function SignUp() {
             Create Account
           </button>
           <div className="flex items-center justify-center">
-            <div className="text-center text-sm font-thin dark:text-gray-300 text-gray-900">
+            <div className="text-center text-sm  dark:text-gray-100 text-gray-900">
               Already have an account?{" "}
               <Link
                 className="text-blue-500 dark:text-blue-200 underline"

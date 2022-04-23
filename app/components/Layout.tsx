@@ -13,7 +13,7 @@ const Layout: React.FC<{}> = ({ children }: any) => {
       >
         <Navbar />
         <div className="flex flex-col min-h-screen">
-          <div className="flex justify-center h-full w-full mb-auto">
+          <div className="flex justify-center h-full w-full mb-auto md:mt-20">
             {children}
           </div>
 

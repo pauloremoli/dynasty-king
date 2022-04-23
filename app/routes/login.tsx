@@ -1,9 +1,8 @@
-import type {
+import {
   ActionFunction,
   LoaderFunction,
-  MetaFunction,
+  MetaFunction,json, redirect
 } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
 
@@ -92,16 +91,16 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full h-full md:mt-20 flex-col justify-center max-w-sm w-full">
+    <div className="flex min-h-full h-full md:mt-20 flex-col justify-center max-w-md w-full">
       <div className="mx-auto w-full  px-8">
-        <h1 className="text-2xl text-center py-4 md:py-12 dark:text-gray-200 text-gray-900">
+        <h1 className="text-2xl text-center py-4 md:py-12 dark:text-gray-100 text-gray-900">
           Log In
         </h1>
         <Form method="post" className="space-y-6">
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-thin  dark:text-gray-200 text-gray-900"
+              className="block text-sm   dark:text-gray-100 text-gray-900"
             >
               Email address
             </label>
@@ -129,7 +128,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-thin  dark:text-gray-200 text-gray-900"
+              className="block text-sm   dark:text-gray-100 text-gray-900"
             >
               Password
             </label>
@@ -160,7 +159,21 @@ export default function LoginPage() {
             Log in
           </button>
           <div className="flex items-center justify-between">
-            <div className="text-center text-sm font-thin text-gray-500 dark:text-gray-100">
+            <div className="flex items-center">
+              <input
+                id="remember"
+                name="remember"
+                type="checkbox"
+                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              />
+              <label
+                htmlFor="remember"
+                className="ml-2 block text-sm text-gray-900 dark:text-gray-100"
+              >
+                Remember me
+              </label>
+            </div>
+            <div className="text-center text-sm  text-gray-500 dark:text-gray-100">
               Don't have an account?{" "}
               <Link
                 className="text-blue-500 dark:text-blue-200 underline"

@@ -50,7 +50,7 @@ export default function Index() {
 
   return (
     <>
-      <div className="w-full max-w-5xl text-gray-200 pt-14 bg-slate-900">
+      <div className="w-full max-w-5xl text-gray-200 bg-slate-900">
         <h1 className="text-sans text-center p-10 text-xl font-bold">
           {position === Position.ALL
             ? format == Format.FORMAT_1QB

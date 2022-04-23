@@ -1,15 +1,21 @@
+import { json } from "@remix-run/node";
+import { TeamStats } from "~/types/TeamStats";
+
+interface ActionData {
+  errors?: {
+    email?: string;
+  };
+}
+
 function wasLeagueActive(team) {
   return team?.recordOverall.hasOwnProperty("wins");
 }
 
 export const getTeams = async (email) => {
-  let teams = [];
+  let teams: Team[] = [];
   let year = new Date().getFullYear();
-  console.log(`Year: ${year}`);
   const params = `FetchUserLeagues?sport=NFL&email=${email}&season=${year}`;
   const url = `https://www.fleaflicker.com/api/${params}`;
-
-  console.log(url);
 
   await fetch(url)
     .then(async (response) => {
@@ -18,29 +24,47 @@ export const getTeams = async (email) => {
       const leagues = data.leagues;
       teams = leagues.map((league: any) => {
         return {
-          league_id: league.id,
-          league_name: league.name,
-          team_id: league.ownedTeam.id,
-          team_name: league.ownedTeam.name,
+          leagueId: league.id,
+          leagueName: league.name,
+          teamId: league.ownedTeam.id,
+          teamName: league.ownedTeam.name,
         };
       });
     })
     .catch((error) => {
-      console.log(error);
-      return "nok";
+      return json<ActionData>(
+        { errors: { email: "Could not find any league for this email" } },
+        { status: 400 }
+      );
     });
 
   return { teams };
 };
 
-export const getStats = async function get_stats(league_id) {
-  let stats = [];
+export const getScoreBoard = async (leagueId: number, year: number) => {
+  const params = `FetchLeagueScoreboard?sport=NFL&league_id=${leagueId}&season=${year}`;
+  const url = `https://www.fleaflicker.com/api/${params}`;
+
+  await fetch(url)
+    .then(async (response) => {
+      const data = await response.json();
+      return data;
+    })
+    .catch((error) => {
+      return json<ActionData>(
+        { errors: { email: "Could not find any league for this email" } },
+        { status: 400 }
+      );
+    });
+};
+
+export const getStats = async function get_stats(leagueId: number) {
+  let stats: TeamStats[] = [];
   let year = new Date().getFullYear();
 
   let hasData = true;
   while (hasData) {
-    console.log(`Year: ${year}`);
-    const params = `FetchLeagueStandings?sport=NFL&league_id=${league_id}&season=${year}`;
+    const params = `FetchLeagueStandings?sport=NFL&league_id=${leagueId}&season=${year}`;
 
     const url = `https://www.fleaflicker.com/api/${params}`;
     await fetch(url).then(async (response) => {
@@ -48,42 +72,36 @@ export const getStats = async function get_stats(league_id) {
 
       if (data) {
         let teams = [];
-        data.divisions.forEach((division) => {
+        data.divisions.forEach((division: { [x: string]: any }) => {
           teams.push(...division["teams"]);
         });
 
         if (!wasLeagueActive(teams[0])) {
           if (year === new Date().getFullYear()) {
-            console.log("season not started", year);
             return;
           }
           hasData = false;
-          console.log("hasData false", year);
           return;
         }
-
-        console.log(stats);
-
         stats = updateStats(teams, stats, year);
-
-        console.log(stats.slice(0, 1));
-        // console.log(year, stats);
       }
     });
     --year;
   }
 };
 
-const updateStats = (teams, stats, year) => {
-  teams.map((team) => {
-    let teamStats = stats[team.name];
+const updateStats = (teams: any, stats: TeamStats[], year: number) => {
+  teams.map((team: any) => {
+    let teamStats: TeamStats = stats[team.name];
     if (!teamStats) {
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
       teamStats = {
+        id: team.id,
         name: team.name,
         logoUrl: team.logoUrl,
-        seasonStats: {
-          [year]: {
+        statsPerYear: [
+          {
+            year,
             rank: team.recordOverall.rank,
             pointsFor: team.pointsFor.value,
             regularSeason: {
@@ -102,8 +120,7 @@ const updateStats = (teams, stats, year) => {
                   : 0,
             },
           },
-        },
-        id: team.id,
+        ],
         regularSeason: {
           wins: team.recordOverall.wins,
           losses: team.recordOverall.losses,
@@ -121,9 +138,8 @@ const updateStats = (teams, stats, year) => {
     } else {
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
 
-      console.log("already has data", teamStats);
-
-      teamStats.seasonStats[year] = {
+      teamStats.statsPerYear?.push({
+        year,
         rank: team.recordOverall.rank,
         pointsFor: team.pointsFor.value,
         regularSeason: {
@@ -139,15 +155,8 @@ const updateStats = (teams, stats, year) => {
               ? team.recordPostseason.losses
               : 0,
         },
-      };
-      teamStats.seasonStats[year].regularSeason.wins = team.recordOverall.wins;
-      teamStats.seasonStats[year].regularSeason.losses =
-        team.recordOverall.losses;
-      teamStats.seasonStats[year].regularSeason.ties = ties;
-      teamStats.seasonStats[year].postseason.wins =
-        "wins" in team.recordPostseason ? team.recordPostseason.wins : 0;
-      teamStats.seasonStats[year].postseason.losses =
-        "losses" in team.recordPostseason ? team.recordPostseason.losses : 0;
+      });
+
       teamStats.regularSeason.wins += team.recordOverall.wins;
       teamStats.regularSeason.losses += team.recordOverall.losses;
       teamStats.regularSeason.ties += ties;
