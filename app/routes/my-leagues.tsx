@@ -15,16 +15,16 @@ export const loader: LoaderFunction = async ({ request }) => {
   const teams = await getTeamsByUserId(userId);
   console.log("teams", teams);
   if (!teams || teams.length === 0) {
-    return redirect("/team-selection");
+    return redirect("/league-selection");
   }
   return { teams };
 };
 
 export const action: ActionFunction = async () => {
-  return redirect(`/team-selection`);
+  return redirect(`/league-selection`);
 };
 
-const MyTeams = () => {
+const MyLeagues = () => {
   const data = useLoaderData();
 
   const handleDelete = async (e) => {
@@ -36,7 +36,7 @@ const MyTeams = () => {
   return (
     <>
       <div className="flex flex-col w-full h-full items-center md:pt-12 text-white">
-        <h1 className="font-semibold text-3xl">My Teams</h1>
+        <h1 className="font-semibold text-3xl">My Leagues</h1>
         <div className="md:pt-10 flex gap-20">
           <div>
             {data.teams.map((team: Team) => {
@@ -65,7 +65,7 @@ const MyTeams = () => {
               type="submit"
               className="w-full rounded bg-blue-500 my-2 py-2 px-12 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
             >
-              Add team
+              Add League
             </button>
           </Form>
         </div>
@@ -74,4 +74,4 @@ const MyTeams = () => {
   );
 };
 
-export default MyTeams;
+export default MyLeagues;

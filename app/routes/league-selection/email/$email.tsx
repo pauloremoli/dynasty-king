@@ -51,7 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
     }
   }
 
-  return redirect("/my-teams");
+  return redirect("/my-leagues");
 };
 
 const SelectLeague = () => {
@@ -59,7 +59,7 @@ const SelectLeague = () => {
   const transition = useTransition();
   return (
     <div>
-      <h1>Teams</h1>
+      <h1 className="font-semibold">Leagues</h1>
       {data && (
         <Form method="post" className="flex flex-col w-full">
           {data.teams.map((team: Team) => (

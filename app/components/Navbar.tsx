@@ -97,9 +97,9 @@ const Navbar = () => {
                 </a>
               </li>
               <li>
-                <a href="/my-teams">
+                <a href="/my-leagues">
                   <span className="px-8 hover:text-yellow-400 hover:underline">
-                    My Teams
+                    My Leagues
                   </span>
                 </a>
               </li>

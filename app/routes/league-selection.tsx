@@ -20,7 +20,7 @@ export const action: ActionFunction = async ({ request }) => {
     );
   }
 
-  return redirect(`/team-selection/email/${email}`);
+  return redirect(`/league-selection/email/${email}`);
 };
 
 const TeamSelection = () => {
@@ -46,7 +46,7 @@ const TeamSelection = () => {
           <Form method="post" className="space-y-6">
             <fieldset disabled={transition.state === "submitting"}>
               <label htmlFor="email" className="block text-sm font-medium ">
-                Email address
+                Email address used for your account in fleaflicker
               </label>
 
               <div className="flex items-center gap-4">
@@ -73,7 +73,7 @@ const TeamSelection = () => {
                   type="submit"
                   className="w-full rounded bg-blue-500 my-2 py-2 px-12 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
                 >
-                  {transition.state === "submitting" ? "Loading..." : "Find"}
+                  {transition.state === "submitting" ? "Loading..." : "Load"}
                 </button>
               </div>
             </fieldset>
