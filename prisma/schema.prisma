@@ -12,9 +12,9 @@ datasource db {
 
 model Team {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  teamId     Number
+  teamId     Int
   teamName   String
-  leagueId   Number
+  leagueId   Int
   leagueName String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId     String   @unique

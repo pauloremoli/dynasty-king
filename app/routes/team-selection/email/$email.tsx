@@ -1,8 +1,17 @@
-import { ActionFunction, json } from "@remix-run/node";
+import { ActionFunction, json, redirect } from "@remix-run/node";
 import { Form, useLoaderData, useTransition } from "@remix-run/react";
 import React from "react";
 import { getTeams } from "~/api/fleaflicker";
+import { addTeam } from "~/models/team.server";
+import { getUserId } from "~/session.server";
 import { Team } from "~/types/Team";
+
+interface ActionData {
+  errors: {
+    teamId?: string;
+    userId?: string;
+  };
+}
 
 export const loader = async ({ params }) => {
   const { email } = params;
@@ -13,15 +22,36 @@ export const loader = async ({ params }) => {
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
   for (var key of formData.keys()) {
-    const [leagueId, teamId] = key.split("/");
+    console.log(key);
+    
+    const [leagueId, leagueName, teamId, teamName] = key.split("##");
     const selected = formData.get(key) === "on";
+    const userId = await getUserId(request);
 
-    if (selected) {
+    if (!leagueId || !leagueName || !teamId || !teamName) {
+      console.log("Invalid team data");
       
+      return json<ActionData>(
+        { errors: { teamId: "Invalid team" } },
+        { status: 400 }
+      );
+    }
+
+    if (!userId) {
+      console.log("Invalid user id");
+      return json<ActionData>(
+        { errors: { userId: "Invalid user id" } },
+        { status: 400 }
+      );
+    }
+
+    console.log("selected", selected, leagueId, leagueName, teamId, teamName);
+    if (selected) {
+      console.log(await addTeam(parseInt(teamId), teamName, parseInt(leagueId), leagueName, userId));
     }
   }
 
-  return json({ result: "ok" });
+  return redirect("/my-teams");
 };
 
 const SelectLeague = () => {
@@ -35,8 +65,15 @@ const SelectLeague = () => {
           {data.teams.map((team: Team) => (
             <div key={team.teamId} className="flex gap-2 p-4 items-center">
               <input
-                id={team.leagueId + "/" + team.teamId.toString()}
-                name={team.leagueId + "/" + team.teamId.toString()}
+                name={
+                  team.leagueId.toString() +
+                  "##" +
+                  team.leagueName +
+                  "##" +
+                  team.teamId.toString() +
+                  "##" +
+                  team.teamName
+                }
                 type="checkbox"
                 defaultChecked={true}
                 className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"

@@ -1,7 +1,6 @@
 import type { Team } from "@prisma/client";
 import { prisma } from "~/db.server";
 
-
 export type { Team } from "@prisma/client";
 
 export async function getTeamsByUserId(userId: Team["userId"]) {
@@ -27,5 +26,7 @@ export async function addTeam(
 }
 
 export async function deleteTeamById(id: Team["id"]) {
+  console.log("deleteTeamById -> id", id);
+  
   return prisma.team.delete({ where: { id } });
 }

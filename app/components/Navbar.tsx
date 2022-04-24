@@ -97,7 +97,7 @@ const Navbar = () => {
                 </a>
               </li>
               <li>
-                <a href="/team-selection">
+                <a href="/my-teams">
                   <span className="px-8 hover:text-yellow-400 hover:underline">
                     My Teams
                   </span>

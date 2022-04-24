@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect(`/team-selection/email/${email}`);
 };
 
-const DuckReport = () => {
+const TeamSelection = () => {
   const actionData = useActionData() as ActionData;
   const emailRef = React.useRef<HTMLInputElement>(null);
   const transition = useTransition();
@@ -37,7 +37,8 @@ const DuckReport = () => {
   return (
     <>
       <div className="flex flex-col w-full h-full items-center pt-24 text-white">
-        <h1 className="text-4xl font-bold text-center pb-20">
+        
+        <h1 className="text-2xl font-bold text-center pb-20">
           Import leagues from Fleaflicker
         </h1>
 
@@ -87,4 +88,4 @@ const DuckReport = () => {
   );
 };
 
-export default DuckReport;
+export default TeamSelection;
