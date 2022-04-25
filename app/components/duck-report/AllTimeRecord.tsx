@@ -7,6 +7,9 @@ interface AllTimeRecordProps {
 const AllTimeRecord: React.FC<AllTimeRecordProps> = ({ teamStats }) => {
   return (
     <div className="flex flex-col items-start px-8">
+      <h1 className="font-semibold text-xl text-blue-400 pb-6">
+        All Time Record
+      </h1>
       {teamStats.map((teamStat: TeamStats, index: number) => {
         return (
           <div key={teamStat.id} className="flex flex-col pb-6">
