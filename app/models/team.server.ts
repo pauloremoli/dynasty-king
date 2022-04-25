@@ -14,6 +14,8 @@ export async function addTeam(
   leagueName: Team["leagueName"],
   userId: Team["userId"]
 ) {
+  console.log("ADD", leagueName, teamName);
+  
   return prisma.team.create({
     data: {
       teamId,

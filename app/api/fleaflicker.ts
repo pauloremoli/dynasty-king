@@ -1,4 +1,5 @@
 import { json } from "@remix-run/node";
+import { Team } from "~/types/Team";
 import { TeamStats } from "~/types/TeamStats";
 
 interface ActionData {
@@ -7,7 +8,7 @@ interface ActionData {
   };
 }
 
-function wasLeagueActive(team) {
+function wasLeagueActive(team: any) {
   return team?.recordOverall.hasOwnProperty("wins");
 }
 

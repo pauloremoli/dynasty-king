@@ -38,8 +38,8 @@ const TeamSelection = () => {
     <>
       <div className="flex flex-col w-full h-full items-center pt-24 text-white">
         
-        <h1 className="text-2xl font-bold text-center pb-20">
-          Import leagues from Fleaflicker
+        <h1 className="text-2xl font-bold text-center pb-10">
+          Add League
         </h1>
 
         <div className="flex flex-col">

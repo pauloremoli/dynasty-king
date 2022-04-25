@@ -4,7 +4,6 @@ import { Form, useLoaderData } from "@remix-run/react";
 import React from "react";
 import { deleteTeamById, getTeamsByUserId } from "~/models/team.server";
 import { getUserId } from "~/session.server";
-import { prisma } from "~/db.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
@@ -44,11 +43,7 @@ const MyLeagues = () => {
           <div>
             {data.teams.map((team: Team) => {
               return (
-                <Form
-                  method="post"
-                  key={team.id}
-                  className="flex gap-4 py-4"
-                >
+                <Form method="post" key={team.id} className="flex gap-4 py-4">
                   <button
                     className="border-0 bg-transparent text-red-600 hover:text-red-900 ml-4 font-bold"
                     name="formName"
