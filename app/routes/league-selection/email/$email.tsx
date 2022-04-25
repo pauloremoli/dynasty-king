@@ -44,11 +44,7 @@ export const action: ActionFunction = async ({ request }) => {
 
     const userId = await getUserId(request);
 
-    console.log("PARSED TEAM", team, userId);
-
     if (!team) {
-      console.log("Invalid team");
-
       return json<ActionData>(
         { errors: { teamId: "Invalid team" } },
         { status: 400 }
@@ -56,22 +52,18 @@ export const action: ActionFunction = async ({ request }) => {
     }
 
     if (!userId) {
-      console.log("Invalid user");
       return json<ActionData>(
         { errors: { userId: "Invalid user id" } },
         { status: 400 }
       );
     }
 
-    console.log("Adding team");
-    console.log(
-      await addTeam(
-        team.teamId,
-        team.teamName,
-        team.leagueId,
-        team.leagueName,
-        userId
-      )
+    await addTeam(
+      team.teamId,
+      team.teamName,
+      team.leagueId,
+      team.leagueName,
+      userId
     );
   }
 
@@ -83,12 +75,16 @@ const SelectLeague = () => {
   const transition = useTransition();
   return (
     <div>
-      {!data && <>
-      <p className="text-red-400">No leagues found!</p>
-      </>}
+      {!data && (
+        <>
+          <p className="text-red-400">No leagues found!</p>
+        </>
+      )}
       {data.teams.length === 0 ? (
         <div>
-          <h1 className="font-semibold text-xl pt-10">All teams are already added.</h1>
+          <h1 className="font-semibold text-xl pt-10">
+            All teams are already added.
+          </h1>
           <a href="/my-leagues" className="underline dark:text-blue-400">
             Go back to my leagues
           </a>

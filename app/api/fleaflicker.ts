@@ -1,6 +1,6 @@
 import { json } from "@remix-run/node";
 import { Team } from "~/types/Team";
-import { TeamStats } from "~/types/TeamStats";
+import { SeasonStats, TeamStats } from "~/types/TeamStats";
 
 interface ActionData {
   errors?: {
@@ -12,7 +12,32 @@ function wasLeagueActive(team: any) {
   return team?.recordOverall.hasOwnProperty("wins");
 }
 
-export const getTeams = async (email) => {
+const sortByMostWins = (first: TeamStats, second: TeamStats) => {
+  if (first.regularSeason.wins > second.regularSeason.wins) {
+    return -1;
+  }
+  if (first.regularSeason.wins < second.regularSeason.wins) {
+    return 1;
+  }
+  if (
+    first.regularSeason.wins === second.regularSeason.wins &&
+    (first.regularSeason.ties ? first.regularSeason.ties : 0) >
+      (second.regularSeason.ties ? second.regularSeason.ties : 0)
+  ) {
+    return -1;
+  }
+
+  if (
+    first.regularSeason.wins === second.regularSeason.wins &&
+    (first.regularSeason.ties ? first.regularSeason.ties : 0) <
+      (second.regularSeason.ties ? second.regularSeason.ties : 0)
+  ) {
+    return 1;
+  }
+  return 0;
+};
+
+export const getTeams = async (email: string) => {
   let teams: Team[] = [];
   let year = new Date().getFullYear();
   const params = `FetchUserLeagues?sport=NFL&email=${email}&season=${year}`;
@@ -93,12 +118,14 @@ export const getStats = async function get_stats(leagueId: number) {
     --year;
   }
 
+  stats = stats.sort(sortByMostWins);
+
   return stats;
 };
 
 const updateStats = (teams: any, stats: TeamStats[], year: number) => {
   teams.map((team: any) => {
-    let teamStats: TeamStats = stats[team.name];
+    let teamStats: TeamStats | undefined = stats.find((s) => s && s.id === team.id);
     if (!teamStats) {
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
       teamStats = {
@@ -141,6 +168,7 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
               : 0,
         },
       };
+      stats.push(teamStats);
     } else {
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
 
@@ -171,7 +199,7 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
       teamStats.postseason.losses +=
         "losses" in team.recordPostseason ? team.recordPostseason.losses : 0;
     }
-    stats[team.name] = teamStats;
+    return teamStats;
   });
   return stats;
 };
