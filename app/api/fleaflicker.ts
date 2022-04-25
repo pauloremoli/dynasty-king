@@ -100,6 +100,7 @@ export const getStats = async function get_stats(leagueId: number) {
       const data = await response.json();
 
       if (data) {
+        
         let teams = [];
         data.divisions.forEach((division: { [x: string]: any }) => {
           teams.push(...division["teams"]);
@@ -124,6 +125,7 @@ export const getStats = async function get_stats(leagueId: number) {
 };
 
 const updateStats = (teams: any, stats: TeamStats[], year: number) => {
+  
   teams.map((team: any) => {
     let teamStats: TeamStats | undefined = stats.find((s) => s && s.id === team.id);
     if (!teamStats) {
@@ -131,6 +133,7 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
       teamStats = {
         id: team.id,
         name: team.name,
+        owner: team.owners[0].displayName,
         logoUrl: team.logoUrl,
         statsPerYear: [
           {

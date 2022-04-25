@@ -15,6 +15,7 @@ export type StatsPerYear = {
 export type TeamStats = {
     id: number,
     name: string,
+    owner: string,
     logoUrl: string,
     statsPerYear? : StatsPerYear[],
     regularSeason: SeasonStats,
