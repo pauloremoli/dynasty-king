@@ -4,34 +4,37 @@ import { Form, useLoaderData } from "@remix-run/react";
 import React from "react";
 import { deleteTeamById, getTeamsByUserId } from "~/models/team.server";
 import { getUserId } from "~/session.server";
+import { prisma } from "~/db.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
-  console.log("userId", userId);
-
   if (!userId) {
     return redirect("/login");
   }
   const teams = await getTeamsByUserId(userId);
-  console.log("teams", teams);
   if (!teams || teams.length === 0) {
     return redirect("/league-selection");
   }
   return { teams };
 };
 
-export const action: ActionFunction = async () => {
-  return redirect(`/league-selection`);
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+
+  const formName = formData.get("formName");
+  if (!formName) {
+    return {};
+  }
+
+  if (formName === "$addleague") {
+    return redirect(`/league-selection`);
+  } else {
+    return deleteTeamById(formName.toString());
+  }
 };
 
 const MyLeagues = () => {
   const data = useLoaderData();
-
-  const handleDelete = async (e) => {
-    console.log(e.target.name);
-
-    console.log(await deleteTeamById(e.target.name));
-  };
 
   return (
     <>
@@ -41,11 +44,15 @@ const MyLeagues = () => {
           <div>
             {data.teams.map((team: Team) => {
               return (
-                <div key={team.id} className="flex gap-4 py-4">
+                <Form
+                  method="post"
+                  key={team.id}
+                  className="flex gap-4 py-4"
+                >
                   <button
                     className="border-0 bg-transparent text-red-600 hover:text-red-900 ml-4 font-bold"
-                    name={team.id}
-                    onClick={handleDelete}
+                    name="formName"
+                    value={team.id}
                   >
                     x
                   </button>
@@ -56,13 +63,15 @@ const MyLeagues = () => {
                       {team.teamName}
                     </span>
                   </div>
-                </div>
+                </Form>
               );
             })}
           </div>
           <Form method="post" className="space-y-6">
             <button
               type="submit"
+              name="formName"
+              value="$addleague"
               className="w-full rounded bg-blue-500 my-2 py-2 px-12 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
             >
               Add League

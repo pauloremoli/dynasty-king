@@ -44,10 +44,13 @@ export const getTeams = async (email) => {
 export const getScoreBoard = async (leagueId: number, year: number) => {
   const params = `FetchLeagueScoreboard?sport=NFL&league_id=${leagueId}&season=${year}`;
   const url = `https://www.fleaflicker.com/api/${params}`;
+  console.log(url);
 
-  await fetch(url)
+  return await fetch(url)
     .then(async (response) => {
       const data = await response.json();
+      console.log(data);
+
       return data;
     })
     .catch((error) => {
@@ -88,6 +91,8 @@ export const getStats = async function get_stats(leagueId: number) {
     });
     --year;
   }
+
+  return stats;
 };
 
 const updateStats = (teams: any, stats: TeamStats[], year: number) => {
