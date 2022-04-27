@@ -70,14 +70,10 @@ export const getTeams = async (email: string) => {
 export const getScoreBoard = async (leagueId: number, year: number) => {
   const params = `FetchLeagueScoreboard?sport=NFL&league_id=${leagueId}&season=${year}`;
   const url = `https://www.fleaflicker.com/api/${params}`;
-  console.log(url);
 
   return await fetch(url)
     .then(async (response) => {
-      const data = await response.json();
-      console.log(data);
-
-      return data;
+      return await response.json();
     })
     .catch((error) => {
       return json<ActionData>(
@@ -127,8 +123,12 @@ export const getStats = async function get_stats(leagueId: number) {
 const updateStats = (teams: any, stats: TeamStats[], year: number) => {
   
   teams.map((team: any) => {
+
     let teamStats: TeamStats | undefined = stats.find((s) => s && s.id === team.id);
     if (!teamStats) {
+      if(team.name === "TIJUCA WITCHERS"){
+        console.log(team);
+      }
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
       teamStats = {
         id: team.id,
@@ -141,8 +141,8 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
             rank: team.recordOverall.rank,
             pointsFor: team.pointsFor.value,
             regularSeason: {
-              wins: team.recordOverall.wins,
-              losses: team.recordOverall.losses,
+              wins: team.recordOverall.wins ? team.recordOverall.wins : 0,
+              losses: team.recordOverall.losses ? team.recordOverall.losses : 0,
               ties: ties,
             },
             postseason: {
@@ -158,8 +158,8 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
           },
         ],
         regularSeason: {
-          wins: team.recordOverall.wins,
-          losses: team.recordOverall.losses,
+          wins: team.recordOverall.wins ? team.recordOverall.wins : 0,
+          losses: team.recordOverall.losses ? team.recordOverall.losses : 0,
           ties: ties,
         },
         postseason: {
@@ -174,7 +174,9 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
       stats.push(teamStats);
     } else {
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
-
+      if(team.name === "TIJUCA WITCHERS"){
+        console.log(team);
+      }
       teamStats.statsPerYear?.push({
         year,
         rank: team.recordOverall.rank,
@@ -202,6 +204,7 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
       teamStats.postseason.losses +=
         "losses" in team.recordPostseason ? team.recordPostseason.losses : 0;
     }
+
     return teamStats;
   });
   return stats;
