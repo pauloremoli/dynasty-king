@@ -12,31 +12,6 @@ function wasLeagueActive(team: any) {
   return team?.recordOverall.hasOwnProperty("wins");
 }
 
-const sortByMostWins = (first: TeamStats, second: TeamStats) => {
-  if (first.regularSeason.wins > second.regularSeason.wins) {
-    return -1;
-  }
-  if (first.regularSeason.wins < second.regularSeason.wins) {
-    return 1;
-  }
-  if (
-    first.regularSeason.wins === second.regularSeason.wins &&
-    (first.regularSeason.ties ? first.regularSeason.ties : 0) >
-      (second.regularSeason.ties ? second.regularSeason.ties : 0)
-  ) {
-    return -1;
-  }
-
-  if (
-    first.regularSeason.wins === second.regularSeason.wins &&
-    (first.regularSeason.ties ? first.regularSeason.ties : 0) <
-      (second.regularSeason.ties ? second.regularSeason.ties : 0)
-  ) {
-    return 1;
-  }
-  return 0;
-};
-
 export const getTeams = async (email: string) => {
   let teams: Team[] = [];
   let year = new Date().getFullYear();
@@ -96,7 +71,6 @@ export const getStats = async function get_stats(leagueId: number) {
       const data = await response.json();
 
       if (data) {
-        
         let teams = [];
         data.divisions.forEach((division: { [x: string]: any }) => {
           teams.push(...division["teams"]);
@@ -115,20 +89,15 @@ export const getStats = async function get_stats(leagueId: number) {
     --year;
   }
 
-  stats = stats.sort(sortByMostWins);
-
   return stats;
 };
 
 const updateStats = (teams: any, stats: TeamStats[], year: number) => {
-  
   teams.map((team: any) => {
-
-    let teamStats: TeamStats | undefined = stats.find((s) => s && s.id === team.id);
+    let teamStats: TeamStats | undefined = stats.find(
+      (s) => s && s.id === team.id
+    );
     if (!teamStats) {
-      if(team.name === "TIJUCA WITCHERS"){
-        console.log(team);
-      }
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
       teamStats = {
         id: team.id,
@@ -173,18 +142,15 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
       };
       stats.push(teamStats);
     } else {
-      const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
-      if(team.name === "TIJUCA WITCHERS"){
-        console.log(team);
-      }
       teamStats.statsPerYear?.push({
         year,
         rank: team.recordOverall.rank,
         pointsFor: team.pointsFor.value,
         regularSeason: {
-          wins: team.recordOverall.wins,
-          losses: team.recordOverall.losses,
-          ties: ties,
+          wins: "wins" in team.recordOverall ? team.recordOverall.wins : 0,
+          losses:
+            "losses" in team.recordOverall ? team.recordOverall.losses : 0,
+          ties: "ties" in team.recordOverall ? team.recordOverall.ties : 0,
         },
         postseason: {
           wins:
@@ -196,9 +162,12 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
         },
       });
 
-      teamStats.regularSeason.wins += team.recordOverall.wins;
-      teamStats.regularSeason.losses += team.recordOverall.losses;
-      teamStats.regularSeason.ties += ties;
+      teamStats.regularSeason.wins +=
+        "wins" in team.recordOverall ? team.recordOverall.wins : 0;
+      teamStats.regularSeason.losses +=
+        "losses" in team.recordOverall ? team.recordOverall.losses : 0;
+      teamStats.regularSeason.ties +=
+        "ties" in team.recordOverall ? team.recordOverall.ties : 0;
       teamStats.postseason.wins +=
         "wins" in team.recordPostseason ? team.recordPostseason.wins : 0;
       teamStats.postseason.losses +=

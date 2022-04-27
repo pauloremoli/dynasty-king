@@ -1,23 +1,15 @@
 import {
-  ActionFunction,
-  json,
-  redirect,
-  LoaderFunction,
+  ActionFunction, LoaderFunction, redirect
 } from "@remix-run/node";
 import {
-  Form,
-  Outlet,
-  useActionData,
-  useLoaderData,
-  useTransition,
+  useLoaderData
 } from "@remix-run/react";
-import React, { useEffect } from "react";
+import React from "react";
 import { getStats } from "~/api/fleaflicker";
+import AllTimeRecordPostseason from "~/components/duck-report/AllTimeRecordPostseason";
+import AllTimeRecord from "~/components/duck-report/AllTimeRecordRegularSeason";
 import { getTeamsByUserId } from "~/models/team.server";
 import { getUserId } from "~/session.server";
-import { Team } from "@prisma/client";
-import { TeamStats } from "~/types/TeamStats";
-import AllTimeRecord from "~/components/duck-report/AllTimeRecord";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
@@ -45,6 +37,7 @@ const DuckReport = () => {
         <h1 className="text-2xl font-bold text-center">Duck Report</h1>
         <div className="flex flex-col items-start max-w-4xl w-full pt-12">
           <AllTimeRecord teamStats={stats} />
+          <AllTimeRecordPostseason teamStats={stats} />
         </div>
       </div>
     </>
