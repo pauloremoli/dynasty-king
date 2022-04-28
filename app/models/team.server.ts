@@ -13,9 +13,7 @@ export async function addTeam(
   leagueId: Team["leagueId"],
   leagueName: Team["leagueName"],
   userId: Team["userId"]
-) {
-  console.log("ADD", leagueName, teamName);
-  
+) {  
   return prisma.team.create({
     data: {
       teamId,
@@ -28,7 +26,5 @@ export async function addTeam(
 }
 
 export async function deleteTeamById(id: Team["id"]) {
-  console.log("deleteTeamById -> id", id);
-  
   return prisma.team.delete({ where: { id } });
 }
