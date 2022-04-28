@@ -89,6 +89,8 @@ export const getStats = async function get_stats(leagueId: number) {
     --year;
   }
 
+  console.log(stats);
+  
   return stats;
 };
 

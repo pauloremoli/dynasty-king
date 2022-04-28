@@ -1,5 +1,6 @@
 import React from "react";
 import { TeamStats } from "~/types/TeamStats";
+import Record from "./Record";
 
 const sortByMostWins = (first: TeamStats, second: TeamStats) => {
   if (first.postseason.wins > second.postseason.wins) {
@@ -34,26 +35,21 @@ const AllTimeRecordPostseason: React.FC<AllTimeRecordPostseasonProps> = ({
 }) => {
   const stats = teamStats.sort(sortByMostWins);
   return (
-    <div className="flex flex-col items-start px-8 pb-10 text-[#caf0f8] font-light">
+    <div className="flex flex-col items-start mb-10 dark:text-[#caf0f8] font-light ">
       <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
         All Time Record Postseason
       </h1>
-      {stats.map((teamStat: TeamStats, index: number) => {
-        return (
-          <div
-            key={teamStat.id}
-            className="flex flex-col rounded-lg w-full mb-2 "
-          >
-            <div className="flex gap-1 text-lg  text-[#caf0f8]">
-              <p>{index + 1 + " - "}</p>
-              <p>{teamStat.name}</p>
-              <p className="flex flex-col pl-2">( {teamStat.owner} )</p>
-              <p className="text-green-200 pl-3">{teamStat.postseason.wins}W</p>
-              <p className="text-red-200 pl-3">{teamStat.postseason.losses}L</p>
-            </div>
-          </div>
-        );
-      })}
+      {stats.map((teamStat: TeamStats, index: number) => (
+        <div key={index}>
+          <Record
+            name={teamStat.name}
+            wins={teamStat.postseason.wins}
+            losses={teamStat.postseason.losses}
+            owner={teamStat.owner}
+            index={index + 1}
+          />
+        </div>
+      ))}
     </div>
   );
 };
