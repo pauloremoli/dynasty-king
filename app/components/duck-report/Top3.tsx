@@ -41,15 +41,15 @@ interface Top3Props {
 }
 
 const Top3: React.FC<Top3Props> = ({ teamStats }) => {
-  console.log(teamStats);
   const titles = filterByRank(teamStats, 1);
   const secondPlaces = filterByRank(teamStats, 2);
   const thirdPlaces = filterByRank(teamStats, 3);
+  const last = filterByRank(teamStats, 12);
 
   return (
-    <div className="flex flex-col w-full items-start mb-10 dark:text-[#caf0f8] font-light  ">
-      <div className="flex flex-col pb-10">
-        <h1 className="font-semibold text-xl text-blue-400 pb-6 ">Champions</h1>
+    <div className="flex flex-col w-full mb-10 dark:text-[#caf0f8] font-light  ">
+      <div className="flex flex-col pb-10 justify-center">
+        <h1 className="font-semibold text-xl text-blue-400 pb-6 ">League Winners</h1>
         {titles.map((stats: StatsFilteredPerRank, index: number) => (
           <div key={"first" + index}>
             <Top3Item stats={stats} index={index} />
@@ -57,7 +57,7 @@ const Top3: React.FC<Top3Props> = ({ teamStats }) => {
         ))}
       </div>
 
-      <div className="flex md:gap-20 w-full items-start mb-10 dark:text-[#caf0f8] font-light  ">
+      <div className="flex md:gap-20 w-full justify-between mb-10 dark:text-[#caf0f8] font-light  ">
         <div className="flex flex-col pb-10">
           <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
             2nd place
@@ -73,6 +73,16 @@ const Top3: React.FC<Top3Props> = ({ teamStats }) => {
             3rd place
           </h1>
           {thirdPlaces.map((stats: StatsFilteredPerRank, index: number) => (
+            <div key={"thrid" + index}>
+              <Top3Item stats={stats} index={index} />
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col pb-10">
+          <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
+            Last place
+          </h1>
+          {last.map((stats: StatsFilteredPerRank, index: number) => (
             <div key={"thrid" + index}>
               <Top3Item stats={stats} index={index} />
             </div>
