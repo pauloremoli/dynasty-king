@@ -7,13 +7,15 @@ const Navbar = () => {
   const user = useOptionalUser();
   return (
     <div className="fixed h-18 flex  w-full items-center justify-center text-white z-10">
-      <nav className="w-full  max-w-7xl bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-slate-900">
+      <nav className="w-full  max-w-7xl bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-slate-900 font-semibold md:text-sm">
         <div className="flex flex-wrap justify-between items-center mx-auto">
-          <a href="/" className="flex tems-center md:pl-20 px-8 py-4">
+          <a href="/" className="flex tems-center px-8 py-4">
             <div className="flex items-center pr-2">
               <FaCrown color="yellow" size={30} />
             </div>
-            <h1 className="text-lg  font-extrabold font-permanentMarker tracking-wider">DK</h1>
+            <h1 className="text-xl  font-extrabold font-permanentMarker tracking-wider">
+              DK
+            </h1>
           </a>
           <button
             data-collapse-toggle="mobile-menu"
@@ -51,29 +53,29 @@ const Navbar = () => {
           <div className="hidden md:flex md:order-2 ml-auto">
             {user ? (
               <div className="flex items-center">
-                <h3 className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+                <h3 className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0">
                   {user.username}
                 </h3>
                 <Form action="/logout" method="post">
                   <button
                     type="submit"
-                    className="mx-4 text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-slate-500 dark:hover:bg-slate-700 dark:focus:ring-slate-800"
+                    className="mx-4 text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-slate-500 dark:hover:bg-slate-700 dark:focus:ring-slate-800"
                   >
                     Logout
                   </button>
                 </Form>
               </div>
             ) : (
-              <div className="mt-4 md:flex-row  md:mt-0 md:text-sm md:font-medium">
+              <div className="mt-4 md:flex-row  md:mt-0 ">
                 <a
                   href="/login"
-                  className="mx-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#6c63ff] dark:hover:bg-indigo-700 dark:focus:ring-blue-800"
+                  className="mx-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#003459] dark:hover:bg-[#003459d0] dark:hover:border-2 dark:hover:border-blue-100"
                 >
                   Log In
                 </a>
                 <a
                   href="/signup"
-                  className="mx-4 bg-white text-[#6c63ff] hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:white dark:hover:bg-blue-100 dark:focus:ring-blue-800"
+                  className="mx-4 bg-white text-[#003459] hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-2.5 text-center mr-3 md:mr-0"
                 >
                   Sign Up
                 </a>
@@ -81,7 +83,7 @@ const Navbar = () => {
             )}
           </div>
           <div className="hidden justify-between items-center w-full md:flex md:w-auto md:order-1 md:pl-32 ">
-            <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
+            <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0">
               <li>
                 <a href="/">
                   <span className="px-8 hover:text-[#ffff00] hover:underline">

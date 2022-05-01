@@ -2,14 +2,17 @@ import { Link } from "@remix-run/react";
 import React from "react";
 import { AiOutlineAlert } from "react-icons/ai";
 import {
-  GiAmericanFootballPlayer, GiDuck, GiFaceToFace, GiScales
+  GiAmericanFootballPlayer,
+  GiDuck,
+  GiFaceToFace,
+  GiScales,
 } from "react-icons/gi";
 import { ImListNumbered, ImPower } from "react-icons/im";
 import { MdFindInPage } from "react-icons/md";
 
 const Tools = () => {
   return (
-    <div className=" ml-auto mr-auto w-full">
+    <div className=" ml-auto mr-auto w-full justify-center">
       <div className="flex flex-col items-center justify-center ">
         <div className="flex md:flex-row flex-col gap-4 p-4 w-full justify-center">
           <Link to="/rankings/format/1QB/position/all">
@@ -104,7 +107,7 @@ const Tools = () => {
                   <GiAmericanFootballPlayer size={40} color="#007ea7" />
                 </div>
                 <p className="pt-4 text-base text-gray-300 text-center">
-                  Evaluate your Hit/Miss rate based on your drafted rookies. 
+                  Evaluate your Hit/Miss rate based on your drafted rookies.
                 </p>
               </div>
             </div>
