@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     return redirect("/login");
   }
   const teams = await getTeamsByUserId(userId);
-  const leagueId = 192378; //teams[0].leagueId;
+  const leagueId = teams[0].leagueId;
   
   const stats = await getStats(leagueId);
 

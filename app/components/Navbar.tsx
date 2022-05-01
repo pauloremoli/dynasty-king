@@ -13,7 +13,7 @@ const Navbar = () => {
             <div className="flex items-center pr-2">
               <FaCrown color="yellow" size={30} />
             </div>
-            <h1 className="text-lg  font-bold ">DK</h1>
+            <h1 className="text-lg  font-extrabold font-permanentMarker tracking-wider">DK</h1>
           </a>
           <button
             data-collapse-toggle="mobile-menu"
@@ -67,13 +67,13 @@ const Navbar = () => {
               <div className="mt-4 md:flex-row  md:mt-0 md:text-sm md:font-medium">
                 <a
                   href="/login"
-                  className="mx-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="mx-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#6c63ff] dark:hover:bg-indigo-700 dark:focus:ring-blue-800"
                 >
                   Log In
                 </a>
                 <a
                   href="/signup"
-                  className="mx-4 bg-white text-blue-700 hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:white dark:hover:bg-blue-100 dark:focus:ring-blue-800"
+                  className="mx-4 bg-white text-[#6c63ff] hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:white dark:hover:bg-blue-100 dark:focus:ring-blue-800"
                 >
                   Sign Up
                 </a>
@@ -84,21 +84,21 @@ const Navbar = () => {
             <ul className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium">
               <li>
                 <a href="/">
-                  <span className="px-8 hover:text-yellow-400 hover:underline">
+                  <span className="px-8 hover:text-[#ffff00] hover:underline">
                     Home
                   </span>
                 </a>
               </li>
               <li>
                 <a href="/tools">
-                  <span className="px-8 hover:text-yellow-400 hover:underline">
+                  <span className="px-8 hover:text-[#ffff00] hover:underline">
                     Tools
                   </span>
                 </a>
               </li>
               <li>
                 <a href="/my-leagues">
-                  <span className="px-8 hover:text-yellow-400 hover:underline">
+                  <span className="px-8 hover:text-[#ffff00] hover:underline">
                     My Leagues
                   </span>
                 </a>
@@ -106,7 +106,7 @@ const Navbar = () => {
 
               <li>
                 <a href="/about">
-                  <span className="px-8 hover:text-yellow-400 hover:underline">
+                  <span className="px-8 hover:text-[#ffff00] hover:underline">
                     About
                   </span>
                 </a>

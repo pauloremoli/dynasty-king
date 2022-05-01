@@ -1,14 +1,11 @@
 import { Link } from "@remix-run/react";
 import React from "react";
-import {
-  GiDuck,
-  GiScales,
-  GiFaceToFace,
-  GiAmericanFootballPlayer,
-} from "react-icons/gi";
-import { MdFindInPage, MdLiveTv } from "react-icons/md";
 import { AiOutlineAlert } from "react-icons/ai";
+import {
+  GiAmericanFootballPlayer, GiDuck, GiFaceToFace, GiScales
+} from "react-icons/gi";
 import { ImListNumbered, ImPower } from "react-icons/im";
+import { MdFindInPage } from "react-icons/md";
 
 const Tools = () => {
   return (
@@ -16,8 +13,8 @@ const Tools = () => {
       <div className="flex flex-col items-center justify-center ">
         <div className="flex md:flex-row flex-col gap-4 p-4 w-full justify-center">
           <Link to="/rankings/format/1QB/position/all">
-            <div className="flex h-56 w-full flex-col  self-center  overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-              <div className="px-6 py-6">
+            <div className="flex h-64 w-full flex-col  self-center  overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
+              <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
                   Dynasty Rankings
                 </div>
@@ -32,8 +29,8 @@ const Tools = () => {
           </Link>
 
           <Link to="/trade-calculator/format/1QB">
-            <div className="flex h-56 w-full flex-col  self-center  overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-              <div className="px-6 py-6">
+            <div className="flex h-64 w-full flex-col  self-center  overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
+              <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
                   Trade Calculator
                 </div>
@@ -49,8 +46,8 @@ const Tools = () => {
           </Link>
 
           <Link to="/power-rankings">
-            <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-              <div className="px-6 py-6">
+            <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
+              <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
                   Power Rankings
                 </div>
@@ -64,8 +61,8 @@ const Tools = () => {
             </div>
           </Link>
           <Link to="/h2h">
-            <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-              <div className="px-6 py-6">
+            <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
+              <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
                   H2H Report
                 </div>
@@ -82,8 +79,8 @@ const Tools = () => {
         </div>
         <div className="flex md:flex-row flex-col gap-4 p-4 w-full pt-0  justify-center">
           <Link to="/duck-report">
-            <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-              <div className="px-6 py-6">
+            <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
+              <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
                   Duck Report
                 </div>
@@ -98,8 +95,8 @@ const Tools = () => {
             </div>
           </Link>
           <Link to="/draft-report">
-            <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-              <div className="px-6 py-6">
+            <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
+              <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
                   Draft Report
                 </div>
@@ -113,8 +110,8 @@ const Tools = () => {
             </div>
           </Link>
           <Link to="/fa-tracker">
-            <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-              <div className="px-6 py-6">
+            <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
+              <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
                   Free Agent Tracker
                 </div>
@@ -130,8 +127,8 @@ const Tools = () => {
           </Link>
 
           <Link to="/lineup-tracker">
-            <div className="flex h-56 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-              <div className="px-6 py-6">
+            <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
+              <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
                   Lineup Tracker
                 </div>

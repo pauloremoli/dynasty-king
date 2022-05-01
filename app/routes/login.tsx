@@ -65,7 +65,7 @@ export const action: ActionFunction = async ({ request }) => {
     request,
     userId: user.id,
     remember: remember === "on" ? true : false,
-    redirectTo: typeof redirectTo === "string" ? redirectTo : "/league-selection",
+    redirectTo: typeof redirectTo === "string" ? redirectTo : "/my-leagues",
   });
 };
 
@@ -77,7 +77,7 @@ export const meta: MetaFunction = () => {
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/league-selection";
+  const redirectTo = searchParams.get("redirectTo") || "/my-leagues";
   const actionData = useActionData() as ActionData;
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);

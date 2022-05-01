@@ -37,7 +37,7 @@ const MyLeagues = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center md:pt-12 text-white">
+      <div className="flex flex-col min-h-screen w-full h-full items-center md:pt-12 text-white">
         <h1 className="font-semibold text-3xl">My Leagues</h1>
         <div className="md:pt-10 flex gap-20">
           <div>
