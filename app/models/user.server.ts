@@ -14,7 +14,7 @@ export async function getUserByEmail(email: User["email"]) {
 }
 
 export async function getUsers() {
-  return {data: prisma.user.findMany(), prisma};
+  return prisma.user.findMany();
 }
 
 
