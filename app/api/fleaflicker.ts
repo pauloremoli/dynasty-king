@@ -1,6 +1,6 @@
 import { json } from "@remix-run/node";
 import { Team } from "~/types/Team";
-import { SeasonStats, TeamStats } from "~/types/TeamStats";
+import { H2H, Standings, TeamStats } from "~/types/TeamStats";
 
 interface ActionData {
   errors?: {
@@ -10,6 +10,10 @@ interface ActionData {
 
 function wasLeagueActive(team: any) {
   return team?.recordOverall.hasOwnProperty("wins");
+}
+
+function wasLeagueActiveH2H(game: any) {
+  return game?.awayScore?.score?.hasOwnProperty("value");
 }
 
 export const getTeams = async (email: string) => {
@@ -50,7 +54,7 @@ export const getScoreBoard = async (leagueId: number, year: number) => {
     .then(async (response) => {
       return await response.json();
     })
-    .catch((error) => {
+    .catch(() => {
       return json<ActionData>(
         { errors: { email: "Could not find any league for this email" } },
         { status: 400 }
@@ -90,6 +94,99 @@ export const getStats = async function get_stats(leagueId: number) {
   }
   
   return stats;
+};
+
+const updateStandings = (result: string, standings: Standings): Standings => {
+  switch (result) {
+    case "WIN":
+      standings.wins += 1;
+      break;
+    case "LOSE":
+      standings.losses += 1;
+      break;
+    case "TIE":
+      standings.ties = standings.ties ? standings.ties + 1 : 1;
+      break;
+    default:
+      break;
+  }
+
+  return standings;
+};
+
+export const getH2H = async (
+  leagueId: number,
+  teamId: number
+): Promise<H2H> => {
+  let h2h: H2H = {};
+  let year = new Date().getFullYear();
+  let hasData = true;
+  while (hasData) {
+    let week = 1;
+    let hasMoreWeeks = true;
+    while (hasMoreWeeks) {
+      console.log(year, week);
+      const params = `FetchLeagueScoreboard?sport=NFL&league_id=${leagueId}&season=${year}&scoring_period=${week}`;
+
+      const url = `https://www.fleaflicker.com/api/${params}`;
+      const data = await fetch(url).then(async (response) => {
+        return await response.json();
+      });
+
+      if (!data.games || !wasLeagueActiveH2H(data.games[0])) {
+        if (year !== new Date().getFullYear() && week === 1) {            
+            return h2h;
+        } else {
+          hasMoreWeeks = false;
+          break;
+        }
+      }
+
+      const games = data.games.filter(
+        (game: any) => game.away.id === teamId || game.home.id === teamId
+      );
+
+      games.forEach((game: any) => {
+        if (!game.homeResult || !game.awayResult) {
+          hasMoreWeeks = false;
+          return;
+        }
+        if (game.home.id === teamId) {
+          if (h2h.hasOwnProperty(game.away.id)) {
+            let standings: Standings = h2h[game.away.id].standings;
+            h2h[game.away.id].standings = updateStandings(
+              game.homeResult,
+              standings
+            );
+          } else {
+            let standings: Standings = { wins: 0, losses: 0 };
+            h2h[game.away.id] = {
+              standings: updateStandings(game.homeResult, standings),
+              teamName: game.away.name,
+            };
+          }
+        } else {
+          if (h2h.hasOwnProperty(game.home.id)) {
+            let standings: Standings = h2h[game.home.id].standings;
+            h2h[game.home.id].standings = updateStandings(
+              game.awayResult,
+              standings
+            );
+          } else {
+            let standings: Standings = { wins: 0, losses: 0 };
+            h2h[game.home.id] = {
+              standings: updateStandings(game.awayResult, standings),
+              teamName: game.home.name,
+            };
+          }
+        }
+      });
+      week++;
+    }
+    --year;
+  }
+
+  return h2h;
 };
 
 const updateStats = (teams: any, stats: TeamStats[], year: number) => {

@@ -1,23 +1,27 @@
-export type SeasonStats = {
-    wins: number,
-    losses: number,
-    ties?: number,
-}
+export type Standings = {
+  wins: number;
+  losses: number;
+  ties?: number;
+};
 
 export type StatsPerYear = {
-    year: number,
-    rank: number,
-    pointsFor: number,
-    regularSeason: SeasonStats,
-    postseason: SeasonStats
-}
+  year: number;
+  rank: number;
+  pointsFor: number;
+  regularSeason: Standings;
+  postseason: Standings;
+};
 
 export type TeamStats = {
-    id: number,
-    name: string,
-    owner: string,
-    logoUrl: string,
-    statsPerYear? : StatsPerYear[],
-    regularSeason: SeasonStats,
-    postseason: SeasonStats
+  id: number;
+  name: string;
+  owner: string;
+  logoUrl: string;
+  statsPerYear?: StatsPerYear[];
+  regularSeason: Standings;
+  postseason: Standings;
+};
+
+export type H2H = {
+  [key: number]: { teamName: string; standings: Standings };
 };

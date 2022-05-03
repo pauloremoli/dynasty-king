@@ -36,7 +36,7 @@ const AllTimeRecordRegularSeason: React.FC<AllTimeRecordRegularSeasonProps> = ({
 }) => {
   const stats = teamStats.sort(sortByMostWins);
   return (
-    <div className="flex flex-col items-start mb-10 dark:text-[#caf0f8] font-light">
+    <div className="flex flex-col items-start mb-10 dark:text-gray-100 font-light">
       <h1 className="font-semibold text-xl text-blue-400 pb-6">
         All Time Record Regular Season
       </h1>

@@ -15,7 +15,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
   const teams = await getTeamsByUserId(userId);
   const leagueId = teams[0].leagueId;
-  
+
   const stats = await getStats(leagueId);
 
   return { stats };
@@ -33,11 +33,17 @@ const DuckReport = () => {
       <div className="flex flex-col w-screen h-full pt-12 text-white items-center justify-center">
         <h1 className="text-2xl font-bold text-center">Duck Report</h1>
         <div className="flex flex-col items-start max-w-5xl w-full pt-12">
-          <Top3 teamStats={stats} />
-          <div className="flex justify-between w-full gap-8">
-            <AllTimeRecord teamStats={stats} />
-            <AllTimeRecordPostseason teamStats={stats} />
-          </div>
+          {stats ? (
+            <div>
+              <Top3 teamStats={stats} />
+              <div className="flex justify-between w-full gap-8">
+                <AllTimeRecord teamStats={stats} />
+                <AllTimeRecordPostseason teamStats={stats} />
+              </div>
+            </div>
+          ) : (
+            "No data"
+          )}
         </div>
       </div>
     </>

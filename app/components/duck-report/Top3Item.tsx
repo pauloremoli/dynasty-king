@@ -14,7 +14,7 @@ interface Top3ItemProps {
 const Top3Item: React.FC<Top3ItemProps> = ({ stats, index }) => {
   return (
     <div key={stats.name} className="flex flex-col rounded-lg w-full mb-2 ">
-      <div className="flex gap-1 text-lg  text-[#caf0f8]">
+      <div className="flex gap-1 text-lg  text-gray-100">
         <p>{index + 1 + " - "}</p>
         <p>{stats.name}</p>
         <div className="flex">
