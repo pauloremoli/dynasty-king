@@ -26,6 +26,7 @@ const H2H = () => {
         <h1 className="text-4xl font-bold text-center pb-20">H2H</h1>
         <h2>Work in progress...</h2>
         <pre>{JSON.stringify(h2h, null, 2)}</pre>
+        {/* TODO: Implement h2H */}
       </div>
     </>
   );

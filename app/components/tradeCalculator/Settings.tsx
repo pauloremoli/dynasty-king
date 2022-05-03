@@ -34,8 +34,8 @@ const Settings: React.FC<SettingsProps> = ({ format }) => {
           </Link>
         </div>
       </div>
-
-      <div className="relative pt-1 flex flex-col flex-nowrap whitespace-nowrap items-center text-left flext-start">
+      {/* // TODO: implement rookie optimism */}
+      {/* <div className="relative pt-1 flex flex-col flex-nowrap whitespace-nowrap items-center text-left flext-start">
         <span
           className="p-4 
            text-left mix-w-xs"
@@ -58,7 +58,7 @@ const Settings: React.FC<SettingsProps> = ({ format }) => {
           max="5"
           step="1"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

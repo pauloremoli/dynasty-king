@@ -47,18 +47,18 @@ const Tools = () => {
               </div>
             </div>
           </Link>
-
-          <Link to="/power-rankings">
+          <Link to="/duck-report">
             <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
               <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
-                  Power Rankings
+                  Duck Report
                 </div>
+
                 <div className="flex items-center justify-center py-2">
-                  <ImPower size={40} color="#007ea7" />
+                  <GiDuck size={40} color="#007ea7" />
                 </div>
                 <p className="pt-4 text-base text-gray-300 text-center">
-                  Team evaluation according to our rankings.
+                  Cool statistics about your league.
                 </p>
               </div>
             </div>
@@ -81,18 +81,17 @@ const Tools = () => {
           </Link>
         </div>
         <div className="flex md:flex-row flex-col gap-4 p-4 w-full pt-0  justify-center">
-          <Link to="/duck-report">
+          <Link to="/power-rankings">
             <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
               <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
-                  Duck Report
+                  Power Rankings
                 </div>
-
                 <div className="flex items-center justify-center py-2">
-                  <GiDuck size={40} color="#007ea7" />
+                  <ImPower size={40} color="#007ea7" />
                 </div>
                 <p className="pt-4 text-base text-gray-300 text-center">
-                  Cool statistics about your league.
+                  Team evaluation according to our rankings.
                 </p>
               </div>
             </div>

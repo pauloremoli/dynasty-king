@@ -66,6 +66,8 @@ export const getStats = async function get_stats(leagueId: number) {
   let stats: TeamStats[] = [];
   let year = new Date().getFullYear();
 
+  console.log("leagueId", leagueId);
+  
   let hasData = true;
   while (hasData) {
     const params = `FetchLeagueStandings?sport=NFL&league_id=${leagueId}&season=${year}`;
@@ -121,11 +123,12 @@ export const getH2H = async (
   let h2h: H2H = {};
   let year = new Date().getFullYear();
   let hasData = true;
+
+  // TODO: fetch data concurrently
   while (hasData) {
     let week = 1;
     let hasMoreWeeks = true;
     while (hasMoreWeeks) {
-      console.log(year, week);
       const params = `FetchLeagueScoreboard?sport=NFL&league_id=${leagueId}&season=${year}&scoring_period=${week}`;
 
       const url = `https://www.fleaflicker.com/api/${params}`;
