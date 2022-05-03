@@ -6,12 +6,12 @@ export type StatsFilteredPerRank = {
   finish?: StatsPerYear[];
 };
 
-interface Top3ItemProps {
+interface YearlyFinishItemItemProps {
   stats: StatsFilteredPerRank;
   index: number;
 }
 
-const Top3Item: React.FC<Top3ItemProps> = ({ stats, index }) => {
+const YearlyFinishItem: React.FC<YearlyFinishItemItemProps> = ({ stats, index }) => {
   return (
     <div key={stats.name} className="flex flex-col rounded-lg w-full mb-2 ">
       <div className="flex gap-1 text-lg  text-gray-100">
@@ -36,4 +36,4 @@ const Top3Item: React.FC<Top3ItemProps> = ({ stats, index }) => {
   );
 };
 
-export default Top3Item;
+export default YearlyFinishItem;

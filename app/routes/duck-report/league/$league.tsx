@@ -1,13 +1,13 @@
+import { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { default as React, default as React } from "react";
 import { getStats } from "~/api/fleaflicker";
-import AllTimeRecordPostseason from "~/components/duck-report/AllTimeRecordPostseason";
-import AllTimeRecord from "~/components/duck-report/AllTimeRecordRegularSeason";
-import Top3 from "~/components/duck-report/Top3";
-import { TeamStats } from "~/types/TeamStats";
+import DuckReport from "~/components/duck-report/DuckReportComponent";
 
 export const loader: LoaderFunction = async ({ params }) => {
   const { league } = params;
+  if (!league) {
+    throw new Response("Missing parameter league", { status: 404 });
+  }
   const leagueId = parseInt(league);
   const stats = await getStats(leagueId);
 
@@ -19,17 +19,7 @@ const LeagueIndex: React.FC<{}> = () => {
 
   return (
     <div>
-      {stats ? (
-        <div>
-          <Top3 teamStats={stats} />
-          <div className="flex justify-between w-full gap-8">
-            <AllTimeRecord teamStats={stats} />
-            <AllTimeRecordPostseason teamStats={stats} />
-          </div>
-        </div>
-      ) : (
-        "No data"
-      )}
+      <DuckReport stats={stats} />
     </div>
   );
 };

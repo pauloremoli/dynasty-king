@@ -1,6 +1,6 @@
 import React from "react";
 import { StatsPerYear, TeamStats } from "~/types/TeamStats";
-import Top3Item, { StatsFilteredPerRank } from "./Top3Item";
+import YearlyFinishItem, { StatsFilteredPerRank } from "./YearlyFinishItemItem";
 
 const sortByMostTimes = (
   first: StatsFilteredPerRank,
@@ -36,11 +36,11 @@ const filterByRank = (
   return filtered.sort(sortByMostTimes);
 };
 
-interface Top3Props {
+interface YearlyFinishProps {
   teamStats: TeamStats[];
 }
 
-const Top3: React.FC<Top3Props> = ({ teamStats }) => {
+const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats }) => {
   const titles = filterByRank(teamStats, 1);
   const secondPlaces = filterByRank(teamStats, 2);
   const thirdPlaces = filterByRank(teamStats, 3);
@@ -49,10 +49,12 @@ const Top3: React.FC<Top3Props> = ({ teamStats }) => {
   return (
     <div className="flex flex-col w-full mb-10 dark:text-white font-light  ">
       <div className="flex flex-col pb-10 justify-center">
-        <h1 className="font-semibold text-xl text-blue-400 pb-6 ">League Winners</h1>
+        <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
+          League Winners
+        </h1>
         {titles.map((stats: StatsFilteredPerRank, index: number) => (
           <div key={"first" + index}>
-            <Top3Item stats={stats} index={index} />
+            <YearlyFinishItem stats={stats} index={index} />
           </div>
         ))}
       </div>
@@ -64,7 +66,7 @@ const Top3: React.FC<Top3Props> = ({ teamStats }) => {
           </h1>
           {secondPlaces.map((stats: StatsFilteredPerRank, index: number) => (
             <div key={"second" + index}>
-              <Top3Item stats={stats} index={index} />
+              <YearlyFinishItem stats={stats} index={index} />
             </div>
           ))}
         </div>
@@ -74,7 +76,7 @@ const Top3: React.FC<Top3Props> = ({ teamStats }) => {
           </h1>
           {thirdPlaces.map((stats: StatsFilteredPerRank, index: number) => (
             <div key={"thrid" + index}>
-              <Top3Item stats={stats} index={index} />
+              <YearlyFinishItem stats={stats} index={index} />
             </div>
           ))}
         </div>
@@ -84,7 +86,7 @@ const Top3: React.FC<Top3Props> = ({ teamStats }) => {
           </h1>
           {last.map((stats: StatsFilteredPerRank, index: number) => (
             <div key={"thrid" + index}>
-              <Top3Item stats={stats} index={index} />
+              <YearlyFinishItem stats={stats} index={index} />
             </div>
           ))}
         </div>
@@ -93,4 +95,4 @@ const Top3: React.FC<Top3Props> = ({ teamStats }) => {
   );
 };
 
-export default Top3;
+export default YearlyFinish;
