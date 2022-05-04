@@ -1,8 +1,6 @@
 import type { Team } from "@prisma/client";
 import { prisma } from "~/db.server";
 
-export type { Team } from "@prisma/client";
-
 export async function getTeamsByUserId(userId: Team["userId"]) {
   return prisma.team.findMany({ where: { userId } });
 }
