@@ -8,9 +8,8 @@ interface SettingsProps {
 
 const Settings: React.FC<SettingsProps> = ({ format }) => {
   return (
-    <div className="flex flex-col max-w-5xl w-full rounded-2xl pb-8 px-12 my-12">
-      <h1 className="pb-4 text-2xl font-semibold text-center">Settings</h1>
-      <div className="flex p-4">
+    <div className="flex flex-col max-w-5xl w-full rounded-2xl px-12 my-6">
+      <div className="flex">
         <h3 className="">Format:</h3>
         <div className="px-4">
           <Link

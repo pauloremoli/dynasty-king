@@ -15,7 +15,15 @@ const TradeAnalysis = ({ totalValueA, totalValueB }: TradeAnalysisProps) => {
   if (totalValueA == 0 || totalValueB == 0) return null;
 
   return (
-    <div className="flex flex-col p-8 border-2 shadow-md shadow-slate-300 rounded-xl w-full md:w-96 h-full ">
+    <div
+      className={`flex flex-col p-8 border-2 shadow-md rounded-xl w-full md:w-96 h-full ${
+        difference > 5
+          ? totalValueA > totalValueB
+            ? "border-blue-600"
+            : "border-red-600"
+          : "border-green-600"
+      }`}
+    >
       <div className="flex flex-col">
         <h1 className="text-center pb-2 text-2xl font-semibold ">
           Trade Analysis
