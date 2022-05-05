@@ -22,6 +22,6 @@ export type TeamStats = {
   postseason: Standings;
 };
 
-export type H2H = {
+export type H2HStats = {
   [key: number]: { teamName: string; standings: Standings };
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { TeamStats } from "~/types/TeamStats";
-import Record from "./Record";
+import Standings from "./Standings";
 
 const sortByMostWins = (first: TeamStats, second: TeamStats) => {
   if (first.postseason.wins > second.postseason.wins) {
@@ -41,7 +41,7 @@ const AllTimeRecordPostseason: React.FC<AllTimeRecordPostseasonProps> = ({
       </h1>
       {stats.map((teamStat: TeamStats, index: number) => (
         <div key={index}>
-          <Record
+          <Standings
             name={teamStat.name}
             wins={teamStat.postseason.wins}
             losses={teamStat.postseason.losses}

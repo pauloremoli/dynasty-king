@@ -1,6 +1,6 @@
 import React from "react";
 import { TeamStats } from "~/types/TeamStats";
-import Record from "./Record";
+import Standings from "./Standings";
 
 interface AllTimeRecordRegularSeasonProps {
   teamStats: TeamStats[];
@@ -42,7 +42,7 @@ const AllTimeRecordRegularSeason: React.FC<AllTimeRecordRegularSeasonProps> = ({
       </h1>
       {stats.map((teamStat: TeamStats, index: number) => (
         <div key={index}>
-          <Record
+          <Standings
             name={teamStat.name}
             wins={teamStat.regularSeason.wins}
             losses={teamStat.regularSeason.losses}

@@ -1,6 +1,6 @@
 import React from "react";
 
-interface RecordProps {
+interface StandingsProps {
   wins: number;
   ties?: number;
   losses: number;
@@ -8,7 +8,7 @@ interface RecordProps {
   owner: string;
   index: number;
 }
-const Record: React.FC<RecordProps> = ({
+const Standings: React.FC<StandingsProps> = ({
   wins,
   ties,
   losses,
@@ -30,4 +30,4 @@ const Record: React.FC<RecordProps> = ({
   );
 };
 
-export default Record;
+export default Standings;

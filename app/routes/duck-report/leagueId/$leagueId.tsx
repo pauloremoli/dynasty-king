@@ -4,12 +4,12 @@ import { getStats } from "~/api/fleaflicker";
 import DuckReport from "~/components/duck-report/DuckReportComponent";
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const { league } = params;
-  if (!league) {
+  const { leagueId } = params;
+  if (!leagueId) {
     throw new Response("Missing parameter league", { status: 404 });
   }
-  const leagueId = parseInt(league);
-  const stats = await getStats(leagueId);
+
+  const stats = await getStats(parseInt(leagueId));
 
   return { stats };
 };

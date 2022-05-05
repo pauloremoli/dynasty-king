@@ -2,33 +2,25 @@ import {
   ActionFunction,
   json,
   LoaderFunction,
-  redirect,
+  redirect
 } from "@remix-run/node";
 import {
   Form,
-  Outlet,
-  useFetcher,
-  useLoaderData,
-  useSubmit,
+  Outlet, useLoaderData,
+  useSubmit
 } from "@remix-run/react";
 import React, {
-  ChangeEventHandler,
-  FormEvent,
-  useEffect,
-  useState,
+  ChangeEventHandler, useEffect,
+  useState
 } from "react";
-import { SelectedOptionValue, SelectSearchOption } from "react-select-search";
 import { getStats } from "~/api/fleaflicker";
-import AllTimeRecordPostseason from "~/components/duck-report/AllTimeRecordPostseason";
-import AllTimeRecord from "~/components/duck-report/AllTimeRecordRegularSeason";
 import DuckReportComponent from "~/components/duck-report/DuckReportComponent";
-import YearlyFinish from "~/components/duck-report/YearlyFinish";
 import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
 import { getUserId } from "~/session.server";
-
 import styles from "~/styles/customSelect.css";
 import { Team } from "~/types/Team";
+
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -57,41 +49,32 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
-  console.log(formData);
-  const leagueId = formData.get("league")?.toString();
+  const league = formData.get("league")?.toString();
 
-  if (!leagueId) {
+  if (!league) {
     return json<ActionData>(
       { errors: { league: "League is invalid" } },
       { status: 400 }
     );
   }
 
-  return redirect("/duck-report/league/" + leagueId);
+  const { leagueId } = JSON.parse(league);
+
+  return redirect("/duck-report/leagueId/" + leagueId);
 };
 
 const DuckReport = () => {
   const { teams, stats, url } = useLoaderData();
-  const [selectedLeague, setSelectedLeague] = useState(
-    teams.length > 0 ? teams[0].leagueId : ""
-  );
   const [selectedLeagueName, setSelectedLeagueName] = useState(
     teams.length > 0 ? teams[0].leagueName : ""
   );
   const submit = useSubmit();
 
   const handleSelection = (e: ChangeEventHandler<HTMLSelectElement>) => {
-    const leagueId = e.target.value;
-    setSelectedLeague(leagueId);
+    const league = e.target.value;
+    const {leagueName} = JSON.parse(league);
+    setSelectedLeagueName(leagueName);
   };
-
-  useEffect(() => {
-    if (!selectedLeague) return;
-    const league = teams.find(
-      (team: Team) => team.leagueId === parseInt(selectedLeague)
-    );
-    setSelectedLeagueName(league.leagueName);
-  }, [selectedLeague, teams]);
 
   const handleChange = (event: any) => {
     submit(event.currentTarget, { replace: true });

@@ -11,14 +11,18 @@ interface YearlyFinishItemItemProps {
   index: number;
 }
 
-const YearlyFinishItem: React.FC<YearlyFinishItemItemProps> = ({ stats, index }) => {
+const YearlyFinishItem: React.FC<YearlyFinishItemItemProps> = ({
+  stats,
+  index,
+  showIndex,
+}) => {
   return (
     <div key={stats.name} className="flex flex-col rounded-lg w-full mb-2 ">
       <div className="flex gap-1 text-lg  text-gray-100">
-        <p>{index + 1 + " - "}</p>
-        <p>{stats.name}</p>
-        <div className="flex">
-          (
+        <div key={stats.name} className="flex gap-1">
+          <p>{stats.finish!.length}</p>
+          <p>-</p>
+          <p>{stats.name}</p>(
           {stats.finish?.map((statsPerYear: StatsPerYear, index: number) => (
             <p
               key={stats.name + statsPerYear.year}

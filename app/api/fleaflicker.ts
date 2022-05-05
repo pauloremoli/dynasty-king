@@ -1,6 +1,6 @@
 import { json } from "@remix-run/node";
 import { Team } from "~/types/Team";
-import { H2H, Standings, TeamStats } from "~/types/TeamStats";
+import { H2HStats, Standings, TeamStats } from "~/types/TeamStats";
 
 interface ActionData {
   errors?: {
@@ -67,7 +67,7 @@ export const getStats = async function get_stats(leagueId: number) {
   let year = new Date().getFullYear();
 
   console.log("leagueId", leagueId);
-  
+
   let hasData = true;
   while (hasData) {
     const params = `FetchLeagueStandings?sport=NFL&league_id=${leagueId}&season=${year}`;
@@ -94,7 +94,7 @@ export const getStats = async function get_stats(leagueId: number) {
     });
     --year;
   }
-  
+
   return stats;
 };
 
@@ -119,8 +119,8 @@ const updateStandings = (result: string, standings: Standings): Standings => {
 export const getH2H = async (
   leagueId: number,
   teamId: number
-): Promise<H2H> => {
-  let h2h: H2H = {};
+): Promise<H2HStats> => {
+  let h2h: H2HStats = {};
   let year = new Date().getFullYear();
   let hasData = true;
 
@@ -137,8 +137,8 @@ export const getH2H = async (
       });
 
       if (!data.games || !wasLeagueActiveH2H(data.games[0])) {
-        if (year !== new Date().getFullYear() && week === 1) {            
-            return h2h;
+        if (year !== new Date().getFullYear() && week === 1) {
+          return h2h;
         } else {
           hasMoreWeeks = false;
           break;
