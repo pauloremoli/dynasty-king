@@ -9,8 +9,8 @@ const H2HRecord: React.FC<H2HRecordProps> = ({ h2h }) => {
     <div className="flex flex-col flex-wrap gap-4 mb-4 w-full">
       {h2h &&
         Object.keys(h2h).map((key: string) => (
-          <div key={h2h[key].teamName} className="flex">
-            <p>{h2h[key].teamName}</p>
+          <div key={h2h[key].teamName} className="flex gap-1">
+            <p>vs {h2h[key].teamName}</p>
             <p className="text-green-200 pl-3">
               {h2h[key].standings.wins + "W"}
             </p>
@@ -21,6 +21,17 @@ const H2HRecord: React.FC<H2HRecordProps> = ({ h2h }) => {
             )}
             <p className="text-red-200 pl-3">
               {h2h[key].standings.losses + "L"}
+            </p>
+
+            <p className="pl-3">
+              {(
+                Math.round(
+                  ((h2h[key].standings.wins * 100) /
+                    (h2h[key].standings.wins + h2h[key].standings.losses)) *
+                    100
+                ) / 100
+              ).toFixed(0)}
+              %
             </p>
           </div>
         ))}
