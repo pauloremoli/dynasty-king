@@ -26,6 +26,9 @@ export const loader: LoaderFunction = async ({ request }) => {
     return redirect("/login");
   }
   const teams = await getTeamsByUserId(userId);
+  if (!teams || teams.length === 0) {
+    return redirect("/league-selection");
+  }
   const leagueId = teams[0].leagueId;
 
   const h2h = await getH2H(leagueId, teams[0].teamId);

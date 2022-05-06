@@ -1,7 +1,7 @@
 import type { Team } from "@prisma/client";
 import { prisma } from "~/db.server";
 
-export async function getTeamsByUserId(userId: Team["userId"]) {
+export async function getTeamsByUserId(userId: Team["userId"]) : Promise<Team[]>{
   return prisma.team.findMany({ where: { userId } });
 }
 

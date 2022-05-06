@@ -2,17 +2,10 @@ import {
   ActionFunction,
   json,
   LoaderFunction,
-  redirect
+  redirect,
 } from "@remix-run/node";
-import {
-  Form,
-  Outlet, useLoaderData,
-  useSubmit
-} from "@remix-run/react";
-import React, {
-  ChangeEventHandler, useEffect,
-  useState
-} from "react";
+import { Form, Outlet, useLoaderData, useSubmit } from "@remix-run/react";
+import React, { ChangeEventHandler, useEffect, useState } from "react";
 import { getStats } from "~/api/fleaflicker";
 import DuckReportComponent from "~/components/duck-report/DuckReportComponent";
 import SelectLeague from "~/components/SelectLeague";
@@ -20,7 +13,6 @@ import { getTeamsByUserId } from "~/models/team.server";
 import { getUserId } from "~/session.server";
 import styles from "~/styles/customSelect.css";
 import { Team } from "~/types/Team";
-
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -40,6 +32,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     return redirect("/login");
   }
   const teams = await getTeamsByUserId(userId);
+
+  if (!teams || teams.length === 0) {
+    return redirect("/league-selection");
+  }
   const leagueId = teams[0].leagueId;
 
   const stats = await getStats(leagueId);
@@ -72,7 +68,7 @@ const DuckReport = () => {
 
   const handleSelection = (e: ChangeEventHandler<HTMLSelectElement>) => {
     const league = e.target.value;
-    const {leagueName} = JSON.parse(league);
+    const { leagueName } = JSON.parse(league);
     setSelectedLeagueName(leagueName);
   };
 
