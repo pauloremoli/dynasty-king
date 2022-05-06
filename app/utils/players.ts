@@ -15,8 +15,7 @@ export const filterDataByFormat = (data: any, format: Format) => {
 export const filterDataByRookie = (data: any) => {
   return data.filter(
     (item: any) =>
-      (item.draft_year === "NA" ||
-        item.draft_year === new Date().getFullYear()) &&
+      (item.draft_year === new Date().getFullYear().toString() || item.draft_year === "NA") &&
       item.pos !== "PICK"
   );
 };
