@@ -5,14 +5,14 @@ import {
   redirect,
 } from "@remix-run/node";
 import { Form, Outlet, useLoaderData, useSubmit } from "@remix-run/react";
-import React, { ChangeEventHandler, useEffect, useState } from "react";
+import React, { ChangeEventHandler, useState } from "react";
 import { getStats } from "~/api/fleaflicker";
 import DuckReportComponent from "~/components/duck-report/DuckReportComponent";
+import ErrorScreen from "~/components/ErrorScreen";
 import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
-import { getUserId } from "~/session.server";
+import { requireUserId } from "~/session.server";
 import styles from "~/styles/customSelect.css";
-import { Team } from "~/types/Team";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -27,10 +27,7 @@ interface ActionData {
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url).pathname;
 
-  const userId = await getUserId(request);
-  if (!userId) {
-    return redirect("/login");
-  }
+  const userId = await requireUserId(request);
   const teams = await getTeamsByUserId(userId);
 
   if (!teams || teams.length === 0) {
@@ -42,6 +39,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   return { teams, stats, url };
 };
+
+export function ErrorBoundary({ error }: any) {
+  console.log(error);
+  return <ErrorScreen />;
+}
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();

@@ -1,4 +1,9 @@
-import { json, LinksFunction, LoaderFunction, MetaFunction } from "@remix-run/node";
+import {
+  json,
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -11,7 +16,6 @@ import Layout from "./components/Layout";
 import { getUser } from "./session.server";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 
-
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
 };
@@ -22,7 +26,6 @@ export const meta: MetaFunction = () => ({
   viewport: "width=device-width,initial-scale=1",
 });
 
-
 type LoaderData = {
   user: Awaited<ReturnType<typeof getUser>>;
 };
@@ -32,6 +35,28 @@ export const loader: LoaderFunction = async ({ request }) => {
     user: await getUser(request),
   });
 };
+
+export function ErrorBoundary({ error }) {
+  console.error(error);
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Layout>
+          <div>
+            <p className="text-4xl text-center text-white">
+              Oops, something went wrong, try reloading the page =/
+            </p>
+          </div>
+        </Layout>
+      </body>
+    </html>
+  );
+}
 
 export default function App() {
   return (

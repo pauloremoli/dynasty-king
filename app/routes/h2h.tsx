@@ -2,16 +2,16 @@ import {
   ActionFunction,
   json,
   LoaderFunction,
-  redirect,
+  redirect
 } from "@remix-run/node";
 import { Form, Outlet, useLoaderData, useSubmit } from "@remix-run/react";
 import { ChangeEventHandler, default as React, useState } from "react";
 import { getH2H } from "~/api/fleaflicker";
+import ErrorScreen from "~/components/ErrorScreen";
 import H2HRecord from "~/components/h2h/H2HRecord";
 import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
-import { getUserId } from "~/session.server";
-import { Team } from "~/types/Team";
+import { requireUserId } from "~/session.server";
 
 interface ActionData {
   errors?: {
@@ -21,14 +21,9 @@ interface ActionData {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url).pathname;
-  const userId = await getUserId(request);
-  if (!userId) {
-    return redirect("/login");
-  }
+  const userId = await requireUserId(request);
+
   const teams = await getTeamsByUserId(userId);
-  if (!teams || teams.length === 0) {
-    return redirect("/league-selection");
-  }
   const leagueId = teams[0].leagueId;
 
   const h2h = await getH2H(leagueId, teams[0].teamId);
@@ -36,6 +31,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   return { teams, h2h, url };
 };
+
+export function ErrorBoundary({ error }: any) {
+  console.log(error);
+  return <ErrorScreen />;
+}
+
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
