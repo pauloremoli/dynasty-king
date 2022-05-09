@@ -3,12 +3,12 @@ import { FaCrown } from "react-icons/fa";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col md:flex-row w-full md:my-32 px-4 items-center justify-center relative">
+    <div className="flex flex-col md:flex-row w-full md:my-16 px-4 items-center justify-center relative">
       <div className="flex flex-col h-full w-full">
         <div className="flex w-full justify-center ">
           <FaCrown color="yellow" size={70} />
         </div>
-        <div className="flex mx-auto flex-col pt-12 md:pt-0">
+        <div className="flex mx-auto flex-col md:pt-0">
           <h1 className="text-3xl md:text-6xl font-extrabold tracking-wider text-white  first-letter:text-[#ffff00] uppercase">
             Dynasty
           </h1>
