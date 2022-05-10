@@ -14,7 +14,6 @@ interface YearlyFinishItemItemProps {
 const YearlyFinishItem: React.FC<YearlyFinishItemItemProps> = ({
   stats,
   index,
-  showIndex,
 }) => {
   return (
     <div key={stats.name} className="flex flex-col rounded-lg w-full mb-2 ">
@@ -26,7 +25,9 @@ const YearlyFinishItem: React.FC<YearlyFinishItemItemProps> = ({
           {stats.finish?.map((statsPerYear: StatsPerYear, index: number) => (
             <p
               key={stats.name + statsPerYear.year}
-              className={`${index !== stats.finish!.length - 1 ? "pr-1" : ""}`}
+              className={`dark:text-blue-300 ${
+                index !== stats.finish!.length - 1 ? "pr-1" : ""
+              }`}
             >
               {index !== stats.finish!.length - 1
                 ? statsPerYear.year + ","

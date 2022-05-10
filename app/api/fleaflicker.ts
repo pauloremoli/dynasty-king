@@ -64,7 +64,9 @@ export const getScoreBoard = async (leagueId: number, year: number) => {
     });
 };
 
-export const getPlayoffRules = async (leagueId: number): LeagueSettings => {
+export const getLeagueSettings = async (
+  leagueId: number
+): Promise<LeagueSettings> => {
   const url = `https://www.fleaflicker.com/nfl/leagues/${leagueId}/rules`;
   const rules: LeagueSettings = await fetch(url).then(async (response) => {
     const page = await response.text();

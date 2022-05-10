@@ -1,4 +1,5 @@
 import React from "react";
+import { LeagueSettings } from "~/types/LeagueSettings";
 import { StatsPerYear, TeamStats } from "~/types/TeamStats";
 import YearlyFinishItem, { StatsFilteredPerRank } from "./YearlyFinishItemItem";
 
@@ -60,13 +61,14 @@ const filterByPlayoffAppearance = (
 
 interface YearlyFinishProps {
   teamStats: TeamStats[];
+  leagueSettings: LeagueSettings;
 }
 
-const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats }) => {
+const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }) => {  
   const titles = filterByRank(teamStats, 1);
   const secondPlaces = filterByRank(teamStats, 2);
   const thirdPlaces = filterByRank(teamStats, 3);
-  const playoffAppearances = filterByPlayoffAppearance(teamStats, 6);
+  const playoffAppearances = filterByPlayoffAppearance(teamStats, leagueSettings.numberOfPlayoffTeams);
   const last = filterByRank(teamStats, 12);
 
   return (

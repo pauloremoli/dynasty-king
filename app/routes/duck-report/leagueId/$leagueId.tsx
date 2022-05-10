@@ -1,6 +1,6 @@
 import { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { getStats } from "~/api/fleaflicker";
+import { getLeagueSettings, getStats } from "~/api/fleaflicker";
 import DuckReport from "~/components/duck-report/DuckReportComponent";
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -8,18 +8,19 @@ export const loader: LoaderFunction = async ({ params }) => {
   if (!leagueId) {
     throw new Response("Missing parameter league", { status: 404 });
   }
+  const leagueSettings = await getLeagueSettings(leagueId);
 
   const stats = await getStats(parseInt(leagueId));
 
-  return { stats };
+  return { stats, leagueSettings };
 };
 
 const LeagueIndex: React.FC<{}> = () => {
-  const { stats } = useLoaderData();
+  const { stats, leagueSettings } = useLoaderData();
 
   return (
     <div>
-      <DuckReport stats={stats} />
+      <DuckReport stats={stats} leagueSettings={leagueSettings} />
     </div>
   );
 };

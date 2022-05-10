@@ -6,7 +6,7 @@ import {
 } from "@remix-run/node";
 import { Form, Outlet, useLoaderData, useSubmit } from "@remix-run/react";
 import React, { ChangeEventHandler, useState } from "react";
-import { getPlayoffRules, getStats } from "~/api/fleaflicker";
+import { getLeagueSettings, getStats } from "~/api/fleaflicker";
 import DuckReportComponent from "~/components/duck-report/DuckReportComponent";
 import ErrorScreen from "~/components/ErrorScreen";
 import SelectLeague from "~/components/SelectLeague";
@@ -35,11 +35,13 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
   const leagueId = teams[0].leagueId;
 
-  const rules = await getPlayoffRules(leagueId);
+  const leagueSettings = await getLeagueSettings(leagueId);
+  console.log(leagueSettings);
+  
 
   const stats = await getStats(leagueId);
 
-  return { teams, stats, url, rules };
+  return { teams, stats, url, leagueSettings };
 };
 
 export function ErrorBoundary({ error }: any) {
@@ -64,7 +66,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 const DuckReport = () => {
-  const { teams, stats, url } = useLoaderData();
+  const { teams, stats, url, leagueSettings } = useLoaderData();
   const [selectedLeagueName, setSelectedLeagueName] = useState(
     teams.length > 0 ? teams[0].leagueName : ""
   );
@@ -93,7 +95,7 @@ const DuckReport = () => {
         </div>
         <div className="flex flex-col  pt-12 w-full">
           {url === "/duck-report" ? (
-            <DuckReportComponent stats={stats} />
+            <DuckReportComponent stats={stats} leagueSettings={leagueSettings}/>
           ) : (
             <Outlet />
           )}
