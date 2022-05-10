@@ -27,8 +27,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   const leagueId = teams[0].leagueId;
 
   const h2h = await getH2H(leagueId, teams[0].teamId);
-  console.log(h2h);
-
   return { teams, h2h, url };
 };
 
@@ -42,7 +40,6 @@ export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
 
   const team = formData.get("league")?.toString();
-  console.log("team", team);
 
   if (!team) {
     return json<ActionData>(
@@ -69,7 +66,6 @@ const H2H = () => {
   };
 
   const handleChange = (event: any) => {
-    console.log("handleChange");
     submit(event.currentTarget, { replace: true });
   };
 

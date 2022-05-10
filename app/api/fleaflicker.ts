@@ -1,6 +1,8 @@
 import { json } from "@remix-run/node";
 import { Team } from "~/types/Team";
 import { H2HStats, Standings, TeamStats } from "~/types/TeamStats";
+import parse from "html-react-parser";
+import { LeagueSettings } from "~/types/LeagueSettings";
 
 interface ActionData {
   errors?: {
@@ -62,11 +64,34 @@ export const getScoreBoard = async (leagueId: number, year: number) => {
     });
 };
 
-export const getStats = async function get_stats(leagueId: number) {
+export const getPlayoffRules = async (leagueId: number): LeagueSettings => {
+  const url = `https://www.fleaflicker.com/nfl/leagues/${leagueId}/rules`;
+  const rules: LeagueSettings = await fetch(url).then(async (response) => {
+    const page = await response.text();
+    const pos = page.search("Weeks:");
+    let numberOfPlayoffTeams = parseInt(
+      page
+        .slice(pos - 16, pos - 14)
+        .split("<")[0]
+        .trim()
+    );
+
+    let [first, last] = page
+      .slice(pos + 7, pos + 12)
+      .trim()
+      .split("-");
+
+    const firstWeek = parseInt(first);
+    const lastWeek = parseInt(last);
+
+    return { numberOfPlayoffTeams, firstWeek, lastWeek };
+  });
+  return rules;
+};
+
+export const getStats = async (leagueId: number) => {
   let stats: TeamStats[] = [];
   let year = new Date().getFullYear();
-
-  console.log("leagueId", leagueId);
 
   let hasData = true;
   while (hasData) {

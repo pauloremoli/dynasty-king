@@ -8,8 +8,6 @@ interface DuckReportProps {
   stats: TeamStats[];
 }
 const DuckReportComponent: React.FC<DuckReportProps> = ({ stats }) => {
-  console.log(stats);
-
   return (
     <>
       {stats.length > 0 ? (

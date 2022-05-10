@@ -6,7 +6,7 @@ import {
 } from "@remix-run/node";
 import { Form, Outlet, useLoaderData, useSubmit } from "@remix-run/react";
 import React, { ChangeEventHandler, useState } from "react";
-import { getStats } from "~/api/fleaflicker";
+import { getPlayoffRules, getStats } from "~/api/fleaflicker";
 import DuckReportComponent from "~/components/duck-report/DuckReportComponent";
 import ErrorScreen from "~/components/ErrorScreen";
 import SelectLeague from "~/components/SelectLeague";
@@ -35,9 +35,11 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
   const leagueId = teams[0].leagueId;
 
+  const rules = await getPlayoffRules(leagueId);
+
   const stats = await getStats(leagueId);
 
-  return { teams, stats, url };
+  return { teams, stats, url, rules };
 };
 
 export function ErrorBoundary({ error }: any) {
@@ -85,7 +87,7 @@ const DuckReport = () => {
           selectedLeagueName ? " - " + selectedLeagueName : ""
         }`}</h1>
         <div className="flex w-full justify-start">
-          <Form method="post" onChange={handleChange}>
+          <Form method="post" onChange={handleChange} className="w-full">
             <SelectLeague teams={teams} handleSelection={handleSelection} />
           </Form>
         </div>
