@@ -1,7 +1,8 @@
+import { LeagueSettings } from "./../types/LeagueSettings";
+import { getLeagueSettings } from "./fleaflicker";
 import { json } from "@remix-run/node";
 import { Team } from "~/types/Team";
 import { H2HStats, Standings, TeamStats } from "~/types/TeamStats";
-import parse from "html-react-parser";
 import { LeagueSettings } from "~/types/LeagueSettings";
 
 interface ActionData {
@@ -95,6 +96,8 @@ export const getStats = async (leagueId: number) => {
   let stats: TeamStats[] = [];
   let year = new Date().getFullYear();
 
+  const leagueSettings = await getLeagueSettings(leagueId);
+
   let hasData = true;
   while (hasData) {
     const params = `FetchLeagueStandings?sport=NFL&league_id=${leagueId}&season=${year}`;
@@ -116,7 +119,7 @@ export const getStats = async (leagueId: number) => {
           hasData = false;
           return;
         }
-        stats = updateStats(teams, stats, year);
+        stats = updateStats(teams, stats, year, leagueSettings);
       }
     });
     --year;
@@ -219,12 +222,32 @@ export const getH2H = async (
   return h2h;
 };
 
-const updateStats = (teams: any, stats: TeamStats[], year: number) => {
+const wasInThePlayoffs = (
+  rank: number,
+  leagueSettings: LeagueSettings
+): boolean => {
+  return rank < leagueSettings.numberOfPlayoffTeams;
+};
+
+const updateStats = (
+  teams: any,
+  stats: TeamStats[],
+  year: number,
+  leagueSettings: LeagueSettings
+) => {
   teams.map((team: any) => {
     let teamStats: TeamStats | undefined = stats.find(
       (s) => s && s.id === team.id
     );
     if (!teamStats) {
+      console.log(
+        "rank",
+        team.recordOverall.rank,
+        team.name,
+        year,
+        leagueSettings
+      );
+
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
       teamStats = {
         id: team.id,
@@ -242,14 +265,16 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
               ties: ties,
             },
             postseason: {
-              wins:
-                "wins" in team.recordPostseason
+              wins: wasInThePlayoffs(team.recordOverall.rank, leagueSettings)
+                ? "wins" in team.recordPostseason
                   ? team.recordPostseason.wins
-                  : 0,
-              losses:
-                "losses" in team.recordPostseason
+                  : 0
+                : 0,
+              losses: wasInThePlayoffs(team.recordOverall.rank, leagueSettings)
+                ? "losses" in team.recordPostseason
                   ? team.recordPostseason.losses
-                  : 0,
+                  : 0
+                : 0,
             },
           },
         ],
@@ -259,12 +284,16 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
           ties: ties,
         },
         postseason: {
-          wins:
-            "wins" in team.recordPostseason ? team.recordPostseason.wins : 0,
-          losses:
-            "losses" in team.recordPostseason
+          wins: wasInThePlayoffs(team.recordOverall.rank, leagueSettings)
+            ? "wins" in team.recordPostseason
+              ? team.recordPostseason.wins
+              : 0
+            : 0,
+          losses: wasInThePlayoffs(team.recordOverall.rank, leagueSettings)
+            ? "losses" in team.recordPostseason
               ? team.recordPostseason.losses
-              : 0,
+              : 0
+            : 0,
         },
       };
       stats.push(teamStats);
@@ -280,12 +309,16 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
           ties: "ties" in team.recordOverall ? team.recordOverall.ties : 0,
         },
         postseason: {
-          wins:
-            "wins" in team.recordPostseason ? team.recordPostseason.wins : 0,
-          losses:
-            "losses" in team.recordPostseason
+          wins: wasInThePlayoffs(team.recordOverall.rank, leagueSettings)
+            ? "wins" in team.recordPostseason
+              ? team.recordPostseason.wins
+              : 0
+            : 0,
+          losses: wasInThePlayoffs(team.recordOverall.rank, leagueSettings)
+            ? "losses" in team.recordPostseason
               ? team.recordPostseason.losses
-              : 0,
+              : 0
+            : 0,
         },
       });
 
@@ -295,10 +328,12 @@ const updateStats = (teams: any, stats: TeamStats[], year: number) => {
         "losses" in team.recordOverall ? team.recordOverall.losses : 0;
       teamStats.regularSeason.ties +=
         "ties" in team.recordOverall ? team.recordOverall.ties : 0;
-      teamStats.postseason.wins +=
-        "wins" in team.recordPostseason ? team.recordPostseason.wins : 0;
-      teamStats.postseason.losses +=
-        "losses" in team.recordPostseason ? team.recordPostseason.losses : 0;
+      if (wasInThePlayoffs(team.recordOverall.rank, leagueSettings)) {
+        teamStats.postseason.wins +=
+          "wins" in team.recordPostseason ? team.recordPostseason.wins : 0;
+        teamStats.postseason.losses +=
+          "losses" in team.recordPostseason ? team.recordPostseason.losses : 0;
+      }
     }
 
     return teamStats;
