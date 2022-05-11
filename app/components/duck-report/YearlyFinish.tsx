@@ -72,9 +72,9 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }
   const last = filterByRank(teamStats, 12);
 
   return (
-    <div className="flex flex-col w-full mb-10 dark:text-white font-light  ">
-      <div className="flex md:gap-20 w-full justify-start mb-10 dark:text-white font-light items-start ">
-        <div className="flex flex-col pb-10 justify-center">
+    <div className="flex flex-col w-full dark:text-white font-light  ">
+      <div className="flex flex-col md:flex-row md:gap-20 w-full justify-start md:pb-8 dark:text-white font-light items-start ">
+        <div className="flex flex-col justify-center pb-8">
           <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
             League Winners
           </h1>
@@ -84,7 +84,7 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }
             </div>
           ))}
         </div>
-        <div className="flex flex-col pb-10">
+        <div className="flex flex-col pb-8">
           <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
             2nd place
           </h1>
@@ -94,7 +94,7 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }
             </div>
           ))}
         </div>
-        <div className="flex flex-col pb-10">
+        <div className="flex flex-col pb-8">
           <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
             3rd place
           </h1>
@@ -105,8 +105,8 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }
           ))}
         </div>
       </div>
-      <div className="flex md:gap-20 w-full justify-start mb-10 dark:text-white font-light  ">
-        <div className="flex flex-col pb-10 justify-center">
+      <div className="flex flex-col md:flex-row md:gap-20 w-full justify-start pb-8 dark:text-white font-light  ">
+        <div className="flex flex-col justify-center pb-8">
           <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
             Playoff appearances
           </h1>
@@ -118,7 +118,7 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }
             )
           )}
         </div>
-        <div className="flex flex-col pb-10">
+        <div className="flex flex-col pb-8">
           <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
             Last place
           </h1>

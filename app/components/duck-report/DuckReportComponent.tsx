@@ -16,9 +16,9 @@ const DuckReportComponent: React.FC<DuckReportProps> = ({
   return (
     <>
       {stats.length > 0 ? (
-        <div>
+        <div className="p-4">
           <YearlyFinish teamStats={stats} leagueSettings={leagueSettings} />
-          <div className="flex justify-between w-full gap-8">
+          <div className="flex flex-col md:flex-row justify-between w-full gap-8">
             <AllTimeRecordRegularSeason teamStats={stats} />
             <AllTimeRecordPostseason teamStats={stats} />
           </div>

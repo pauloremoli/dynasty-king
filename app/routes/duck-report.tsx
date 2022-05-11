@@ -88,12 +88,12 @@ const DuckReport = () => {
         <h1 className="text-2xl font-bold text-center">{`Duck Report${
           selectedLeagueName ? " - " + selectedLeagueName : ""
         }`}</h1>
-        <div className="flex w-full justify-start">
+        <div className="flex w-full justify-start px-4">
           <Form method="post" onChange={handleChange} className="w-full">
             <SelectLeague teams={teams} handleSelection={handleSelection} />
           </Form>
         </div>
-        <div className="flex flex-col  pt-12 w-full">
+        <div className="flex flex-col md:pt-12 w-full">
           {url === "/duck-report" ? (
             <DuckReportComponent stats={stats} leagueSettings={leagueSettings}/>
           ) : (
