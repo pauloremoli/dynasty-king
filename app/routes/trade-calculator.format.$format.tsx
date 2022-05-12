@@ -1,11 +1,10 @@
-import { useLoaderData, useParams, Link } from "@remix-run/react";
+import { useLoaderData, useParams } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
-import Navbar from "~/components/Navbar";
 import Settings from "~/components/tradeCalculator/Settings";
 import Team from "~/components/tradeCalculator/Team";
 import TradeAnalysis from "~/components/tradeCalculator/TradeAnalysis";
-import { Format } from "~/types/Format";
 import styles from "~/styles/customSelect.css";
+import { Format } from "~/types/Format";
 import { csvToJson } from "~/utils/csvToJson";
 import { filterDataByFormat } from "~/utils/players";
 
@@ -44,8 +43,8 @@ const TradeCalculator = () => {
 
   return (
     <>
-      <div className="max-w-7xl flex flex-col h-full w-full items-center md:mb-24 pt-12 text-white p-2">
-        <h1 className="text-4xl font-semibold tracking-wide text-center pb-8">
+      <div className="max-w-7xl flex flex-col h-full w-full items-center md:mb-24 pt-8 md:pt-12 text-white p-2">
+        <h1 className="text-2xl font-semibold tracking-wide text-center pb-8">
           Trade Calculator
         </h1>
 

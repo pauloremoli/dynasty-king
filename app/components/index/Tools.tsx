@@ -81,11 +81,11 @@ const Tools = () => {
           </Link>
         </div>
         <div className="flex md:flex-row flex-col gap-4 p-4 w-full pt-0  justify-center">
-          <Link to="/power-rankings">
+          <Link to="/power-ranking">
             <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg bg-[#003459] hover:bg-[#003459d0] hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
               <div className="px-6 py-10">
                 <div className="mb-2 text-center text-xl font-semibold text-[#caf0f8]">
-                  Power Rankings
+                  Power Ranking
                 </div>
                 <div className="flex items-center justify-center py-2">
                   <ImPower size={40} color="#007ea7" />

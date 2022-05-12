@@ -1,9 +1,10 @@
-import { LeagueSettings } from "./../types/LeagueSettings";
-import { getLeagueSettings } from "./fleaflicker";
+import { csvToJson } from './../utils/csvToJson';
+import { PlayerPosition } from '../types/Roster';
 import { json } from "@remix-run/node";
 import { Team } from "~/types/Team";
 import { H2HStats, Standings, TeamStats } from "~/types/TeamStats";
 import { LeagueSettings } from "~/types/LeagueSettings";
+import { Roster } from "~/types/Roster";
 
 interface ActionData {
   errors?: {
@@ -339,4 +340,32 @@ const updateStats = (
     return teamStats;
   });
   return stats;
+};
+
+export const getPlayersId = async () => {
+  const response = await fetch(
+    "https://raw.githubusercontent.com/dynastyprocess/data/master/files/values.csv"
+  );
+
+  return csvToJson(await response.text());
+} 
+
+export const getPowerRanking = async (leagueId: number) => {
+  let year = new Date().getFullYear();
+
+
+
+  const params = `FetchLeagueRosters?sport=NFL&league_id=${leagueId}&season=${year}`;
+  const url = `https://www.fleaflicker.com/api/${params}`;
+  return await fetch(url).then(async (response) => {
+    const data = await response.json();
+    const powerRanking : Roster[] = []; 
+    data.rosters.forEach((roster: any) => {
+      const players = roster.players.map((player: any) => ({id: player.proPlayer.id, name: player.proPlayer.nameFull, position: player.proPlayer.position}))
+      console.log(roster.team.id, roster.team.name, players);
+      powerRanking.push({teamId: roster.team.id, teamName: roster.team.name, players}) 
+    });
+
+    return powerRanking;
+  });
 };
