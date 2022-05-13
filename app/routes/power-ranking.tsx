@@ -1,13 +1,13 @@
-import { redirect } from "@remix-run/node";
+import { LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import React from "react";
-import { getPowerRanking } from "~/api/fleaflicker";
+import { createPlayerMap, getPowerRanking } from "~/api/fleaflicker";
 import ErrorScreen from "~/components/ErrorScreen";
 import { getTeamsByUserId } from "~/models/team.server";
 import { requireUserId } from "~/session.server";
 import { Roster } from "~/types/Roster";
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader: LoaderFunction= async ({ request }) => {
   const url = new URL(request.url).pathname;
 
   const userId = await requireUserId(request);
@@ -18,9 +18,10 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
   const leagueId = teams[0].leagueId;
 
-  const powerRanking = await getPowerRanking(leagueId);
+  const powerRanking = getPowerRanking(leagueId);
+  const playersMap = await createPlayerMap();
 
-  return { powerRanking };
+  return { powerRanking, playersMap };
 };
 
 export function ErrorBoundary({ error }: any) {
@@ -34,9 +35,9 @@ const PowerRanking = () => {
     <>
       <div className="flex flex-col w-full h-full items-center pt-24 text-white">
         <h1 className="text-2xl font-bold text-center pb-20">Power Rankings</h1>
-
-        <div className="flex flex-col gap-4">
-          {powerRanking.map((team: Roster) => {
+        <p>WIP</p>
+        {/* <div className="flex flex-col gap-4">
+          {powerRanking && powerRanking.map((team: Roster) => {
             return (
               <div key={team.teamId}>
                 <p>{team.teamName}</p>
@@ -52,10 +53,10 @@ const PowerRanking = () => {
               </div>
             );
           })}
-        </div>
+        </div> */}
       </div>
     </>
   );
 };
 
-export default Roster;
+export default PowerRanking;

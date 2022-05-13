@@ -1,11 +1,11 @@
 import { useLoaderData, useParams } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
+import { getPlayers } from "~/api/fleaflicker";
 import Settings from "~/components/tradeCalculator/Settings";
 import Team from "~/components/tradeCalculator/Team";
 import TradeAnalysis from "~/components/tradeCalculator/TradeAnalysis";
 import styles from "~/styles/customSelect.css";
 import { Format } from "~/types/Format";
-import { csvToJson } from "~/utils/csvToJson";
 import { filterDataByFormat } from "~/utils/players";
 
 export function links() {
@@ -15,11 +15,7 @@ export function links() {
 export const loader = async ({ params }) => {
   const { format } = params;
 
-  const response = await fetch(
-    "https://raw.githubusercontent.com/dynastyprocess/data/master/files/values.csv"
-  );
-
-  let result = csvToJson(await response.text());
+  const result = await getPlayers();
 
   result.data = filterDataByFormat(result.data, format);
   return result.data;

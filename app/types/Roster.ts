@@ -5,7 +5,6 @@ export enum PlayerPosition {
     TE = "TE"
   }
   
-
 export type Player = {
     id: number;
     name: string;
