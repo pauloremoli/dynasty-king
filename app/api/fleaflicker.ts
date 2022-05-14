@@ -1,11 +1,12 @@
 import { csvToJson } from "./../utils/csvToJson";
-import { PlayerPosition } from "../types/Roster";
+import { Player, PlayerPosition } from "../types/Roster";
 import { json } from "@remix-run/node";
 import { Team } from "~/types/Team";
 import { H2HStats, Standings, TeamStats } from "~/types/TeamStats";
 import { LeagueSettings } from "~/types/LeagueSettings";
 import { Roster } from "~/types/Roster";
 import { ImSteam } from "react-icons/im";
+import { FaColumns } from "react-icons/fa";
 
 interface ActionData {
   errors?: {
@@ -351,47 +352,31 @@ export const getPlayersId = async () => {
   return csvToJson(await response.text());
 };
 
-export const getPowerRanking = async (leagueId: number) => {
+export const getRosters = async (leagueId: number) => {
   let year = new Date().getFullYear();
 
   const params = `FetchLeagueRosters?sport=NFL&league_id=${leagueId}&season=${year}`;
   const url = `https://www.fleaflicker.com/api/${params}`;
   return await fetch(url).then(async (response) => {
     const data = await response.json();
-    const powerRanking: Roster[] = [];
+    const rosters: Roster[] = [];
     data.rosters.forEach((roster: any) => {
-      const players = roster.players.map((player: any) => ({
+      const players: Player[] = roster.players.map((player: any) => ({
         id: player.proPlayer.id,
         name: player.proPlayer.nameFull,
         position: player.proPlayer.position,
+        team: player.proPlayer.proTeam.abbreviation,
       }));
 
-      powerRanking.push({
+      rosters.push({
         teamId: roster.team.id,
         teamName: roster.team.name,
         players,
       });
     });
 
-    return powerRanking;
+    return rosters;
   });
-};
-
-export const createPlayerMap = async () => {
-  const { data: players } = await getPlayers();
-  const { data: ids } = await getPlayersId();
-
-  const res = ids.map((item: any) => {
-    return {
-      [item["fleaflicker_id"]]: players.find(
-        (player) => "NA" !== item.fleaflicker_id && item.fp_id === player.id
-      ),
-    };
-  });
-
-  console.log(res);
-
-  return res;
 };
 
 export const getPlayers = async () => {
@@ -399,5 +384,11 @@ export const getPlayers = async () => {
     "https://raw.githubusercontent.com/dynastyprocess/data/master/files/values.csv"
   );
 
-  return csvToJson(await response.text());
+  let { columns, data } = csvToJson(await response.text());
+  columns.push("str");
+  data = data.map((player: any) => ({
+    ...player,
+    str: player.player + "/" + player.pos + "/" + player.team,
+  }));
+  return { columns, data };
 };
