@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { LeagueSettings } from "~/types/LeagueSettings";
 import { StatsPerYear, TeamStats } from "~/types/TeamStats";
 import YearlyFinishItem, { StatsFilteredPerRank } from "./YearlyFinishItem";
-import YearlyFinishItemChart from "./YearlyFinishItemChart";
 
 const sortByMostTimes = (
   first: StatsFilteredPerRank,
@@ -77,7 +76,6 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({
     leagueSettings.numberOfPlayoffTeams
   );
   const last = filterByRank(teamStats, 12);
-  const [charts, setCharts] = useState(true);
 
   return (
     <div className="flex flex-col w-full dark:text-white font-light  ">
