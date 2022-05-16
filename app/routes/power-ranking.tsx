@@ -11,14 +11,12 @@ import {
   useSubmit,
 } from "@remix-run/react";
 import React, { ChangeEventHandler, useState } from "react";
-import { getRosterValue } from "~/api/fleaflicker";
+import { getLeagueSettings, getRosterValue } from "~/api/fleaflicker";
 import ErrorScreen from "~/components/ErrorScreen";
 import PowerRankingChart from "~/components/powerRanking/PowerRankingChart";
 import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
 import { requireUserId } from "~/session.server";
-import { RosterValue } from "~/types/Roster";
-import { TotalValue } from "~/types/RosterValue";
 
 interface ActionData {
   errors?: {
@@ -27,8 +25,6 @@ interface ActionData {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const url = new URL(request.url).pathname;
-
   const userId = await requireUserId(request);
   const teams = await getTeamsByUserId(userId);
 
@@ -39,8 +35,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   console.log("LoaderFunction");
   const data = await getRosterValue(leagueId);
+  const leagueSettings = await getLeagueSettings(leagueId);
 
-  return { url, teams, data };
+  return { teams, data, leagueSettings };
 };
 
 export function ErrorBoundary({ error }: any) {
@@ -61,15 +58,13 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const { leagueId } = JSON.parse(team);
-
-  console.log("ActionFunction");
   const data = await getRosterValue(parseInt(leagueId));
-
-  return data;
+  const leagueSettings = await getLeagueSettings(leagueId);
+  return { data, leagueSettings };
 };
 
 const PowerRanking = () => {
-  const { teams, data } = useLoaderData();
+  const { teams, data, leagueSettings } = useLoaderData();
   const actionData = useActionData();
 
   const [selectedLeagueName, setSelectedLeagueName] = useState(
@@ -98,7 +93,10 @@ const PowerRanking = () => {
           </Form>
         </div>
         <div className="flex flex-col text-white font-light pt-12 w-full">
-          <PowerRankingChart value={actionData ?? data}/>
+          <PowerRankingChart
+            value={actionData?.data ?? data}
+            leagueSetttings={actionData?.leagueSettings ?? leagueSettings}
+          />
         </div>
       </div>
     </>

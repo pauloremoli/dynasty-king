@@ -91,7 +91,7 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({
           ))}
         </div>
       </div>
-      <div className="flex flex-col md:flex-row md:gap-20 w-full justify-start pb-8 dark:text-white font-light  ">
+      <div className="flex flex-col md:flex-row md:gap-20 w-full justify-between pb-8 dark:text-white font-light  ">
         <div className="flex flex-col pb-8">
           <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
             2nd place

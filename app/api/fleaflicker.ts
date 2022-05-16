@@ -377,7 +377,8 @@ export const getRosters = async (leagueId: number) => {
     const data = await response.json();
     const rosters: Roster[] = [];
     data.rosters.forEach((roster: any) => {
-      const players: Player[] = roster.players.map((player: any) => ({
+      if (!roster?.players) return;
+      const players: Player[] = roster?.players?.map((player: any) => ({
         id: player.proPlayer.id,
         player: player.proPlayer.nameFull,
         pos: player.proPlayer.position,

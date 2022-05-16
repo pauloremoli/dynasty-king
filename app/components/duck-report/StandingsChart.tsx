@@ -38,18 +38,32 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
     scales: {
       x: {
         stacked: true,
+        ticks: {
+          color: "rgb(240,240,240)",
+          font: {
+            size: 12,
+          },
+        },
       },
       y: {
         stacked: true,
+        ticks: {
+          color: "rgb(240,240,240)",
+          font: {
+            size: 12,
+          },
+        },
       },
     },
     plugins: {
       legend: {
         position: "right" as const,
-      },
-      title: {
-        display: true,
-        text: isPostseason ? "Postseason" : "Regular season",
+        labels: {
+          color: "rgb(240,240,240)",
+          font: {
+            size: 12,
+          },
+        },
       },
     },
   };

@@ -11,13 +11,18 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { Player } from "~/types/Player";
+import { LeagueSettings } from "~/types/LeagueSettings";
+import { getPlayerValue } from "~/utils/players";
 
 interface PowerRankingChartProps {
   value: RosterValue[];
+  leagueSetttings: LeagueSettings;
 }
 
 const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
   value,
+  leagueSetttings,
 }) => {
   ChartJS.register(
     CategoryScale,
@@ -30,18 +35,64 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
 
   const options = {
     plugins: {
-      title: {
-        display: true,
-        text: "Power Ranking",
+      legend: {
+        labels: {
+          color: "rgb(240,240,240)",
+          font: {
+            size: 12,
+          },
+        },
+      },
+      tooltip: {
+        callbacks: {
+          label: (context: any) => {
+            let label: string[] = [];
+
+            const team = context?.label;
+            const position = context?.dataset?.label;
+            const selectedTeam = value.filter(
+              (item: RosterValue) => item.roster.teamName === team
+            );
+
+            if (context?.parsed?.y) {
+              label.push(position + " value: " + context.parsed.y);
+              label.push("");
+            }
+            if (selectedTeam.length > 0) {
+              selectedTeam[0].roster.players.forEach((current: Player) => {
+                if (current.pos === position) {
+                  label.push(
+                    current.player +
+                      " - Value: " +
+                      getPlayerValue(current, leagueSetttings.format)
+                  );
+                }
+              });
+            }
+            return label;
+          },
+        },
       },
     },
     responsive: true,
     scales: {
       x: {
         stacked: true,
+        ticks: {
+          color: "rgb(240,240,240)",
+          font: {
+            size: 12,
+          },
+        },
       },
       y: {
         stacked: true,
+        ticks: {
+          color: "rgb(240,240,240)",
+          font: {
+            size: 12,
+          },
+        },
       },
     },
   };
