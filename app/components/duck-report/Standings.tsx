@@ -17,7 +17,7 @@ const Standings: React.FC<StandingsProps> = ({
   owner,
 }) => {
   return (
-    <div className="flex gap-1 rounded-lg w-full mb-1 pb-4">
+    <div className="flex rounded-lg w-full mb-1 pb-4 text-lg">
       <div className="flex flex-col md:flex-row flex-wrap">
         <div className="flex">
           <p>{index + " - "}</p>

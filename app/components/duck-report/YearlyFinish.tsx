@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { LeagueSettings } from "~/types/LeagueSettings";
 import { StatsPerYear, TeamStats } from "~/types/TeamStats";
-import YearlyFinishItem, { StatsFilteredPerRank } from "./YearlyFinishItemItem";
+import YearlyFinishItem, { StatsFilteredPerRank } from "./YearlyFinishItem";
+import YearlyFinishItemChart from "./YearlyFinishItemChart";
 
 const sortByMostTimes = (
   first: StatsFilteredPerRank,
@@ -64,12 +65,19 @@ interface YearlyFinishProps {
   leagueSettings: LeagueSettings;
 }
 
-const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }) => {  
+const YearlyFinish: React.FC<YearlyFinishProps> = ({
+  teamStats,
+  leagueSettings,
+}) => {
   const titles = filterByRank(teamStats, 1);
   const secondPlaces = filterByRank(teamStats, 2);
   const thirdPlaces = filterByRank(teamStats, 3);
-  const playoffAppearances = filterByPlayoffAppearance(teamStats, leagueSettings.numberOfPlayoffTeams);
+  const playoffAppearances = filterByPlayoffAppearance(
+    teamStats,
+    leagueSettings.numberOfPlayoffTeams
+  );
   const last = filterByRank(teamStats, 12);
+  const [charts, setCharts] = useState(true);
 
   return (
     <div className="flex flex-col w-full dark:text-white font-light  ">
@@ -84,6 +92,8 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }
             </div>
           ))}
         </div>
+      </div>
+      <div className="flex flex-col md:flex-row md:gap-20 w-full justify-start pb-8 dark:text-white font-light  ">
         <div className="flex flex-col pb-8">
           <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
             2nd place
@@ -99,7 +109,17 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }
             3rd place
           </h1>
           {thirdPlaces.map((stats: StatsFilteredPerRank, index: number) => (
-            <div key={"thrid" + index}>
+            <div key={"third" + index}>
+              <YearlyFinishItem stats={stats} index={index} />
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col pb-8">
+          <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
+            Last place
+          </h1>
+          {last.map((stats: StatsFilteredPerRank, index: number) => (
+            <div key={"last" + index}>
               <YearlyFinishItem stats={stats} index={index} />
             </div>
           ))}
@@ -117,16 +137,6 @@ const YearlyFinish: React.FC<YearlyFinishProps> = ({ teamStats, leagueSettings }
               </div>
             )
           )}
-        </div>
-        <div className="flex flex-col pb-8">
-          <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
-            Last place
-          </h1>
-          {last.map((stats: StatsFilteredPerRank, index: number) => (
-            <div key={"thrid" + index}>
-              <YearlyFinishItem stats={stats} index={index} />
-            </div>
-          ))}
         </div>
       </div>
     </div>

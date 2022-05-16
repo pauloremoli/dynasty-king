@@ -1,5 +1,5 @@
 import { csvToJson } from "./../utils/csvToJson";
-import { Player, PlayerPosition } from "../types/Roster";
+import { PlayerPosition, RosterValue } from "../types/Roster";
 import { json } from "@remix-run/node";
 import { Team } from "~/types/Team";
 import { H2HStats, Standings, TeamStats } from "~/types/TeamStats";
@@ -7,8 +7,13 @@ import { LeagueSettings } from "~/types/LeagueSettings";
 import { Roster } from "~/types/Roster";
 import { ImSteam } from "react-icons/im";
 import { FaColumns } from "react-icons/fa";
+import { Format } from "~/types/Format";
+import fuzzysort from "fuzzysort";
+import { TotalValue } from "~/types/RosterValue";
+import { getPlayerValue } from "~/utils/players";
+import { Player } from "~/types/Player";
 
-interface ActionData {
+interface ActionDataEmail {
   errors?: {
     email?: string;
   };
@@ -43,7 +48,7 @@ export const getTeams = async (email: string) => {
       });
     })
     .catch((error) => {
-      return json<ActionData>(
+      return json<ActionDataEmail>(
         { errors: { email: "Could not find any league for this email" } },
         { status: 400 }
       );
@@ -61,7 +66,7 @@ export const getScoreBoard = async (leagueId: number, year: number) => {
       return await response.json();
     })
     .catch(() => {
-      return json<ActionData>(
+      return json<ActionDataEmail>(
         { errors: { email: "Could not find any league for this email" } },
         { status: 400 }
       );
@@ -72,9 +77,20 @@ export const getLeagueSettings = async (
   leagueId: number
 ): Promise<LeagueSettings> => {
   const url = `https://www.fleaflicker.com/nfl/leagues/${leagueId}/rules`;
+
   const rules: LeagueSettings = await fetch(url).then(async (response) => {
     const page = await response.text();
-    const pos = page.search("Weeks:");
+
+    // Format
+    let pos = page.search("QB</span>");
+    let qbCount = parseInt(page.slice(pos - 59, pos - 58));
+    let format =
+      qbCount > 1 || page.search("QB/RB") !== -1
+        ? Format.FORMAT_2QB
+        : Format.FORMAT_1QB;
+
+    //playoff settings
+    pos = page.search("Weeks:");
     let numberOfPlayoffTeams = parseInt(
       page
         .slice(pos - 16, pos - 14)
@@ -90,7 +106,7 @@ export const getLeagueSettings = async (
     const firstWeek = parseInt(first);
     const lastWeek = parseInt(last);
 
-    return { numberOfPlayoffTeams, firstWeek, lastWeek };
+    return { numberOfPlayoffTeams, firstWeek, lastWeek, format };
   });
   return rules;
 };
@@ -363,8 +379,8 @@ export const getRosters = async (leagueId: number) => {
     data.rosters.forEach((roster: any) => {
       const players: Player[] = roster.players.map((player: any) => ({
         id: player.proPlayer.id,
-        name: player.proPlayer.nameFull,
-        position: player.proPlayer.position,
+        player: player.proPlayer.nameFull,
+        pos: player.proPlayer.position,
         team: player.proPlayer.proTeam.abbreviation,
       }));
 
@@ -391,4 +407,112 @@ export const getPlayers = async () => {
     str: player.player + "/" + player.pos + "/" + player.team,
   }));
   return { columns, data };
+};
+
+const searchPlayer = (playerInRoster: Player, players: Player[]) => {
+  const result = fuzzysort.go(
+    playerInRoster.player +
+      "/" +
+      playerInRoster.pos +
+      "/" +
+      playerInRoster.team,
+    players,
+    { key: "str", limit: 1 }
+  );
+
+  if (result.total === 1) {
+    return result[0].obj;
+  } else {
+    const result = fuzzysort.go(playerInRoster.player, players, {
+      key: "player",
+      limit: 1,
+    });
+
+    if (result.total > 0) {
+      return result[0].obj;
+    } else {
+      console.log(
+        "NOT FOUND",
+        playerInRoster.player,
+        playerInRoster.pos,
+        playerInRoster.team
+      );
+
+      return {
+        player: playerInRoster.player,
+        pos: playerInRoster.pos,
+        team: playerInRoster.team,
+        age: "NA",
+        draft_year: "NA",
+        ecr_1qb: null,
+        ecr_2qb: null,
+        ecr_pos: null,
+        value_1qb: 1,
+        value_2qb: 1,
+        scrape_date: "NA",
+        fp_id: "NA",
+      };
+    }
+  }
+};
+
+export const getRosterValue = async (
+  leagueId: number
+): Promise<RosterValue[]> => {
+  const leagueSettings = await getLeagueSettings(leagueId);
+  console.log("leagueSettings", leagueSettings);
+
+  const rosters = await getRosters(leagueId);
+  const players = await getPlayers();
+
+  const data: Roster[] = rosters.map((roster: Roster) => {
+    return {
+      ...roster,
+      players: roster.players.map((playerInRoster: Player) =>
+        searchPlayer(playerInRoster, players.data)
+      ),
+    };
+  });
+
+  const result: RosterValue[] = data.map((roster: Roster) => {
+    const value: TotalValue = {
+      total: 0,
+      totalQB: 0,
+      totalRB: 0,
+      totalWR: 0,
+      totalTE: 0,
+    };
+
+    roster.players.forEach((currentValue: Player) => {
+      const playerValue = getPlayerValue(currentValue, leagueSettings.format);
+      switch (currentValue.pos) {
+        case "QB":
+          value.totalQB += playerValue;
+          break;
+        case "RB":
+          value.totalRB += playerValue;
+          break;
+        case "WR":
+          value.totalWR += playerValue;
+          break;
+        case "TE":
+          value.totalTE += playerValue;
+          break;
+        default:
+          break;
+      }
+      value.total += playerValue;
+    });
+
+    return {
+      roster,
+      value,
+    };
+  });
+
+  result.sort(
+    (a: RosterValue, b: RosterValue) => b.value.total - a.value.total
+  );
+
+  return result;
 };

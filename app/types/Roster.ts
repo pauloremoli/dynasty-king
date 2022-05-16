@@ -1,3 +1,4 @@
+import { TotalValue } from '~/types/RosterValue';
 import { Player } from "./Player";
 
 export enum PlayerPosition {
@@ -12,4 +13,9 @@ export type Roster = {
     teamName: string;
     teamId: number;
     players: Player[];
+}
+
+export type RosterValue = {
+  roster: Roster;
+  value: TotalValue;
 }
