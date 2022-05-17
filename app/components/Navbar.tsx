@@ -59,7 +59,12 @@ function Nav() {
                     {user ? (
                       <div className="flex items-center">
                         <h3 className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0">
-                          {user.username}
+                          <a
+                            href="/user"
+                            className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                          >
+                            {user.username}
+                          </a>
                         </h3>
                         <Form action="/logout" method="post">
                           <button

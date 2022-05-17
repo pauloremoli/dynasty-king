@@ -1,7 +1,6 @@
-import { FaCrown } from "react-icons/fa";
-
 import Hero from "~/components/index/Hero";
 import Tools from "~/components/index/Tools";
+
 
 const Index = () => {
   return (

@@ -49,7 +49,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (password.length < 6) {
     return json<ActionData>(
-      { errors: { password: "Password is too short" } },
+      { errors: { password: "Password is too short, it must have at least 6 characters" } },
       { status: 400 }
     );
   }

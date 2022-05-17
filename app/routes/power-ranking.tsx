@@ -33,7 +33,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
   const leagueId = teams[0].leagueId;
 
-  console.log("LoaderFunction");
   const data = await getRosterValue(leagueId);
   const leagueSettings = await getLeagueSettings(leagueId);
 
