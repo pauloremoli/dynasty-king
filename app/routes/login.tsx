@@ -1,7 +1,9 @@
 import {
   ActionFunction,
   LoaderFunction,
-  MetaFunction,json, redirect
+  MetaFunction,
+  json,
+  redirect,
 } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
@@ -173,6 +175,19 @@ export default function LoginPage() {
                 Remember me
               </label>
             </div>
+            <div className="text-center text-sm  text-gray-500 dark:text-gray-100">
+              <Link
+                className="text-blue-500 dark:text-blue-200 underline"
+                to={{
+                  pathname: "/forgot-password",
+                  search: searchParams.toString(),
+                }}
+              >
+                Forgot password
+              </Link>
+            </div>
+          </div>
+          <div className="flex items-center justify-start">
             <div className="text-center text-sm  text-gray-500 dark:text-gray-100">
               Don't have an account?{" "}
               <Link
