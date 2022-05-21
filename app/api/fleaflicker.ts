@@ -261,7 +261,6 @@ const updateStats = (
       (s) => s && s.id === team.id
     );
     if (!teamStats) {
-
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
       teamStats = {
         id: team.id,
@@ -515,7 +514,7 @@ export const getRosterValue = async (
     };
   });
 
-  const result: RosterValue[] = data.map((roster: Roster) => {
+  const result: RosterValue[] = data.map(async (roster: Roster) => {
     const value: TotalValue = {
       total: 0,
       totalQB: 0,
@@ -546,24 +545,24 @@ export const getRosterValue = async (
       value.total += playerValue;
     });
 
-    rosters.map(async (roster: Roster) => {
-      const picks = await getPicks(leagueId, roster.teamId);
-      picks.forEach((pick: Pick) => {
-        const pickValue = players.data.filter(
-          (player: Player) =>
-            player.player === pick.season + " " + getRound(pick.round)
-        );
-        if (pickValue && pickValue.length > 0) {
-          value.totalPicks += getPlayerValue(
-            pickValue[0],
-            leagueSettings.format
-          );
-        }
-      });
+    const picks = await getPicks(leagueId, roster.teamId);
+    picks.forEach((pick: Pick) => {
+      const pickValue = players.data.filter(
+        (player: Player) =>
+          player.player === pick.season + " " + getRound(pick.round)
+      );
+      if (pickValue && pickValue.length > 0) {
+        value.totalPicks += getPlayerValue(pickValue[0], leagueSettings.format);
+      }
+    });
+
+    console.log({
+      roster,
+      value,
     });
 
     return {
-      roster: data,
+      roster,
       value,
     };
   });
