@@ -3,5 +3,6 @@ export type TotalValue = {
   totalRB: number;
   totalWR: number;
   totalTE: number;
+  totalPicks: number;
   total: number;
 };

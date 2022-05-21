@@ -12,6 +12,8 @@ import fuzzysort from "fuzzysort";
 import { TotalValue } from "~/types/RosterValue";
 import { getPlayerValue } from "~/utils/players";
 import { Player } from "~/types/Player";
+import { Pick } from "~/types/Picks";
+import { getRounds } from "bcryptjs";
 
 interface ActionDataEmail {
   errors?: {
@@ -259,13 +261,6 @@ const updateStats = (
       (s) => s && s.id === team.id
     );
     if (!teamStats) {
-      console.log(
-        "rank",
-        team.recordOverall.rank,
-        team.name,
-        year,
-        leagueSettings
-      );
 
       const ties = "ties" in team.recordOverall ? team.recordOverall.ties : 0;
       teamStats = {
@@ -457,11 +452,56 @@ const searchPlayer = (playerInRoster: Player, players: Player[]) => {
   }
 };
 
+export const getPicks = async (
+  leagueId: number,
+  teamId: number
+): Promise<Pick[]> => {
+  let picks: Pick[] = [];
+
+  const params = `FetchTeamPicks?sport=NFL&league_id=${leagueId}&team_id=${teamId}`;
+  const url = `https://www.fleaflicker.com/api/${params}`;
+  await fetch(url).then(async (response) => {
+    const data = await response.json();
+
+    if (data?.picks) {
+      data?.picks.map((pick: any) => {
+        picks.push({
+          originalOwner: pick.originalOwner?.id ?? undefined,
+          originalOwnerName: pick.originalOwner?.name ?? undefined,
+          ownedByName: pick.ownedBy.name,
+          ownedBy: pick.ownedBy.id,
+          slot: pick.slot.slot,
+          overall: pick.slot.overall,
+          round: pick.slot.round,
+          traded: pick.traded ?? false,
+          season: pick.season,
+        });
+      });
+    }
+  });
+
+  return picks;
+};
+
+const getRound = (round: number) => {
+  switch (round) {
+    case 1:
+      return "1st";
+
+    case 2:
+      return "2nd";
+
+    case 3:
+      return "3rd";
+    default:
+      return round + "th";
+  }
+};
+
 export const getRosterValue = async (
   leagueId: number
 ): Promise<RosterValue[]> => {
   const leagueSettings = await getLeagueSettings(leagueId);
-  console.log("leagueSettings", leagueSettings);
 
   const rosters = await getRosters(leagueId);
   const players = await getPlayers();
@@ -482,9 +522,10 @@ export const getRosterValue = async (
       totalRB: 0,
       totalWR: 0,
       totalTE: 0,
+      totalPicks: 0,
     };
 
-    roster.players.forEach((currentValue: Player) => {
+    roster?.players?.forEach((currentValue: Player) => {
       const playerValue = getPlayerValue(currentValue, leagueSettings.format);
       switch (currentValue.pos) {
         case "QB":
@@ -505,8 +546,24 @@ export const getRosterValue = async (
       value.total += playerValue;
     });
 
+    rosters.map(async (roster: Roster) => {
+      const picks = await getPicks(leagueId, roster.teamId);
+      picks.forEach((pick: Pick) => {
+        const pickValue = players.data.filter(
+          (player: Player) =>
+            player.player === pick.season + " " + getRound(pick.round)
+        );
+        if (pickValue && pickValue.length > 0) {
+          value.totalPicks += getPlayerValue(
+            pickValue[0],
+            leagueSettings.format
+          );
+        }
+      });
+    });
+
     return {
-      roster,
+      roster: data,
       value,
     };
   });

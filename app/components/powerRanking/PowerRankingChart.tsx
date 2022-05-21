@@ -103,14 +103,14 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
     labels,
     datasets: [
       {
-        label: "QB",
-        data: value.map((item: RosterValue) => item.value.totalQB),
-        backgroundColor: "rgb(255, 99, 132)",
+        label: "PICKS",
+        data: value.map((item: RosterValue) => item.value.totalPicks),
+        backgroundColor: "orange",
       },
       {
-        label: "RB",
-        data: value.map((item: RosterValue) => item.value.totalRB),
-        backgroundColor: "rgb(75, 192, 192)",
+        label: "TE",
+        data: value.map((item: RosterValue) => item.value.totalTE),
+        backgroundColor: "yellow",
       },
       {
         label: "WR",
@@ -118,9 +118,14 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
         backgroundColor: "rgb(53, 162, 235)",
       },
       {
-        label: "TE",
-        data: value.map((item: RosterValue) => item.value.totalTE),
-        backgroundColor: "yellow",
+        label: "RB",
+        data: value.map((item: RosterValue) => item.value.totalRB),
+        backgroundColor: "rgb(75, 192, 192)",
+      },
+      {
+        label: "QB",
+        data: value.map((item: RosterValue) => item.value.totalQB),
+        backgroundColor: "rgb(255, 99, 132)",
       },
     ],
   };

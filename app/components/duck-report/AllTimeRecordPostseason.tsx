@@ -12,7 +12,7 @@ const sortByMostWins = (first: TeamStats, second: TeamStats) => {
   }
   if (
     first.postseason.wins === second.postseason.wins &&
-    (first.postseason.losses ? first.postseason.losses : 0) >
+    (first.postseason.losses ? first.postseason.losses : 0) <
       (second.postseason.losses ? second.postseason.losses : 0)
   ) {
     return -1;
@@ -20,7 +20,7 @@ const sortByMostWins = (first: TeamStats, second: TeamStats) => {
 
   if (
     first.postseason.wins === second.postseason.wins &&
-    (first.postseason.losses ? first.postseason.losses : 0) <
+    (first.postseason.losses ? first.postseason.losses : 0) >
       (second.postseason.losses ? second.postseason.losses : 0)
   ) {
     return 1;

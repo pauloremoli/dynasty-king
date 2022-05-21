@@ -8,6 +8,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  DatasetChartOptions,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
@@ -102,6 +103,11 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
       },
     ],
   };
+
+  if (isPostseason) {
+    data.datasets = data.datasets.filter((dataset) => dataset.label !== "Ties");
+  }
+
   return (
     <div className="font-lg text-white w-full">
       <Bar options={options} data={data} />
