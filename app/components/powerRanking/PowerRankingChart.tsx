@@ -13,7 +13,8 @@ import {
 import { Bar } from "react-chartjs-2";
 import { Player } from "~/types/Player";
 import { LeagueSettings } from "~/types/LeagueSettings";
-import { getPlayerValue } from "~/utils/players";
+import { getPlayerValue, getRound } from "~/utils/players";
+import { Pick } from "~/types/Picks";
 
 interface PowerRankingChartProps {
   value: RosterValue[];
@@ -67,6 +68,18 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
                       getPlayerValue(current, leagueSetttings.format)
                   );
                 }
+              });
+            }
+
+            if ("PICKS" === position) {
+              selectedTeam[0].roster.picks.forEach((pick: Pick) => {
+                label.push(
+                  pick.season +
+                    " " +
+                    getRound(pick.round) +
+                    " - Value: " +
+                    pick.value
+                );
               });
             }
             return label;
@@ -129,6 +142,7 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
       },
     ],
   };
+
   return <Bar options={options} data={data} />;
 };
 

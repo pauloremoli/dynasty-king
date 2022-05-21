@@ -8,4 +8,5 @@ export type Pick = {
     overall: number;
     traded: boolean;
     season: number;
+    value?: number
 }

@@ -10,7 +10,7 @@ import { FaColumns } from "react-icons/fa";
 import { Format } from "~/types/Format";
 import fuzzysort from "fuzzysort";
 import { TotalValue } from "~/types/RosterValue";
-import { getPlayerValue } from "~/utils/players";
+import { getPlayerValue, getRound } from "~/utils/players";
 import { Player } from "~/types/Player";
 import { Pick } from "~/types/Picks";
 import { getRounds } from "bcryptjs";
@@ -457,13 +457,16 @@ export const getPicks = async (
 ): Promise<Pick[]> => {
   let picks: Pick[] = [];
 
+  const filterYear = new Date().getFullYear() + 1;
+
   const params = `FetchTeamPicks?sport=NFL&league_id=${leagueId}&team_id=${teamId}`;
   const url = `https://www.fleaflicker.com/api/${params}`;
   await fetch(url).then(async (response) => {
     const data = await response.json();
 
     if (data?.picks) {
-      data?.picks.map((pick: any) => {
+      data?.picks.forEach((pick: any) => {
+        if(pick.season <= filterYear)
         picks.push({
           originalOwner: pick.originalOwner?.id ?? undefined,
           originalOwnerName: pick.originalOwner?.name ?? undefined,
@@ -482,20 +485,6 @@ export const getPicks = async (
   return picks;
 };
 
-const getRound = (round: number) => {
-  switch (round) {
-    case 1:
-      return "1st";
-
-    case 2:
-      return "2nd";
-
-    case 3:
-      return "3rd";
-    default:
-      return round + "th";
-  }
-};
 
 export const getRosterValue = async (
   leagueId: number
@@ -514,7 +503,8 @@ export const getRosterValue = async (
     };
   });
 
-  const result: RosterValue[] = data.map(async (roster: Roster) => {
+  const result: RosterValue[] = [];
+  data.forEach(async (roster: Roster) => {
     const value: TotalValue = {
       total: 0,
       totalQB: 0,
@@ -546,25 +536,24 @@ export const getRosterValue = async (
     });
 
     const picks = await getPicks(leagueId, roster.teamId);
+
     picks.forEach((pick: Pick) => {
       const pickValue = players.data.filter(
         (player: Player) =>
           player.player === pick.season + " " + getRound(pick.round)
       );
       if (pickValue && pickValue.length > 0) {
-        value.totalPicks += getPlayerValue(pickValue[0], leagueSettings.format);
+        pick.value = getPlayerValue(pickValue[0], leagueSettings.format);
+        value.totalPicks += pick.value;        
       }
     });
 
-    console.log({
+    roster.picks = picks;
+
+    result.push({
       roster,
       value,
     });
-
-    return {
-      roster,
-      value,
-    };
   });
 
   result.sort(
