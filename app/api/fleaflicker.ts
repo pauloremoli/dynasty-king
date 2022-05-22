@@ -351,6 +351,7 @@ const updateStats = (
 
     return teamStats;
   });
+
   return stats;
 };
 
@@ -466,25 +467,24 @@ export const getPicks = async (
 
     if (data?.picks) {
       data?.picks.forEach((pick: any) => {
-        if(pick.season <= filterYear)
-        picks.push({
-          originalOwner: pick.originalOwner?.id ?? undefined,
-          originalOwnerName: pick.originalOwner?.name ?? undefined,
-          ownedByName: pick.ownedBy.name,
-          ownedBy: pick.ownedBy.id,
-          slot: pick.slot.slot,
-          overall: pick.slot.overall,
-          round: pick.slot.round,
-          traded: pick.traded ?? false,
-          season: pick.season,
-        });
+        if (pick.season <= filterYear)
+          picks.push({
+            originalOwner: pick.originalOwner?.id ?? undefined,
+            originalOwnerName: pick.originalOwner?.name ?? undefined,
+            ownedByName: pick.ownedBy.name,
+            ownedBy: pick.ownedBy.id,
+            slot: pick.slot.slot,
+            overall: pick.slot.overall,
+            round: pick.slot.round,
+            traded: pick.traded ?? false,
+            season: pick.season,
+          });
       });
     }
   });
 
   return picks;
 };
-
 
 export const getRosterValue = async (
   leagueId: number
@@ -544,7 +544,7 @@ export const getRosterValue = async (
       );
       if (pickValue && pickValue.length > 0) {
         pick.value = getPlayerValue(pickValue[0], leagueSettings.format);
-        value.totalPicks += pick.value;        
+        value.totalPicks += pick.value;
       }
     });
 

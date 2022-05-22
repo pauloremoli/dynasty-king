@@ -36,6 +36,10 @@ const AllTimeRecordPostseason: React.FC<AllTimeRecordPostseasonProps> = ({
   teamStats,
   charts,
 }) => {
+  teamStats = teamStats.filter(
+    (team: TeamStats) =>
+      team.postseason.wins !== 0 || team.postseason.losses !== 0
+  );
   const stats = teamStats.sort(sortByMostWins);
   return (
     <div className="flex flex-col items-start mb-10 dark:text-gray-100 font-light ">

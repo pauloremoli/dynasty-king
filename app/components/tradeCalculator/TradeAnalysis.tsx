@@ -16,13 +16,7 @@ const TradeAnalysis = ({ totalValueA, totalValueB }: TradeAnalysisProps) => {
 
   return (
     <div
-      className={`flex flex-col p-8 border-2 shadow-md rounded-xl w-full md:w-96 h-full ${
-        difference > 5
-          ? totalValueA > totalValueB
-            ? "border-blue-600"
-            : "border-red-600"
-          : "border-green-600"
-      }`}
+      className={`flex flex-col p-8 shadow-md rounded-xl w-full md:w-96 h-full bg-[#003459]`}
     >
       <div className="flex flex-col">
         <h1 className="text-center pb-2 text-2xl font-semibold ">
@@ -43,7 +37,7 @@ const TradeAnalysis = ({ totalValueA, totalValueB }: TradeAnalysisProps) => {
               <span>in favor of</span>
               <span
                 className={`text-center pl-2 text-3xl ${
-                  totalValueA > totalValueB ? "text-blue-600" : "text-red-600"
+                  totalValueA > totalValueB ? "text-blue-400" : "text-red-400"
                 }`}
               >
                 Team {totalValueA > totalValueB ? "A" : "B"}

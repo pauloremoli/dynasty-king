@@ -1,13 +1,99 @@
 import React from "react";
-
+import { ImListNumbered } from "react-icons/im";
 
 const Tools = () => {
-
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center pt-24 text-white">
-        <h1 className="text-4xl font-bold text-center pb-20">Tools</h1>
-        <h2>Work in progress...</h2>
+      <div className="flex flex-col w-full h-full items-center pt-10 text-white max-w-5xl">
+        <h1 className="text-2xl font-bold text-center pb-10">Tools</h1>
+        <div className="flex flex-col w-full text-gray-300">
+          <h1 className="text-xl font-semibold text-blue-400 pb-4">
+            <a href="/rankings/format/1QB/position/all">Dynasty Rankings</a>
+          </h1>
+          <p className="pb-8">
+            PPR dynasty rankings based on data from
+            <a
+              href="https://github.com/dynastyprocess/data"
+              className="underline pl-1"
+            >
+              Dynasty Process
+            </a>
+          </p>
+          <div className="flex font-semibold flex-col gap-1 ">
+            <a href="/rankings/format/1QB/position/all">1QB Rankings</a>
+            <a href="/rankings/format/2QB/position/all">Super Flex Rankings</a>
+            <a href="/rankings/format/1QB/position/QB" className="pt-4">
+              Quarterback Rankings
+            </a>
+            <a href="/rankings/format/1QB/position/RB">Running Back Rankings</a>
+            <a href="/rankings/format/1QB/position/WR">
+              Wide Receiver Rankings
+            </a>
+            <a href="/rankings/format/1QB/position/TE">Tight End Rankings</a>
+            <a href="/rookie_rankings/format/1QB/position/all">
+              Rookie Rankings
+            </a>
+          </div>
+        </div>
+        <div className="flex flex-col w-full text-gray-300 pt-20">
+          <h1 className="text-xl font-semibold text-blue-400 pb-4">
+            <a href="/trade-calculator/format/1QB">Trade Calculator</a>
+          </h1>
+          <p className="">
+            Adjust calculator according to your league settings and personal
+            preferences.
+          </p>
+        </div>
+
+        <div className="flex flex-col w-full text-gray-300 pt-20">
+          <h1 className="text-xl font-semibold text-blue-400 pb-4">
+            <a href="/duck-report">Duck Report</a>
+          </h1>
+          <p>Cool statistics about your league history</p>
+          <ul className="px-4 list-disc">
+            <li>League Winners</li>
+            <li>2nd, 3rd, and last place finishes</li>
+            <li>Playoff Appearances</li>
+            <li>All time record - Regular season & Postseason</li>
+          </ul>
+        </div>
+        <div className="flex flex-col w-full text-gray-300 pt-20">
+          <h1 className="text-xl font-semibold text-blue-400 pb-4">
+            <a href="/h2h">H2H Report</a>
+          </h1>
+          <p>All time H2H record against your league mates.</p>
+        </div>
+
+        <div className="flex flex-col w-full text-gray-300 pt-20">
+          <h1 className="text-xl font-semibold text-blue-400 pb-4">
+            <a href="/power-ranking">Power Ranking</a>
+          </h1>
+          <p>
+            Roster value analysis for all teams in your league according to our
+            rankings
+          </p>
+        </div>
+        <div className="flex flex-col w-full text-gray-300 pt-20">
+          <h1 className="text-xl font-semibold text-blue-400 pb-4">
+            <a href="/draft-report">Draft Report</a>
+          </h1>
+          <p>Evaluate your Hit/Miss rate based on your drafted rookies.</p>
+        </div>
+        <div className="flex flex-col w-full text-gray-300 pt-20">
+          <h1 className="text-xl font-semibold text-blue-400 pb-4">
+            <a href="/fa-tracker">Free Agent Tracker</a>
+          </h1>
+          <p>
+            Add a player to the watchlist to see in which leagues he is
+            available in FA.
+          </p>
+        </div>
+        <div className="flex flex-col w-full text-gray-300 pt-20">
+          <h1 className="text-xl font-semibold text-blue-400 pb-4">
+            <a href="/lineup-tracker">Lineup Tracker</a>
+          </h1>
+          <p>Check all your lineups for inactive players.</p>
+        </div>
       </div>
     </>
   );
