@@ -137,3 +137,9 @@ export const getRound = (round: number) => {
       return round + "th";
   }
 };
+
+export const pad = (num: number, size: number): string => {
+  let str = num.toString();
+  while (str.length < size) str = "0" + str;
+  return str;
+};

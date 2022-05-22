@@ -25,6 +25,9 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
   value,
   leagueSetttings,
 }) => {
+  const sortedData = value.sort(
+    (a: RosterValue, b: RosterValue) => b.value.total - a.value.total
+  );
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -55,12 +58,19 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
               (item: RosterValue) => item.roster.teamName === team
             );
 
+
             if (context?.parsed?.y) {
               label.push(position + " value: " + context.parsed.y);
               label.push("");
             }
             if (selectedTeam.length > 0) {
-              selectedTeam[0].roster.players.forEach((current: Player) => {
+              const players = selectedTeam[0].roster.players.sort(
+                (a: Player, b: Player) =>
+                  getPlayerValue(b, leagueSetttings.format) -
+                  getPlayerValue(a, leagueSetttings.format)
+              );
+  
+              players.forEach((current: Player) => {
                 if (current.pos === position) {
                   label.push(
                     current.player +
@@ -117,27 +127,27 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
     datasets: [
       {
         label: "PICKS",
-        data: value.map((item: RosterValue) => item.value.totalPicks),
+        data: sortedData.map((item: RosterValue) => item.value.totalPicks),
         backgroundColor: "orange",
       },
       {
         label: "TE",
-        data: value.map((item: RosterValue) => item.value.totalTE),
+        data: sortedData.map((item: RosterValue) => item.value.totalTE),
         backgroundColor: "yellow",
       },
       {
         label: "WR",
-        data: value.map((item: RosterValue) => item.value.totalWR),
+        data: sortedData.map((item: RosterValue) => item.value.totalWR),
         backgroundColor: "rgb(53, 162, 235)",
       },
       {
         label: "RB",
-        data: value.map((item: RosterValue) => item.value.totalRB),
+        data: sortedData.map((item: RosterValue) => item.value.totalRB),
         backgroundColor: "rgb(75, 192, 192)",
       },
       {
         label: "QB",
-        data: value.map((item: RosterValue) => item.value.totalQB),
+        data: sortedData.map((item: RosterValue) => item.value.totalQB),
         backgroundColor: "rgb(255, 99, 132)",
       },
     ],

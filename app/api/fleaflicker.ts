@@ -10,7 +10,7 @@ import { FaColumns } from "react-icons/fa";
 import { Format } from "~/types/Format";
 import fuzzysort from "fuzzysort";
 import { TotalValue } from "~/types/RosterValue";
-import { getPlayerValue, getRound } from "~/utils/players";
+import { getPlayerValue, getRound, pad } from "~/utils/players";
 import { Player } from "~/types/Player";
 import { Pick } from "~/types/Picks";
 import { getRounds } from "bcryptjs";
@@ -537,14 +537,29 @@ export const getRosterValue = async (
 
     const picks = await getPicks(leagueId, roster.teamId);
 
+    let currentYear = new Date().getFullYear();
     picks.forEach((pick: Pick) => {
+      let pickStr = pick.season + " " + getRound(pick.round);
+      if (pick.season === currentYear) {
+        const round = Math.ceil(pick.overall / 12);
+        const slot = pick.overall % 12 !== 0 ? pick.overall % 12 : 12;
+        pickStr = pick.season + " Pick " + round + "." + pad(slot, 2);
+        console.log(pickStr, pick.overall);
+        
+      }
+
       const pickValue = players.data.filter(
-        (player: Player) =>
-          player.player === pick.season + " " + getRound(pick.round)
+        (player: Player) => player.player === pickStr
       );
+
       if (pickValue && pickValue.length > 0) {
         pick.value = getPlayerValue(pickValue[0], leagueSettings.format);
         value.totalPicks += pick.value;
+        value.total += pick.value;
+      } else {
+        pick.value = 1;
+        value.totalPicks += 1;
+        value.total += 1;
       }
     });
 
