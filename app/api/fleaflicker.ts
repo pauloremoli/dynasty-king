@@ -363,12 +363,12 @@ export const getPlayersId = async () => {
   return csvToJson(await response.text());
 };
 
-export const getRosters = async (leagueId: number) => {
+export const getRosters = async (leagueId: number): Promise<Roster[]> => {
   let year = new Date().getFullYear();
 
   const params = `FetchLeagueRosters?sport=NFL&league_id=${leagueId}&season=${year}`;
   const url = `https://www.fleaflicker.com/api/${params}`;
-  return await fetch(url).then(async (response) => {
+  return await fetch(url).then(async (response): Promise<Roster[]> => {
     const data = await response.json();
     const rosters: Roster[] = [];
     data.rosters.forEach((roster: any) => {
@@ -384,6 +384,7 @@ export const getRosters = async (leagueId: number) => {
         teamId: roster.team.id,
         teamName: roster.team.name,
         players,
+        picks: [],
       });
     });
 
@@ -486,15 +487,17 @@ export const getPicks = async (
   return picks;
 };
 
-export const getRosterValue = async (
+export const getRostersValues = async (
   leagueId: number
 ): Promise<RosterValue[]> => {
   const leagueSettings = await getLeagueSettings(leagueId);
 
-  const rosters = await getRosters(leagueId);
+  let rosters = await getRosters(leagueId);
+  console.log("Total Rosters: ", rosters.length);
+
   const players = await getPlayers();
 
-  const data: Roster[] = rosters.map((roster: Roster) => {
+  rosters = rosters.map((roster: Roster) => {
     return {
       ...roster,
       players: roster.players.map((playerInRoster: Player) =>
@@ -503,77 +506,93 @@ export const getRosterValue = async (
     };
   });
 
-  const result: RosterValue[] = [];
-  data.forEach(async (roster: Roster) => {
-    const value: TotalValue = {
-      total: 0,
-      totalQB: 0,
-      totalRB: 0,
-      totalWR: 0,
-      totalTE: 0,
-      totalPicks: 0,
-    };
-
-    roster?.players?.forEach((currentValue: Player) => {
-      const playerValue = getPlayerValue(currentValue, leagueSettings.format);
-      switch (currentValue.pos) {
-        case "QB":
-          value.totalQB += playerValue;
-          break;
-        case "RB":
-          value.totalRB += playerValue;
-          break;
-        case "WR":
-          value.totalWR += playerValue;
-          break;
-        case "TE":
-          value.totalTE += playerValue;
-          break;
-        default:
-          break;
-      }
-      value.total += playerValue;
-    });
-
-    const picks = await getPicks(leagueId, roster.teamId);
-
-    let currentYear = new Date().getFullYear();
-    picks.forEach((pick: Pick) => {
-      let pickStr = pick.season + " " + getRound(pick.round);
-      if (pick.season === currentYear) {
-        const round = Math.ceil(pick.overall / 12);
-        const slot = pick.overall % 12 !== 0 ? pick.overall % 12 : 12;
-        pickStr = pick.season + " Pick " + round + "." + pad(slot, 2);
-        console.log(pickStr, pick.overall);
-        
-      }
-
-      const pickValue = players.data.filter(
-        (player: Player) => player.player === pickStr
-      );
-
-      if (pickValue && pickValue.length > 0) {
-        pick.value = getPlayerValue(pickValue[0], leagueSettings.format);
-        value.totalPicks += pick.value;
-        value.total += pick.value;
-      } else {
-        pick.value = 1;
-        value.totalPicks += 1;
-        value.total += 1;
-      }
-    });
-
-    roster.picks = picks;
-
-    result.push({
-      roster,
-      value,
-    });
-  });
+  const result = await Promise.all(
+    rosters.map(
+      async (roster: Roster) =>
+        await getRosterValue(
+          roster,
+          leagueId,
+          leagueSettings,
+          players.data
+        )
+    )
+  );
 
   result.sort(
     (a: RosterValue, b: RosterValue) => b.value.total - a.value.total
   );
 
   return result;
+};
+
+const getRosterValue = async (
+  roster: Roster,
+  leagueId: number,
+  leagueSettings: LeagueSettings,
+  players: Player[]
+): Promise<RosterValue> => {
+  const value: TotalValue = {
+    total: 0,
+    totalQB: 0,
+    totalRB: 0,
+    totalWR: 0,
+    totalTE: 0,
+    totalPicks: 0,
+  };
+  console.log(roster.teamName, roster?.players.length);
+
+  roster?.players?.forEach((currentValue: Player) => {
+    const playerValue = getPlayerValue(currentValue, leagueSettings.format);
+    switch (currentValue.pos) {
+      case "QB":
+        value.totalQB += playerValue;
+        break;
+      case "RB":
+        value.totalRB += playerValue;
+        break;
+      case "WR":
+        value.totalWR += playerValue;
+        break;
+      case "TE":
+        value.totalTE += playerValue;
+        break;
+      default:
+        break;
+    }
+    value.total += playerValue;
+  });
+
+  const picks = await getPicks(leagueId, roster.teamId);
+
+  let currentYear = new Date().getFullYear();
+  picks.forEach((pick: Pick) => {
+    let pickStr = pick.season + " " + getRound(pick.round);
+    if (pick.season === currentYear) {
+      const round = Math.ceil(pick.overall / 12);
+      const slot = pick.overall % 12 !== 0 ? pick.overall % 12 : 12;
+      pickStr = pick.season + " Pick " + round + "." + pad(slot, 2);
+      console.log(pickStr, pick.overall);
+    }
+
+    const pickValue = players.filter(
+      (player: Player) => player.player === pickStr
+    );
+
+    if (pickValue && pickValue.length > 0) {
+      pick.value = getPlayerValue(pickValue[0], leagueSettings.format);
+      value.totalPicks += pick.value;
+      value.total += pick.value;
+    } else {
+      pick.value = 1;
+      value.totalPicks += 1;
+      value.total += 1;
+    }
+  });
+
+  roster.picks = picks;
+
+  return {
+    roster,
+    value,
+  };
 };

@@ -11,7 +11,7 @@ import {
   useSubmit,
 } from "@remix-run/react";
 import React, { ChangeEventHandler, useState } from "react";
-import { getLeagueSettings, getRosterValue } from "~/api/fleaflicker";
+import { getLeagueSettings, getRostersValues } from "~/api/fleaflicker";
 import ErrorScreen from "~/components/ErrorScreen";
 import PowerRankingChart from "~/components/powerRanking/PowerRankingChart";
 import SelectLeague from "~/components/SelectLeague";
@@ -33,7 +33,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
   const leagueId = teams[0].leagueId;
 
-  const data = await getRosterValue(leagueId);
+  const data = await getRostersValues(leagueId);
   const leagueSettings = await getLeagueSettings(leagueId);
 
   return { teams, data, leagueSettings };
@@ -57,7 +57,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   const { leagueId } = JSON.parse(team);
-  const data = await getRosterValue(parseInt(leagueId));
+  const data = await getRostersValues(parseInt(leagueId));
   const leagueSettings = await getLeagueSettings(leagueId);
   return { data, leagueSettings };
 };
