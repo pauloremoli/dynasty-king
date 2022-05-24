@@ -17,6 +17,9 @@ import PowerRankingChart from "~/components/powerRanking/PowerRankingChart";
 import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
 import { requireUserId } from "~/session.server";
+import { useTransition } from "@remix-run/react";
+import { GridLoader } from "react-spinners";
+import { css } from "@emotion/react";
 
 interface ActionData {
   errors?: {
@@ -64,6 +67,8 @@ export const action: ActionFunction = async ({ request }) => {
 
 const PowerRanking = () => {
   const { teams, data, leagueSettings } = useLoaderData();
+  const transition = useTransition();
+
   const actionData = useActionData();
 
   const [selectedLeagueName, setSelectedLeagueName] = useState(
@@ -80,9 +85,15 @@ const PowerRanking = () => {
     submit(event.currentTarget, { replace: true });
   };
 
+  const override = css`
+    display: block;
+    margin: auto;
+    border-color: white;
+  `;
+
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center md:pt-24 text-white  max-w-5xl p-4">
+      <div className="flex flex-col w-full h-full items-center md:pt-10 text-white  max-w-5xl p-4">
         <h1 className="text-2xl font-bold text-center">{`Power Ranking${
           selectedLeagueName ? " - " + selectedLeagueName : ""
         }`}</h1>
@@ -92,10 +103,22 @@ const PowerRanking = () => {
           </Form>
         </div>
         <div className="flex flex-col text-white font-light pt-12 w-full">
-          <PowerRankingChart
-            value={actionData?.data ?? data}
-            leagueSetttings={actionData?.leagueSettings ?? leagueSettings}
-          />
+          {transition.state === "submitting" ||
+          transition.state === "loading" ? (
+            <div className="flex w-full h-full items-center justify-center">
+              <GridLoader
+                color={"#ffffff"}
+                loading={true}
+                css={override}
+                size={15}
+              />
+            </div>
+          ) : (
+            <PowerRankingChart
+              value={actionData?.data ?? data}
+              leagueSetttings={actionData?.leagueSettings ?? leagueSettings}
+            />
+          )}
         </div>
       </div>
     </>

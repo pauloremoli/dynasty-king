@@ -4,7 +4,14 @@ import {
   LoaderFunction,
   redirect,
 } from "@remix-run/node";
-import { Form, Outlet, useLoaderData, useSubmit } from "@remix-run/react";
+import {
+  Form,
+  Outlet,
+  useActionData,
+  useLoaderData,
+  useSubmit,
+  useTransition,
+} from "@remix-run/react";
 import React, { ChangeEventHandler, useState } from "react";
 import { getLeagueSettings, getStats } from "~/api/fleaflicker";
 import DuckReportComponent from "~/components/duck-report/DuckReportComponent";
@@ -13,6 +20,8 @@ import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
 import { requireUserId } from "~/session.server";
 import styles from "~/styles/customSelect.css";
+import { css } from "@emotion/react";
+import { GridLoader } from "react-spinners";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -35,7 +44,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
   const leagueId = teams[0].leagueId;
 
-  const leagueSettings = await getLeagueSettings(leagueId);  
+  const leagueSettings = await getLeagueSettings(leagueId);
 
   const stats = await getStats(leagueId);
 
@@ -60,7 +69,11 @@ export const action: ActionFunction = async ({ request }) => {
 
   const { leagueId } = JSON.parse(league);
 
-  return redirect("/duck-report/leagueId/" + leagueId);
+  const leagueSettings = await getLeagueSettings(leagueId);
+
+  const stats = await getStats(parseInt(leagueId));
+
+  return { stats, leagueSettings };
 };
 
 const DuckReport = () => {
@@ -69,6 +82,8 @@ const DuckReport = () => {
     teams.length > 0 ? teams[0].leagueName : ""
   );
   const submit = useSubmit();
+  const actionData = useActionData();
+  const transition = useTransition();
 
   const handleSelection = (e: ChangeEventHandler<HTMLSelectElement>) => {
     const league = e.target.value;
@@ -79,6 +94,12 @@ const DuckReport = () => {
   const handleChange = (event: any) => {
     submit(event.currentTarget, { replace: true });
   };
+
+  const override = css`
+    display: block;
+    margin: auto;
+    border-color: white;
+  `;
 
   return (
     <>
@@ -92,10 +113,21 @@ const DuckReport = () => {
           </Form>
         </div>
         <div className="flex flex-col md:pt-12 w-full">
-          {url === "/duck-report" ? (
-            <DuckReportComponent stats={stats} leagueSettings={leagueSettings}/>
+          {transition.state === "submitting" ||
+          transition.state === "loading" ? (
+            <div className="flex w-full h-full items-center justify-center">
+              <GridLoader
+                color={"#ffffff"}
+                loading={true}
+                css={override}
+                size={15}
+              />
+            </div>
           ) : (
-            <Outlet />
+            <DuckReportComponent
+              stats={actionData?.stats ?? stats}
+              leagueSettings={actionData?.leagueSettings ?? leagueSettings}
+            />
           )}
         </div>
       </div>

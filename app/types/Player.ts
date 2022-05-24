@@ -3,7 +3,7 @@ export type Player = {
   pos: string;
   team: string;
   age: string;
-  value_1qb: string;
-  value_2qb: string;
+  value_1qb: number;
+  value_2qb: number;
   fp_id: string;
 };

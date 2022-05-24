@@ -1,11 +1,16 @@
+import { css } from "@emotion/react";
 import {
   ActionFunction,
   json,
-  LoaderFunction,
-  redirect
+  LoaderFunction
 } from "@remix-run/node";
-import { Form, Outlet, useLoaderData, useSubmit } from "@remix-run/react";
+import {
+  Form, useActionData, useLoaderData,
+  useSubmit,
+  useTransition
+} from "@remix-run/react";
 import { ChangeEventHandler, default as React, useState } from "react";
+import { GridLoader } from "react-spinners";
 import { getH2H } from "~/api/fleaflicker";
 import ErrorScreen from "~/components/ErrorScreen";
 import H2HRecord from "~/components/h2h/H2HRecord";
@@ -20,21 +25,19 @@ interface ActionData {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const url = new URL(request.url).pathname;
   const userId = await requireUserId(request);
 
   const teams = await getTeamsByUserId(userId);
   const leagueId = teams[0].leagueId;
 
   const h2h = await getH2H(leagueId, teams[0].teamId);
-  return { teams, h2h, url };
+  return { teams, h2h };
 };
 
 export function ErrorBoundary({ error }: any) {
   console.log(error);
   return <ErrorScreen />;
 }
-
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -50,15 +53,19 @@ export const action: ActionFunction = async ({ request }) => {
 
   const { teamId, leagueId } = JSON.parse(team);
 
-  return redirect("/h2h/leagueId/" + leagueId + "/teamId/" + teamId);
+  const h2h = await getH2H(parseInt(leagueId), parseInt(teamId));
+
+  return { h2h };
 };
 
 const H2H = () => {
-  const { teams, h2h, url } = useLoaderData();
+  const { teams, h2h } = useLoaderData();
   const [selectedLeagueName, setSelectedLeagueName] = useState(
     teams.length > 0 ? teams[0].leagueName : ""
   );
   const submit = useSubmit();
+  const transition = useTransition();
+  const actionData = useActionData();
 
   const handleSelection = (e: ChangeEventHandler<HTMLSelectElement>) => {
     const { leagueName } = JSON.parse(e.target.value);
@@ -68,6 +75,12 @@ const H2H = () => {
   const handleChange = (event: any) => {
     submit(event.currentTarget, { replace: true });
   };
+
+  const override = css`
+    display: block;
+    margin: auto;
+    border-color: white;
+  `;
 
   return (
     <>
@@ -80,7 +93,19 @@ const H2H = () => {
             <SelectLeague teams={teams} handleSelection={handleSelection} />
           </Form>
           <div className="flex flex-col  pt-12 w-full">
-            {url === "/h2h" ? <H2HRecord h2h={h2h} /> : <Outlet />}
+            {transition.state === "submitting" ||
+            transition.state === "loading" ? (
+              <div className="flex w-full h-full items-center justify-center">
+                <GridLoader
+                  color={"#ffffff"}
+                  loading={true}
+                  css={override}
+                  size={15}
+                />
+              </div>
+            ) : (
+              <H2HRecord h2h={actionData?.h2h ?? h2h} />
+            )}
           </div>
         </div>
       </div>

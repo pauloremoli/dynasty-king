@@ -28,7 +28,6 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
   const sortedData = value.sort(
     (a: RosterValue, b: RosterValue) => b.value.total - a.value.total
   );
-  console.log("Sorted data:", sortedData.length);
   
   ChartJS.register(
     CategoryScale,

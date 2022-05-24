@@ -493,7 +493,6 @@ export const getRostersValues = async (
   const leagueSettings = await getLeagueSettings(leagueId);
 
   let rosters = await getRosters(leagueId);
-  console.log("Total Rosters: ", rosters.length);
 
   const players = await getPlayers();
 
@@ -539,7 +538,6 @@ const getRosterValue = async (
     totalTE: 0,
     totalPicks: 0,
   };
-  console.log(roster.teamName, roster?.players.length);
 
   roster?.players?.forEach((currentValue: Player) => {
     const playerValue = getPlayerValue(currentValue, leagueSettings.format);
@@ -571,7 +569,6 @@ const getRosterValue = async (
       const round = Math.ceil(pick.overall / 12);
       const slot = pick.overall % 12 !== 0 ? pick.overall % 12 : 12;
       pickStr = pick.season + " Pick " + round + "." + pad(slot, 2);
-      console.log(pickStr, pick.overall);
     }
 
     const pickValue = players.filter(
