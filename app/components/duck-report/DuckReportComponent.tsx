@@ -14,19 +14,23 @@ const DuckReportComponent: React.FC<DuckReportProps> = ({
   leagueSettings,
 }) => {
   const [charts, setCharts] = useState(true);
+
+  if (!stats || stats.length === 0)
+    return (
+      <div>
+        <p className="text-white text-2xl text-center">No data available</p>
+      </div>
+    );
   return (
     <>
-      {stats.length > 0 ? (
-        <div className="p-4">
-          <YearlyFinish teamStats={stats} leagueSettings={leagueSettings} />
-          <div className="flex flex-col justify-between w-full gap-8">
-            <AllTimeRecordRegularSeason teamStats={stats} charts={charts} />
-            <AllTimeRecordPostseason teamStats={stats} charts={charts} />
-          </div>
+      <div className="p-4">
+        <YearlyFinish teamStats={stats} leagueSettings={leagueSettings} />
+        <div className="flex flex-col justify-between w-full gap-8">
+          <AllTimeRecordRegularSeason teamStats={stats} charts={charts} />
+          <AllTimeRecordPostseason teamStats={stats} charts={charts} />
         </div>
-      ) : (
-        <p className="text-xl">No data to show</p>
-      )}
+      </div>
+      )
     </>
   );
 };

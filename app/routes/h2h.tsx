@@ -84,7 +84,7 @@ const H2H = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center md:pt-24 text-white  max-w-5xl p-4">
+      <div className="flex flex-col w-full h-full items-center md:pt-10 text-white  max-w-5xl p-4">
         <h1 className="text-2xl font-bold text-center">{`H2H${
           selectedLeagueName ? " - " + selectedLeagueName : ""
         }`}</h1>
