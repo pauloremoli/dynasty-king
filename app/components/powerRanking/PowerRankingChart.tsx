@@ -25,10 +25,17 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
   value,
   leagueSetttings,
 }) => {
+  if (!value || value.length === 0)
+    return (
+      <div>
+        <p className="text-white text-2xl text-center">No data available</p>
+      </div>
+    );
+
   const sortedData = value.sort(
     (a: RosterValue, b: RosterValue) => b.value.total - a.value.total
   );
-  
+
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -59,7 +66,6 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
               (item: RosterValue) => item.roster.teamName === team
             );
 
-
             if (context?.parsed?.y) {
               label.push(position + " value: " + context.parsed.y);
               label.push("");
@@ -70,7 +76,7 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
                   getPlayerValue(b, leagueSetttings.format) -
                   getPlayerValue(a, leagueSetttings.format)
               );
-  
+
               players.forEach((current: Player) => {
                 if (current.pos === position) {
                   label.push(

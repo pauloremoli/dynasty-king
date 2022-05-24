@@ -65,7 +65,7 @@ export default function Index() {
           {data ? (
             <Table data={data.data} columns={data.columns} />
           ) : (
-            <h3>No data available</h3>
+            <h3 className="text-center text-2xl text-white">No data available</h3>
           )}
         </div>
       </div>
