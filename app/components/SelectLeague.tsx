@@ -2,7 +2,7 @@ import React, { ChangeEventHandler } from "react";
 import { Team } from "~/types/Team";
 
 interface SelectLeagueProps {
-  handleSelection: (e: ChangeEventHandler<HTMLSelectElement>) => void;
+  handleSelection: ChangeEventHandler<HTMLSelectElement>;
   teams: Team[];
 }
 

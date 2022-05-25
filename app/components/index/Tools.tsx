@@ -12,7 +12,7 @@ import { MdFindInPage } from "react-icons/md";
 
 const Tools = () => {
   return (
-    <div className=" ml-auto mr-auto w-full justify-center">
+    <div className=" ml-auto mr-auto w-full justify-center pt-10">
       <div className="flex flex-col items-center justify-center ">
         <div className="flex md:flex-row flex-col gap-4 p-4 w-full justify-center">
           <Link to="/rankings/format/1QB/position/all">
@@ -91,7 +91,7 @@ const Tools = () => {
                   <ImPower size={40} color="#007ea7" />
                 </div>
                 <p className="pt-4 text-base text-gray-300 text-center">
-                  Team evaluation according to our rankings.
+                  Roster value analysis according to our rankings.
                 </p>
               </div>
             </div>

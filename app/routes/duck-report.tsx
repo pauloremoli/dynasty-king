@@ -34,7 +34,6 @@ interface ActionData {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const url = new URL(request.url).pathname;
 
   const userId = await requireUserId(request);
   const teams = await getTeamsByUserId(userId);
@@ -48,7 +47,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const stats = await getStats(leagueId);
 
-  return { teams, stats, url, leagueSettings };
+  return { teams, stats, leagueSettings };
 };
 
 export function ErrorBoundary({ error }: any) {
@@ -77,7 +76,7 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 const DuckReport = () => {
-  const { teams, stats, url, leagueSettings } = useLoaderData();
+  const { teams, stats, leagueSettings } = useLoaderData();
   const [selectedLeagueName, setSelectedLeagueName] = useState(
     teams.length > 0 ? teams[0].leagueName : ""
   );
