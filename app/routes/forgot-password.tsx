@@ -1,22 +1,27 @@
 import { ActionFunction, json } from "@remix-run/node";
 import { Form, useActionData, useTransition } from "@remix-run/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getUserByEmail } from "~/models/user.server";
 import { validateEmail } from "~/utils/userUtils";
-import emailjs from "@emailjs/browser";
 import { getResetPasswordToken } from "~/models/resetPassword.server";
 import invariant from "tiny-invariant";
+import emailjs from "@emailjs/browser";
 
 interface ActionData {
   errors: {
     email?: string;
   };
-  result?: boolean;
+  username?: string;
+  link?: string;
+  email?: string;
+  serviceId?: string;
+  templateId?: string;
+  userId?: string;
 }
 
 export const action: ActionFunction = async ({ request }) => {
   const url = new URL(request.url).href;
-  
+
   const formData = await request.formData();
   const email = formData.get("email");
 
@@ -40,37 +45,50 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(process.env.TEMPLATE_ID, "TEMPLATE_ID must be set");
   invariant(process.env.USER_ID, "TEMPLATE_ID must be set");
 
-  const serviceId: string = process.env.SERVICE_ID;
-  const templateId: string = process.env.TEMPLATE_ID;
-  const userId: string = process.env.USER_ID;
-
   const link = url + "/" + token;
 
-  console.log(link);
-  
-
-  emailjs
-    .send(
-      serviceId,
-      templateId,
-      { email, username: user.username, link },
-      userId
-    )
-    .then(
-      (result) => {},
-      (error) => {
-        console.log(error);
-        return { result: false };
-      }
-    );
-
-  return { result: true };
+  return {
+    username: user.username,
+    link,
+    email,
+    serviceId: process.env.SERVICE_ID,
+    templateId: process.env.TEMPLATE_ID,
+    userId: process.env.USER_ID,
+  };
 };
 
 const ForgotPassword = () => {
   const actionData = useActionData() as ActionData;
   const emailRef = React.useRef<HTMLInputElement>(null);
   const transition = useTransition();
+  const [emailSent, setEmailSent] = useState(false);
+
+  useEffect(() => {
+    async function fetchData(actionData: ActionData) {
+      if (
+        actionData &&
+        actionData.email &&
+        actionData.serviceId &&
+        actionData.templateId &&
+        actionData.link &&
+        actionData.userId
+      ) {
+        await emailjs.send(
+          actionData.serviceId,
+          actionData.templateId,
+          {
+            username: actionData.username,
+            link: actionData.link,
+            email: actionData.email,
+          },
+          actionData.userId
+        );
+      }
+    }
+
+    fetchData(actionData);
+    setEmailSent(true);
+  }, [actionData]);
 
   React.useEffect(() => {
     if (actionData?.errors?.email) {
@@ -112,9 +130,9 @@ const ForgotPassword = () => {
             >
               {transition.state === "submitting" ? "Loading..." : "OK"}
             </button>
-            {actionData?.result && (
+            {emailSent && (
               <div className="pt-1 text-green-400" id="email-error">
-                Email sent with a link to reset your password.
+                An email was sent to you with a link to reset your password.
               </div>
             )}
           </div>
