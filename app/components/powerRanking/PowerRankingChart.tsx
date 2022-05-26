@@ -46,7 +46,6 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
   );
 
   const options = {
-    maintainAspectRatio : false,
     indexAxis: "y" as const,
     plugins: {
       legend: {
