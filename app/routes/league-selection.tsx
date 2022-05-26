@@ -42,7 +42,7 @@ const TeamSelection = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center pt-24 text-white">
+      <div className="flex flex-col w-full h-full items-center pt-24 text-white animate-fadeIn">
         
         <h1 className="text-2xl font-bold text-center pb-10">
           Add League

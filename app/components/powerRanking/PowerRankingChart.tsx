@@ -46,12 +46,14 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
   );
 
   const options = {
+    maintainAspectRatio : false,
+    indexAxis: "y" as const,
     plugins: {
       legend: {
         labels: {
           color: "rgb(240,240,240)",
           font: {
-            size: 12,
+            size: 10,
           },
         },
       },
@@ -133,19 +135,9 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
     labels,
     datasets: [
       {
-        label: "PICKS",
-        data: sortedData.map((item: RosterValue) => item.value.totalPicks),
-        backgroundColor: "orange",
-      },
-      {
-        label: "TE",
-        data: sortedData.map((item: RosterValue) => item.value.totalTE),
-        backgroundColor: "yellow",
-      },
-      {
-        label: "WR",
-        data: sortedData.map((item: RosterValue) => item.value.totalWR),
-        backgroundColor: "rgb(53, 162, 235)",
+        label: "QB",
+        data: sortedData.map((item: RosterValue) => item.value.totalQB),
+        backgroundColor: "rgb(255, 99, 132)",
       },
       {
         label: "RB",
@@ -153,9 +145,19 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
         backgroundColor: "rgb(75, 192, 192)",
       },
       {
-        label: "QB",
-        data: sortedData.map((item: RosterValue) => item.value.totalQB),
-        backgroundColor: "rgb(255, 99, 132)",
+        label: "WR",
+        data: sortedData.map((item: RosterValue) => item.value.totalWR),
+        backgroundColor: "rgb(53, 162, 235)",
+      },
+      {
+        label: "TE",
+        data: sortedData.map((item: RosterValue) => item.value.totalTE),
+        backgroundColor: "yellow",
+      },
+      {
+        label: "PICKS",
+        data: sortedData.map((item: RosterValue) => item.value.totalPicks),
+        backgroundColor: "orange",
       },
     ],
   };

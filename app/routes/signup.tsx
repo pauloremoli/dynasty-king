@@ -109,7 +109,7 @@ export default function SignUp() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col mt-20 justify-center max-w-md w-full">
+    <div className="flex min-h-full flex-col mt-20 justify-center max-w-md w-full animate-fadeIn">
       <div className="mx-auto w-full px-8">
         <h1 className="text-2xl text-center py-4 md:py-12 dark:text-gray-200 text-gray-900 font-semibold">
           Sign Up

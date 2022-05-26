@@ -103,7 +103,7 @@ const ForgotPassword = () => {
     }
   }, [actionData]);
   return (
-    <div className="flex flex-col items-center justify-center text-white w-full max-w-md">
+    <div className="flex flex-col items-center justify-center text-white w-full max-w-md animate-fadeIn">
       <h1 className="text-xl text-white md:pt-10 ">Forgot Password</h1>
       <Form method="post" className="flex justify-center w-full pt-16">
         <fieldset

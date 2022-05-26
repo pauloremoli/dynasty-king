@@ -74,7 +74,7 @@ const SelectLeague = () => {
   const data = useLoaderData();
   const transition = useTransition();
   return (
-    <div>
+    <div className="animate-fadeIn">
       {!data && (
         <>
           <p className="text-red-400">No leagues found!</p>

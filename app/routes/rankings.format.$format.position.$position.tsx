@@ -52,7 +52,7 @@ export default function Rankings() {
   }, [params]);
 
   return (
-    <div className="w-full flex justify-center bg-slate-900">
+    <div className="w-full flex justify-center bg-slate-900 animate-fadeIn">
       <div className="w-full max-w-5xl text-gray-200 bg-slate-900">
         <h1 className="text-sans text-center p-10 text-xl font-bold">
           {position === Position.ALL

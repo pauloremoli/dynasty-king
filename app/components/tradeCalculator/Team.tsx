@@ -79,7 +79,7 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
           handleDelete={handleDelete}
         />
         {total !== 0 && (
-          <div className="mt-auto flex items-center justify-between text-2xl pt-16">
+          <div className="mt-auto flex items-center justify-between text-xl pt-16">
             <h3 className="font-semibold items-center text-blue-300">
               Total value:{" "}
             </h3>{" "}

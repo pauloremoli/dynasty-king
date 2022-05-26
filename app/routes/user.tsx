@@ -89,7 +89,7 @@ const User = () => {
   }, [actionData]);
 
   return (
-    <div className="flex flex-col text-white max-w-5xl w-full ">
+    <div className="flex flex-col text-white max-w-5xl w-full animate-fadeIn">
       <h1 className="text-xl font-semibold text-center md:pt-10">User</h1>
       <div className="flex flex-col gap-4 font-extralight md:pt-10 w-full">
         <p className="font-semibold">Username:</p>

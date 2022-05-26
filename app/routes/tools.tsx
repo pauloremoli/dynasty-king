@@ -12,7 +12,7 @@ export const meta: MetaFunction = () => {
 const Tools = () => {
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center pt-10 text-white max-w-5xl">
+      <div className="flex flex-col w-full h-full items-center md:pt-10 pt-4 text-white max-w-5xl animate-fadeIn px-4">
         <h1 className="text-2xl font-bold text-center pb-10">Tools</h1>
         <div className="flex flex-col w-full text-gray-300">
           <h1 className="text-xl font-semibold text-blue-400 pb-4">
@@ -43,7 +43,7 @@ const Tools = () => {
             </a>
           </div>
         </div>
-        <div className="flex flex-col w-full text-gray-300 pt-20">
+        <div className="flex flex-col w-full text-gray-300 md:pt-20 pt-8">
           <h1 className="text-xl font-semibold text-blue-400 pb-4">
             <a href="/trade-calculator/format/1QB">Trade Calculator</a>
           </h1>
@@ -53,7 +53,7 @@ const Tools = () => {
           </p>
         </div>
 
-        <div className="flex flex-col w-full text-gray-300 pt-20">
+        <div className="flex flex-col w-full text-gray-300 md:pt-20 pt-8">
           <h1 className="text-xl font-semibold text-blue-400 pb-4">
             <a href="/duck-report">Duck Report</a>
           </h1>
@@ -65,14 +65,14 @@ const Tools = () => {
             <li>All time record - Regular season & Postseason</li>
           </ul>
         </div>
-        <div className="flex flex-col w-full text-gray-300 pt-20">
+        <div className="flex flex-col w-full text-gray-300 md:pt-20 pt-8">
           <h1 className="text-xl font-semibold text-blue-400 pb-4">
             <a href="/h2h">H2H Report</a>
           </h1>
           <p>All time H2H record against your league mates.</p>
         </div>
 
-        <div className="flex flex-col w-full text-gray-300 pt-20">
+        <div className="flex flex-col w-full text-gray-300 md:pt-20 pt-8">
           <h1 className="text-xl font-semibold text-blue-400 pb-4">
             <a href="/power-ranking">Power Ranking</a>
           </h1>
@@ -81,13 +81,13 @@ const Tools = () => {
             rankings
           </p>
         </div>
-        <div className="flex flex-col w-full text-gray-300 pt-20">
+        <div className="flex flex-col w-full text-gray-300 md:pt-20 pt-8">
           <h1 className="text-xl font-semibold text-blue-400 pb-4">
             <a href="/draft-report">Draft Report</a>
           </h1>
           <p>Evaluate your Hit/Miss rate based on your drafted rookies.</p>
         </div>
-        <div className="flex flex-col w-full text-gray-300 pt-20">
+        <div className="flex flex-col w-full text-gray-300 md:pt-20 pt-8">
           <h1 className="text-xl font-semibold text-blue-400 pb-4">
             <a href="/fa-tracker">Free Agent Tracker</a>
           </h1>
@@ -96,7 +96,7 @@ const Tools = () => {
             available in FA.
           </p>
         </div>
-        <div className="flex flex-col w-full text-gray-300 pt-20">
+        <div className="flex flex-col w-full text-gray-300 md:pt-20 pt-8">
           <h1 className="text-xl font-semibold text-blue-400 pb-4">
             <a href="/lineup-tracker">Lineup Tracker</a>
           </h1>

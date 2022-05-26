@@ -29,6 +29,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
     Legend
   );
   const options = {
+    maintainAspectRatio : false,
     indexAxis: "y" as const,
     elements: {
       bar: {
@@ -58,7 +59,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
     },
     plugins: {
       legend: {
-        position: "right" as const,
+        position: "bottom" as const,
         labels: {
           color: "rgb(240,240,240)",
           font: {

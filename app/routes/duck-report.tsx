@@ -109,7 +109,7 @@ const DuckReport = () => {
 
   return (
     <>
-      <div className="flex flex-col md:max-w-5xl w-full h-full md:w-5xl pt-8 text-white items-center justify-center">
+      <div className="flex flex-col md:max-w-5xl w-full h-full md:w-5xl pt-8 text-white items-center justify-center animate-fadeIn">
         <h1 className="text-2xl font-bold text-center">{`Duck Report${
           selectedLeagueName ? " - " + selectedLeagueName : ""
         }`}</h1>

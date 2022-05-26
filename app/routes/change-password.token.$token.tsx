@@ -147,7 +147,7 @@ export default function ChangePassword() {
   }, [data]);
 
   return (
-    <div className="flex min-h-full flex-col mt-20 justify-center max-w-md w-full  px-2">
+    <div className="flex min-h-full flex-col mt-20 justify-center max-w-md w-full px-2 animate-fadeIn">
       <div className="mx-auto w-full px-8">
         <h1 className="text-2xl text-center py-4 md:py-12 dark:text-gray-200 text-gray-900 font-semibold">
           Change Password
