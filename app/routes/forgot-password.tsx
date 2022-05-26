@@ -20,7 +20,7 @@ interface ActionData {
 }
 
 export const action: ActionFunction = async ({ request }) => {
-  const url = new URL(request.url).href;
+  const url = new URL(request.url).origin;
 
   const formData = await request.formData();
   const email = formData.get("email");
@@ -45,7 +45,7 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(process.env.TEMPLATE_ID, "TEMPLATE_ID must be set");
   invariant(process.env.USER_ID, "TEMPLATE_ID must be set");
 
-  const link = url + "/" + token;
+  const link = url + "/change-password/token/" + token;
 
   return {
     username: user.username,
@@ -83,11 +83,12 @@ const ForgotPassword = () => {
           },
           actionData.userId
         );
+
+        setEmailSent(true);
       }
     }
 
     fetchData(actionData);
-    setEmailSent(true);
   }, [actionData]);
 
   React.useEffect(() => {
@@ -96,15 +97,18 @@ const ForgotPassword = () => {
     }
   }, [actionData]);
   return (
-    <div className="flex flex-col items-center justify-center text-white w-full max-w-5xl">
+    <div className="flex flex-col items-center justify-center text-white w-full max-w-md">
       <h1 className="text-xl text-white md:pt-10 ">Forgot Password</h1>
       <Form method="post" className="flex justify-center w-full pt-16">
-        <fieldset disabled={transition.state === "submitting"}>
+        <fieldset
+          disabled={transition.state === "submitting"}
+          className="w-full  max-w-md"
+        >
           <label htmlFor="email" className="font-semibold">
             Email
           </label>
 
-          <div className="flex flex-col justify-center gap-4">
+          <div className="flex flex-col justify-center gap-4 w-full">
             <div className="w-full mt-1">
               <input
                 ref={emailRef}
@@ -132,7 +136,7 @@ const ForgotPassword = () => {
             </button>
             {emailSent && (
               <div className="pt-1 text-green-400" id="email-error">
-                An email was sent to you with a link to reset your password.
+                Check your inbox, use that link to change your password.
               </div>
             )}
           </div>

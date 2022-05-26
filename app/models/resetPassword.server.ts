@@ -9,7 +9,7 @@ export async function getResetPasswordToken(
 
   const newToken = uuid();
   if (token) {
-    prisma.resetPassword.update({
+    await prisma.resetPassword.update({
       where: {
         email,
       },
@@ -18,7 +18,7 @@ export async function getResetPasswordToken(
       },
     });
   } else {
-    prisma.resetPassword.create({
+    await prisma.resetPassword.create({
       data: {
         email,
         token: newToken,
@@ -28,7 +28,31 @@ export async function getResetPasswordToken(
   return newToken;
 }
 
-
 export async function deleteToken(email: ResetPassword["email"]) {
   return prisma.resetPassword.delete({ where: { email } });
+}
+
+export async function isTokenValid(
+  token: ResetPassword["token"]
+): Promise<boolean> {
+  const resetPassword = await prisma.resetPassword.findUnique({
+    where: { token },
+  });
+
+  console.log(resetPassword);
+
+  return resetPassword ? true : false;
+}
+
+export async function getEmailByToken(
+  token: ResetPassword["token"]
+): Promise<string | undefined> {
+  const resetPassword = await prisma.resetPassword.findUnique({
+    where: { token },
+  });
+
+  console.log(resetPassword);
+  
+
+  return resetPassword?.email;
 }

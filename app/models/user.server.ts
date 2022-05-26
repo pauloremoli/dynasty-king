@@ -17,12 +17,12 @@ export async function getUsers() {
   return prisma.user.findMany();
 }
 
-export async function updatePassword(id: User["id"], newPassword: User["password"])
+export async function updatePassword(email: User["email"], newPassword: User["password"])
 {
   const hashedPassword = await bcrypt.hash(newPassword, 10);
   const updateUser = await prisma.user.update({
     where: {
-      id,
+      email,
     },
     data: {
       password: hashedPassword,

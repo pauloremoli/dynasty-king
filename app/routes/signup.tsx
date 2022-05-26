@@ -88,7 +88,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 export const meta: MetaFunction = () => {
   return {
-    title: "Sign Up",
+    title: "Sign Up - Dynasty King",
   };
 };
 

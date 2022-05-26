@@ -47,9 +47,12 @@ export function ErrorBoundary({ error }) {
       </head>
       <body>
         <Layout>
-          <div>
-            <p className="text-4xl text-center text-white">
-              Oops, something went wrong, try reloading the page =/
+          <div className="h-full flex">
+            <p className="text-2xl text-center text-white">
+              Oops, something went wrong
+            </p>
+            <p className="text-2xl text-center text-white">
+              try reloading the page
             </p>
           </div>
         </Layout>

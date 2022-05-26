@@ -1,5 +1,13 @@
+import { MetaFunction } from "@remix-run/node";
 import React from "react";
-import { ImListNumbered } from "react-icons/im";
+
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Tools - Dynasty King",
+  };
+};
+
 
 const Tools = () => {
   return (

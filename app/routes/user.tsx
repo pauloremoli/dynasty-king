@@ -80,9 +80,9 @@ const User = () => {
     }
   }, [actionData]);
   return (
-    <div className="text-white max-w-5xl w-full flex-start">
+    <div className="flex flex-col text-white max-w-5xl w-full ">
       <h1 className="text-xl font-semibold text-center md:pt-10">User</h1>
-      <div className="flex flex-col gap-4 font-extralight">
+      <div className="flex flex-col gap-4 font-extralight md:pt-10 w-full">
         <p className="font-semibold">Username:</p>
         <p> {user.username}</p>
 
@@ -92,7 +92,7 @@ const User = () => {
 
         <Form
           method="post"
-          className="flex flex-col gap-3 max-w-lg font-light "
+          className="flex flex-col gap-3 max-w-lg font-light"
         >
           <label htmlFor="newPassword">New password</label>
           <input

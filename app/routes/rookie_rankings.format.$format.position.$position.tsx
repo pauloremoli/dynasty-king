@@ -1,3 +1,4 @@
+import { MetaFunction } from "@remix-run/node";
 import { useLoaderData, useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -37,7 +38,13 @@ export const loader = async ({ params }) => {
   return result;
 };
 
-export default function Index() {
+export const meta: MetaFunction = () => {
+  return {
+    title: "Rookie Rankings - Dynasty King",
+  };
+};
+
+export default function RookieRankings() {
   const data = useLoaderData();
   const params = useParams();
   const [format, setFormat] = useState(params.format as Format);

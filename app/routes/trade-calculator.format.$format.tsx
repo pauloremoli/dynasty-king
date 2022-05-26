@@ -1,3 +1,4 @@
+import { MetaFunction } from "@remix-run/node";
 import { useLoaderData, useParams } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
 import { getPlayers } from "~/api/fleaflicker";
@@ -20,6 +21,13 @@ export const loader = async ({ params }) => {
   result.data = filterDataByFormat(result.data, format);
   return result.data;
 };
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Trade Calculator - Dynasty King",
+  };
+};
+
 
 const TradeCalculator = () => {
   const params = useParams();

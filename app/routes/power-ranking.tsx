@@ -2,6 +2,7 @@ import {
   ActionFunction,
   json,
   LoaderFunction,
+  MetaFunction,
   redirect,
 } from "@remix-run/node";
 import {
@@ -64,6 +65,13 @@ export const action: ActionFunction = async ({ request }) => {
   const leagueSettings = await getLeagueSettings(leagueId);
   return { data, leagueSettings };
 };
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Power Ranking - Dynasty King",
+  };
+};
+
 
 const PowerRanking = () => {
   const { teams, data, leagueSettings } = useLoaderData();
