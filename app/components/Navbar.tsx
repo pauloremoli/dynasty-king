@@ -181,6 +181,40 @@ function Nav() {
                 >
                   About
                 </a>
+
+                {user ? (
+                  <>
+                    <a
+                      href="/user"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                    >
+                      {user.username}
+                    </a>
+                    <Form action="/logout" method="post">
+                      <button
+                        type="submit"
+                        className="mx-4 text-white bg-slate-500 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-slate-500 dark:hover:bg-slate-700 dark:focus:ring-slate-800"
+                      >
+                        Logout
+                      </button>
+                    </Form>
+                  </>
+                ) : (
+                  <>
+                    <a
+                      href="/login"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                    >
+                      Login
+                    </a>
+                    <a
+                      href="/signup"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                    >
+                      Sign Up
+                    </a>
+                  </>
+                )}
               </div>
             </div>
           )}

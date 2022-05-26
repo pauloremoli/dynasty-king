@@ -30,7 +30,6 @@ const DuckReportComponent: React.FC<DuckReportProps> = ({
           <AllTimeRecordPostseason teamStats={stats} charts={charts} />
         </div>
       </div>
-      )
     </>
   );
 };
