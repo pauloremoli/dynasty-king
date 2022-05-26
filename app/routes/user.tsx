@@ -4,6 +4,7 @@ import React from "react";
 import { updatePassword } from "~/models/user.server";
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils/userUtils";
+import { MetaFunction } from "@remix-run/node";
 
 export const loader: LoaderFunction = async ({ request }) => {
   await requireUserId(request);
@@ -66,6 +67,13 @@ export const action: ActionFunction = async ({ request }) => {
   return json<ActionData>({ result: true });
 };
 
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Profile - Dynasty King",
+  };
+};
+
 const User = () => {
   const user = useUser();
   const actionData = useActionData() as ActionData;
@@ -79,6 +87,7 @@ const User = () => {
       confirmPasswordRef.current?.focus();
     }
   }, [actionData]);
+
   return (
     <div className="flex flex-col text-white max-w-5xl w-full ">
       <h1 className="text-xl font-semibold text-center md:pt-10">User</h1>
@@ -124,7 +133,7 @@ const User = () => {
 
           <button
             type="submit"
-            className="w-full rounded bg-blue-500 my-2 py-2 px-12 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
+            className="w-full rounded bg-blue-500 my-2 py-2 px-12 mt-8 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
           >
             Save
           </button>

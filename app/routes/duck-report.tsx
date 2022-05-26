@@ -2,6 +2,7 @@ import {
   ActionFunction,
   json,
   LoaderFunction,
+  MetaFunction,
   redirect,
 } from "@remix-run/node";
 import {
@@ -54,6 +55,12 @@ export function ErrorBoundary({ error }: any) {
   console.log(error);
   return <ErrorScreen />;
 }
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Duck Report - Dynasty King",
+  };
+};
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();

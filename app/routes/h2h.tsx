@@ -2,7 +2,8 @@ import { css } from "@emotion/react";
 import {
   ActionFunction,
   json,
-  LoaderFunction
+  LoaderFunction,
+  MetaFunction
 } from "@remix-run/node";
 import {
   Form, useActionData, useLoaderData,
@@ -56,6 +57,12 @@ export const action: ActionFunction = async ({ request }) => {
   const h2h = await getH2H(parseInt(leagueId), parseInt(teamId));
 
   return { h2h };
+};
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "H2H Report - Dynasty King",
+  };
 };
 
 const H2H = () => {

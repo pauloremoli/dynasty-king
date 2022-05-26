@@ -1,4 +1,4 @@
-import { ActionFunction, json, redirect } from "@remix-run/node";
+import { ActionFunction, json, MetaFunction, redirect } from "@remix-run/node";
 import { Form, Outlet, useActionData, useTransition } from "@remix-run/react";
 import React from "react";
 import { validateEmail } from "~/utils/userUtils";
@@ -21,6 +21,12 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   return redirect(`/league-selection/email/${email}`);
+};
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "League selection - Dynasty King",
+  };
 };
 
 const TeamSelection = () => {

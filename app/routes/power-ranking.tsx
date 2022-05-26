@@ -72,7 +72,6 @@ export const meta: MetaFunction = () => {
   };
 };
 
-
 const PowerRanking = () => {
   const { teams, data, leagueSettings } = useLoaderData();
   const transition = useTransition();

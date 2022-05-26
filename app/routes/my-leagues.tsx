@@ -5,6 +5,13 @@ import React from "react";
 import { deleteTeamById, getTeamsByUserId } from "~/models/team.server";
 import { getUserId } from "~/session.server";
 
+import { MetaFunction } from "@remix-run/node";
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "My leagues - Dynasty King",
+  };
+};
 export const loader: LoaderFunction = async ({ request }) => {
   const userId = await getUserId(request);
   if (!userId) {

@@ -1,6 +1,12 @@
+import { MetaFunction } from "@remix-run/node";
 import Hero from "~/components/index/Hero";
 import Tools from "~/components/index/Tools";
 
+export const meta: MetaFunction = () => {
+  return {
+    title: "Dynasty King",
+  };
+};
 
 const Index = () => {
   return (

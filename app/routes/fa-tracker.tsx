@@ -1,4 +1,11 @@
+import { MetaFunction } from "@remix-run/node";
 import React from "react";
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Free Agente Tracker - Dynasty King",
+  };
+};
 
 const FATracker = () => {
   return (

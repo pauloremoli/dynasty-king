@@ -1,7 +1,13 @@
+import { MetaFunction } from "@remix-run/node";
 import React from "react";
-import Navbar from "~/components/Navbar";
 
-const RookieReport = () => {
+export const meta: MetaFunction = () => {
+  return {
+    title: "Draft Report - Dynasty King",
+  };
+};
+
+const DraftReport = () => {
   return (
     <>
       <div className="flex flex-col w-full h-full items-center pt-24 text-white">
@@ -13,4 +19,4 @@ const RookieReport = () => {
   );
 };
 
-export default RookieReport;
+export default DraftReport;

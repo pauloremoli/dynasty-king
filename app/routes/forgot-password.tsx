@@ -1,4 +1,4 @@
-import { ActionFunction, json } from "@remix-run/node";
+import { ActionFunction, json, MetaFunction } from "@remix-run/node";
 import { Form, useActionData, useTransition } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
 import { getUserByEmail } from "~/models/user.server";
@@ -54,6 +54,12 @@ export const action: ActionFunction = async ({ request }) => {
     serviceId: process.env.SERVICE_ID,
     templateId: process.env.TEMPLATE_ID,
     userId: process.env.USER_ID,
+  };
+};
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Forgot Password - Dynasty King",
   };
 };
 
