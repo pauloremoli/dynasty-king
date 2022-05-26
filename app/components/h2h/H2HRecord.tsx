@@ -18,7 +18,7 @@ const H2HRecord: React.FC<H2HRecordProps> = ({ h2h }) => {
         Object.keys(h2h).map((key: string) => (
           <div
             key={h2h[key].teamName}
-            className="flex p-4 justify-center w-72 rounded-xl flex-col bg-[#003459] gap-1"
+            className="flex p-4 justify-center rounded-xl flex-col bg-[#003459] gap-1 w-full md:w-72"
           >
             <p className="font-semibold text-lg dark:text-blue-300">
               {h2h[key].teamName}
