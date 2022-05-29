@@ -10,7 +10,7 @@ import { FaColumns } from "react-icons/fa";
 import { Format } from "~/types/Format";
 import fuzzysort from "fuzzysort";
 import { TotalValue } from "~/types/RosterValue";
-import { getPlayerValue, getRound, pad } from "~/utils/players";
+import { getPlayerValue, getRound, pad, searchPlayer } from "~/utils/players";
 import { Player } from "~/types/Player";
 import { Pick } from "~/types/Picks";
 import { getRounds } from "bcryptjs";
@@ -406,52 +406,6 @@ export const getPlayers = async () => {
   return { columns, data };
 };
 
-const searchPlayer = (playerInRoster: Player, players: Player[]) => {
-  const result = fuzzysort.go(
-    playerInRoster.player +
-      "/" +
-      playerInRoster.pos +
-      "/" +
-      playerInRoster.team,
-    players,
-    { key: "str", limit: 1 }
-  );
-
-  if (result.total === 1) {
-    return result[0].obj;
-  } else {
-    const result = fuzzysort.go(playerInRoster.player, players, {
-      key: "player",
-      limit: 1,
-    });
-
-    if (result.total > 0) {
-      return result[0].obj;
-    } else {
-      console.log(
-        "NOT FOUND",
-        playerInRoster.player,
-        playerInRoster.pos,
-        playerInRoster.team
-      );
-
-      return {
-        player: playerInRoster.player,
-        pos: playerInRoster.pos,
-        team: playerInRoster.team,
-        age: "NA",
-        draft_year: "NA",
-        ecr_1qb: null,
-        ecr_2qb: null,
-        ecr_pos: null,
-        value_1qb: 1,
-        value_2qb: 1,
-        scrape_date: "NA",
-        fp_id: "NA",
-      };
-    }
-  }
-};
 
 export const getPicks = async (
   leagueId: number,
@@ -499,21 +453,39 @@ export const getRostersValues = async (
   rosters = rosters.map((roster: Roster) => {
     return {
       ...roster,
-      players: roster.players.map((playerInRoster: Player) =>
-        searchPlayer(playerInRoster, players.data)
-      ),
+      players: roster.players.map((playerInRoster: Player) => {
+        const player = searchPlayer(playerInRoster, players.data);
+        if (!player) {
+          console.log(
+            "NOT FOUND",
+            playerInRoster.player,
+            playerInRoster.pos,
+            playerInRoster.team
+          );
+          return {
+            player: playerInRoster.player,
+            pos: playerInRoster.pos,
+            team: playerInRoster.team,
+            age: "NA",
+            draft_year: "NA",
+            ecr_1qb: null,
+            ecr_2qb: null,
+            ecr_pos: null,
+            value_1qb: 1,
+            value_2qb: 1,
+            scrape_date: "NA",
+            fp_id: "NA",
+          };
+        }
+        return player;
+      }),
     };
   });
 
   const result = await Promise.all(
     rosters.map(
       async (roster: Roster) =>
-        await getRosterValue(
-          roster,
-          leagueId,
-          leagueSettings,
-          players.data
-        )
+        await getRosterValue(roster, leagueId, leagueSettings, players.data)
     )
   );
 

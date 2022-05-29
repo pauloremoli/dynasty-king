@@ -29,6 +29,12 @@ model User {
 }
 
 
+model FaWatchlist {
+  userId    String   @id @default(auto()) @map("_id") @db.ObjectId
+  playersId String[]
+}
+
+
 model ResetPassword {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String   @unique

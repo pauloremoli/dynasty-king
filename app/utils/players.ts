@@ -1,3 +1,4 @@
+import fuzzysort from "fuzzysort";
 import { Format } from "~/types/Format";
 import { Player } from "~/types/Player";
 import { Position } from "~/types/Position";
@@ -141,4 +142,35 @@ export const pad = (num: number, size: number): string => {
   let str = num.toString();
   while (str.length < size) str = "0" + str;
   return str;
+};
+
+export const searchPlayer = (
+  playerInRoster: Player | undefined,
+  players: Player[]
+): Player | null => {
+  if (!playerInRoster) return null;
+  const result = fuzzysort.go(
+    playerInRoster.player +
+      "/" +
+      playerInRoster.pos +
+      "/" +
+      playerInRoster.team,
+    players,
+    { key: "str", limit: 1 }
+  );
+
+  if (result.total === 1) {
+    return result[0].obj;
+  } else {
+    const result = fuzzysort.go(playerInRoster.player, players, {
+      key: "player",
+      limit: 1,
+    });
+
+    if (result.total > 0) {
+      return result[0].obj;
+    } else {
+      return null;
+    }
+  }
 };

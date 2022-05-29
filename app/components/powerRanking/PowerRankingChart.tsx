@@ -112,7 +112,7 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
         ticks: {
           color: "rgb(240,240,240)",
           font: {
-            size: 12,
+            size: 16,
           },
         },
       },
@@ -121,7 +121,7 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
         ticks: {
           color: "rgb(240,240,240)",
           font: {
-            size: 12,
+            size: 16,
           },
         },
       },

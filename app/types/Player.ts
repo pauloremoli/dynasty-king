@@ -7,3 +7,8 @@ export type Player = {
   value_2qb: number;
   fp_id: string;
 };
+
+export type PlayerTeam = {
+  player: Player;
+  availableInLeague: string[];
+}

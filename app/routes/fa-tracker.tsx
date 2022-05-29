@@ -1,5 +1,37 @@
-import { MetaFunction } from "@remix-run/node";
-import React from "react";
+import { Team } from "@prisma/client";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import React, { useEffect, useState } from "react";
+import SelectSearch, {
+  fuzzySearch,
+  SelectSearchOption,
+} from "react-select-search";
+import { getPlayers, getRosters } from "~/api/fleaflicker";
+import ErrorScreen from "~/components/ErrorScreen";
+import ListPlayers from "~/components/fa-tracker/ListPlayers";
+import { getWatchlist } from "~/models/faWatchlist.server";
+import { getTeamsByUserId } from "~/models/team.server";
+import { requireUserId } from "~/session.server";
+import { Player, PlayerTeam } from "~/types/Player";
+import { Roster } from "~/types/Roster";
+import styles from "~/styles/customSelect.css";
+import { searchPlayer } from "~/utils/players";
+
+type LeagueRosters = {
+  leagueName: string;
+  rosters: Roster[];
+};
+
+type LoaderData = {
+  players: Player[];
+  teams: Team[];
+  allLeaguesRosters: LeagueRosters[];
+  faTracker: PlayerTeam[];
+};
+
+export function links() {
+  return [{ rel: "stylesheet", href: styles }];
+}
 
 export const meta: MetaFunction = () => {
   return {
@@ -7,15 +39,125 @@ export const meta: MetaFunction = () => {
   };
 };
 
+export const loader: LoaderFunction = async ({ request }) => {
+  const userId = await requireUserId(request);
+  const teams = await getTeamsByUserId(userId);
+  const players = await getPlayers();
+
+  const watchlist = await getWatchlist(userId);
+  const faTracker: PlayerTeam[] = [];
+  let allLeaguesRosters: LeagueRosters[] = [];
+  await Promise.all(
+    teams.map(async (team: Team) => {
+      const leagueId = team.leagueId;
+      const rosters = await getRosters(leagueId);
+      allLeaguesRosters.push({ leagueName: team.leagueName, rosters });
+      console.log("allLeaguesRosters", allLeaguesRosters.length);
+
+      let found: Boolean = false;
+      const player = players.data.find((player: Player) => player.fp_id);
+      watchlist?.playersId.forEach((playerId: string) => {
+        const playerTeam: PlayerTeam = {
+          player,
+          availableInLeague: [],
+        };
+        rosters.forEach((roster: Roster) => {
+          const playerInRoster = searchPlayer(player, roster.players);
+          if (playerInRoster) {
+            found = true;
+            return;
+          }
+        });
+        if (!found) {
+          playerTeam.availableInLeague.push(team.leagueName);
+          faTracker.push(playerTeam);
+        }
+      });
+      return team;
+    })
+  );
+
+  return { teams, players: players.data, faTracker, allLeaguesRosters };
+};
+
+export function ErrorBoundary({ error }: any) {
+  console.log(error);
+  return <ErrorScreen />;
+}
+
 const FATracker = () => {
+  const data = useLoaderData<LoaderData>();
+  const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  const playersSSO: SelectSearchOption[] = data?.players?.map(
+    (item: Player) => ({
+      name: `${item.player} - ${item.pos} ${item.team}`,
+      value: item.player,
+    })
+  );
+
+  const handleSelection = (e: string) => {
+    if (e) {
+      let player: Player | undefined = data?.players.find(
+        (player: Player) => player.player === e
+      );
+      if (player) {
+        const playerTeam: PlayerTeam = {
+          player,
+          availableInLeague: [],
+        };
+
+        console.log("LOOKING FOR", player.fp_id);
+
+        data?.allLeaguesRosters.forEach((leagueRosters: LeagueRosters) => {
+          let found: Boolean = false;
+          leagueRosters.rosters.forEach((roster: Roster) => {
+            const playerInRoster = searchPlayer(player, roster.players);
+
+            if (playerInRoster) {
+              found = true;
+              return;
+            }
+          });
+          if (!found) {
+            playerTeam.availableInLeague.push(leagueRosters.leagueName);
+          }
+        });
+        data?.faTracker.push(playerTeam);
+
+        setSelectedPlayers([...selectedPlayers, player]);
+      }
+    }
+  };
+
+  const handleDelete = (e) => {
+    setSelectedPlayers((players) =>
+      players.filter((player: Player) => player.player !== e.target.name)
+    );
+  };
+
   return (
-    <>
-      <div className="flex flex-col w-full h-full items-center pt-24 text-white animate-fadeIn">
-        <h1 className="text-4xl font-bold text-center pb-20">FA Tracker</h1>
-        <h2>Work in progress...</h2>
+    <div className="flex flex-col w-full h-full items-center pt-24 max-w-5xl text-white animate-fadeIn">
+      <h1 className="text-2xl font-bold text-center pb-20">FA Tracker</h1>
+      <div className="text-black w-full">
+        <SelectSearch
+          options={playersSSO}
+          multiple={false}
+          search
+          placeholder="Select a player"
+          onChange={handleSelection}
+          filterOptions={(options) => {
+            const filter = fuzzySearch(options);
+            return (q) => filter(q);
+          }}
+        />
       </div>
-      {/* TODO: Implement FA Tracker */}
-    </>
+      <ListPlayers faTracker={data?.faTracker} handleDelete={handleDelete} />
+    </div>
   );
 };
 
