@@ -147,20 +147,20 @@ export const pad = (num: number, size: number): string => {
 export const searchPlayer = (
   playerInRoster: Player | undefined,
   players: Player[]
-): Player | null => {
+): { playerInRoster: Player; player: Player } | null => {
   if (!playerInRoster) return null;
-  const result = fuzzysort.go(
+
+  const str =
     playerInRoster.player +
-      "/" +
-      playerInRoster.pos +
-      "/" +
-      playerInRoster.team,
-    players,
-    { key: "str", limit: 1 }
-  );
+    "/" +
+    playerInRoster.pos +
+    "/" +
+    playerInRoster.team;
+
+  const result = fuzzysort.go(str, players, { key: "str", limit: 1 });
 
   if (result.total === 1) {
-    return result[0].obj;
+    return { playerInRoster, player: result[0].obj };
   } else {
     const result = fuzzysort.go(playerInRoster.player, players, {
       key: "player",
@@ -168,7 +168,7 @@ export const searchPlayer = (
     });
 
     if (result.total > 0) {
-      return result[0].obj;
+      return { playerInRoster, player: result[0].obj };
     } else {
       return null;
     }

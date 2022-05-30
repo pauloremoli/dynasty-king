@@ -41,7 +41,6 @@ interface ActionData {
 
 export const action: ActionFunction = async ({ request, params }) => {
   const { token } = params;
-  console.log(params);
 
   const formData = await request.formData();
   const confirmPassword = formData.get("confirmPassword") as string;

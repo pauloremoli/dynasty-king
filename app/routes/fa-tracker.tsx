@@ -16,9 +16,10 @@ import { Player, PlayerTeam } from "~/types/Player";
 import { Roster } from "~/types/Roster";
 import styles from "~/styles/customSelect.css";
 import { searchPlayer } from "~/utils/players";
+import { League } from "~/types/Team";
 
 type LeagueRosters = {
-  leagueName: string;
+  league: League;
   rosters: Roster[];
 };
 
@@ -51,8 +52,10 @@ export const loader: LoaderFunction = async ({ request }) => {
     teams.map(async (team: Team) => {
       const leagueId = team.leagueId;
       const rosters = await getRosters(leagueId);
-      allLeaguesRosters.push({ leagueName: team.leagueName, rosters });
-      console.log("allLeaguesRosters", allLeaguesRosters.length);
+      allLeaguesRosters.push({
+        league: { id: team.leagueId, name: team.leagueName },
+        rosters,
+      });
 
       let found: Boolean = false;
       const player = players.data.find((player: Player) => player.fp_id);
@@ -62,14 +65,18 @@ export const loader: LoaderFunction = async ({ request }) => {
           availableInLeague: [],
         };
         rosters.forEach((roster: Roster) => {
-          const playerInRoster = searchPlayer(player, roster.players);
-          if (playerInRoster) {
+          const result = searchPlayer(player, roster.players);
+          if (result && result.playerInRoster) {
             found = true;
+            playerTeam.player = result.playerInRoster;
             return;
           }
         });
         if (!found) {
-          playerTeam.availableInLeague.push(team.leagueName);
+          playerTeam.availableInLeague.push({
+            id: team.leagueId,
+            name: team.leagueName,
+          });
           faTracker.push(playerTeam);
         }
       });
@@ -86,23 +93,21 @@ export function ErrorBoundary({ error }: any) {
 }
 
 const FATracker = () => {
-  const data = useLoaderData<LoaderData>();
-  const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
+  let { players, faTracker, allLeaguesRosters } = useLoaderData<LoaderData>();
+  const [selectedPlayers, setSelectedPlayers] = useState(faTracker);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    setSelectedPlayers(faTracker);
+  }, [faTracker]);
 
-  const playersSSO: SelectSearchOption[] = data?.players?.map(
-    (item: Player) => ({
-      name: `${item.player} - ${item.pos} ${item.team}`,
-      value: item.player,
-    })
-  );
+  const playersSSO: SelectSearchOption[] = players?.map((item: Player) => ({
+    name: `${item.player} - ${item.pos} ${item.team}`,
+    value: item.player,
+  }));
 
   const handleSelection = (e: string) => {
     if (e) {
-      let player: Player | undefined = data?.players.find(
+      let player: Player | undefined = players.find(
         (player: Player) => player.player === e
       );
       if (player) {
@@ -111,32 +116,31 @@ const FATracker = () => {
           availableInLeague: [],
         };
 
-        console.log("LOOKING FOR", player.fp_id);
-
-        data?.allLeaguesRosters.forEach((leagueRosters: LeagueRosters) => {
+        allLeaguesRosters.forEach((leagueRosters: LeagueRosters) => {
           let found: Boolean = false;
           leagueRosters.rosters.forEach((roster: Roster) => {
-            const playerInRoster = searchPlayer(player, roster.players);
-
-            if (playerInRoster) {
+            const result = searchPlayer(player, roster.players);
+            if (result && result.playerInRoster) {
               found = true;
+              playerTeam.player = result.playerInRoster;
               return;
             }
           });
           if (!found) {
-            playerTeam.availableInLeague.push(leagueRosters.leagueName);
+            playerTeam.availableInLeague.push(leagueRosters.league);
           }
         });
-        data?.faTracker.push(playerTeam);
 
-        setSelectedPlayers([...selectedPlayers, player]);
+        setSelectedPlayers((players) => [...players, playerTeam]);
       }
     }
   };
 
   const handleDelete = (e) => {
     setSelectedPlayers((players) =>
-      players.filter((player: Player) => player.player !== e.target.name)
+      players.filter(
+        (playerTeam: PlayerTeam) => playerTeam.player.player !== e.target.name
+      )
     );
   };
 
@@ -156,7 +160,7 @@ const FATracker = () => {
           }}
         />
       </div>
-      <ListPlayers faTracker={data?.faTracker} handleDelete={handleDelete} />
+      <ListPlayers faTracker={selectedPlayers} handleDelete={handleDelete} />
     </div>
   );
 };

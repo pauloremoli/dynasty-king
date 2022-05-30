@@ -374,7 +374,7 @@ export const getRosters = async (leagueId: number): Promise<Roster[]> => {
     data.rosters.forEach((roster: any) => {
       if (!roster?.players) return;
       const players: Player[] = roster?.players?.map((player: any) => ({
-        id: player.proPlayer.id,
+        fleaflickerId: player.proPlayer.id,
         player: player.proPlayer.nameFull,
         pos: player.proPlayer.position,
         team: player.proPlayer.proTeam.abbreviation,
@@ -405,7 +405,6 @@ export const getPlayers = async () => {
   }));
   return { columns, data };
 };
-
 
 export const getPicks = async (
   leagueId: number,
@@ -454,14 +453,16 @@ export const getRostersValues = async (
     return {
       ...roster,
       players: roster.players.map((playerInRoster: Player) => {
-        const player = searchPlayer(playerInRoster, players.data);
-        if (!player) {
+        const result = searchPlayer(playerInRoster, players.data);
+
+        if (!result || !result.player) {
           console.log(
             "NOT FOUND",
             playerInRoster.player,
             playerInRoster.pos,
             playerInRoster.team
           );
+
           return {
             player: playerInRoster.player,
             pos: playerInRoster.pos,
@@ -477,7 +478,7 @@ export const getRostersValues = async (
             fp_id: "NA",
           };
         }
-        return player;
+        return result.player;
       }),
     };
   });

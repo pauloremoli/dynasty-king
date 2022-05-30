@@ -39,8 +39,6 @@ export async function isTokenValid(
     where: { token },
   });
 
-  console.log(resetPassword);
-
   return resetPassword ? true : false;
 }
 
@@ -50,9 +48,6 @@ export async function getEmailByToken(
   const resetPassword = await prisma.resetPassword.findUnique({
     where: { token },
   });
-
-  console.log(resetPassword);
-  
 
   return resetPassword?.email;
 }

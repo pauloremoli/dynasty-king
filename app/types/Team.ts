@@ -5,3 +5,8 @@ export type Team = {
     teamName: string,
     logo?: string,
 };
+
+export type League = {
+    id: number;
+    name: string;
+}
