@@ -10,8 +10,6 @@ interface ListPlayersProps {
 }
 
 const ListPlayers = ({ faTracker, handleDelete }: ListPlayersProps) => {
-  console.log(faTracker);
-
   return (
     <div className="w-full pt-10">
       {faTracker.length > 0 && (
@@ -19,7 +17,7 @@ const ListPlayers = ({ faTracker, handleDelete }: ListPlayersProps) => {
           {faTracker.map((playerTeam: PlayerTeam) => (
             <div
               className="flex flex-col text-white pb-8"
-              key={playerTeam.player.fp_id}
+              key={playerTeam.player.player}
             >
               <div className="flex justify-start items-center gap-4">
                 <button
@@ -38,13 +36,19 @@ const ListPlayers = ({ faTracker, handleDelete }: ListPlayersProps) => {
                   {playerTeam.player.pos}
                 </span>
               </div>
-              <div className="text-white pl-4">
+              <div className="flex flex-col text-white pl-4 w-full pt-4">
                 {playerTeam.availableInLeague.length > 0 ? (
                   playerTeam.availableInLeague.map((league: League) => (
-                    <div key={league.id}>
+                    <div
+                      key={league.id}
+                      className="flex pb-4 w-full items-center gap-4"
+                    >
                       <p>{league.name}</p>
                       <a
                         href={`https://www.fleaflicker.com/nfl/leagues/${league.id}/players/add?toAddPlayerId=${playerTeam.player.fleaflickerId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-blue-500 underline"
                       >
                         Add
                       </a>
