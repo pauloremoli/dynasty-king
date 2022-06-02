@@ -45,7 +45,7 @@ const TradeCalculator = () => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center md:min-h-screen  animate-fadeIn">
+    <div className="w-full h-full flex justify-center md:min-h-screen  animate-fadeIn px-4">
       <div className="flex flex-col w-full max-w-5xl dark:text-gray-200 ">
         <h1 className="text-2xl font-semibold tracking-wide text-center pb-8 md:pt-20 pt-8">
           Trade Calculator
