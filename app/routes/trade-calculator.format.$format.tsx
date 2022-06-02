@@ -28,7 +28,6 @@ export const meta: MetaFunction = () => {
   };
 };
 
-
 const TradeCalculator = () => {
   const params = useParams();
   const [format, setFormat] = useState(params.format as Format);
@@ -46,9 +45,9 @@ const TradeCalculator = () => {
   };
 
   return (
-    <>
-      <div className="max-w-7xl flex flex-col h-full w-full items-center md:mb-24 pt-8 md:pt-12 text-white p-4 animate-fadeIn">
-        <h1 className="text-2xl font-semibold tracking-wide text-center pb-8">
+    <div className="w-full h-full flex justify-center md:min-h-screen  animate-fadeIn">
+      <div className="flex flex-col w-full max-w-5xl dark:text-gray-200 ">
+        <h1 className="text-2xl font-semibold tracking-wide text-center pb-8 md:pt-20 pt-8">
           Trade Calculator
         </h1>
 
@@ -68,9 +67,11 @@ const TradeCalculator = () => {
           />
         </div>
 
-        <TradeAnalysis totalValueA={totalValueA} totalValueB={totalValueB} />
+        <div className="flex flex-col md:flex-row max-w-5xl w-full justify-center gap-4 mb-4">
+          <TradeAnalysis totalValueA={totalValueA} totalValueB={totalValueB} />
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

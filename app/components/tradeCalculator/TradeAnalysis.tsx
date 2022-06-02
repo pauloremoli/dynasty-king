@@ -16,9 +16,9 @@ const TradeAnalysis = ({ totalValueA, totalValueB }: TradeAnalysisProps) => {
 
   return (
     <div
-      className={`flex flex-col p-8 shadow-md rounded-xl w-full md:w-96 h-full bg-[#003459]`}
+      className={`flex flex-col justify-center p-8 dark:shadow-md rounded-xl w-full md:w-96 dark:bg-[#003459]`}
     >
-      <div className="flex flex-col">
+      <div className="flex flex-col justify-center">
         <h1 className="text-center pb-2 text-2xl font-semibold ">
           Trade Analysis
         </h1>
@@ -37,7 +37,9 @@ const TradeAnalysis = ({ totalValueA, totalValueB }: TradeAnalysisProps) => {
               <span>in favor of</span>
               <span
                 className={`text-center pl-2 text-3xl ${
-                  totalValueA > totalValueB ? "text-blue-400" : "text-red-400"
+                  totalValueA > totalValueB
+                    ? "dark:text-blue-400"
+                    : "dark:text-red-400"
                 }`}
               >
                 Team {totalValueA > totalValueB ? "A" : "B"}

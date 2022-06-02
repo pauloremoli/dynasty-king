@@ -40,7 +40,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
       x: {
         stacked: true,
         ticks: {
-          color: "rgb(240,240,240)",
+          color: "gray",
           font: {
             size: 16,
           },
@@ -49,7 +49,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
       y: {
         stacked: true,
         ticks: {
-          color: "rgb(240,240,240)",
+          color: "gray",
           font: {
             size: 16,
           },
@@ -60,7 +60,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
       legend: {
         position: "bottom" as const,
         labels: {
-          color: "rgb(240,240,240)",
+          color: "gray",
           font: {
             size: 12,
           },
@@ -79,7 +79,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
         data: teamStats.map((stats: TeamStats) =>
           isPostseason ? stats.postseason.wins : stats.regularSeason.wins
         ),
-        fontColor: "white",
+        fontColor: "gray",
         borderColor: "rgb(75, 192, 192)",
         backgroundColor: "rgba(75, 192, 192, 0.7)",
       },
@@ -88,13 +88,13 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
         data: teamStats.map((stats: TeamStats) =>
           isPostseason ? stats.postseason.ties : stats.regularSeason.ties
         ),
-        fontColor: "white",
+        fontColor: "gray",
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.7)",
       },
       {
         label: "Losses",
-        fontColor: "white",
+        fontColor: "gray",
         data: teamStats.map((stats: TeamStats) =>
           isPostseason ? stats.postseason.losses : stats.regularSeason.losses
         ),
@@ -109,7 +109,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
   }
 
   return (
-    <div className="font-lg text-white w-full">
+    <div className="font-lg dark:text-white w-full">
       <Bar options={options} data={data} />
     </div>
   );

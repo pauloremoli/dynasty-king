@@ -65,7 +65,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   {...column.getHeaderProps()}
                   scope="col"
-                  className="md:py-3 px-2 py-2 text-left text-xs font-medium text-gray-100 uppercase tracking-wider"
+                  className="md:py-3 px-2 py-2 text-left text-xs font-medium dark:text-gray-100 uppercase tracking-wider"
                 >
                   <span className="text-left">{column.render("Header")}</span>
                   <span>

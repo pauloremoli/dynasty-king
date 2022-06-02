@@ -18,7 +18,7 @@ const ListPlayers = ({ faTracker, handleDelete }: ListPlayersProps) => {
             (playerTeam: PlayerTeam) =>
               playerTeam && (
                 <div
-                  className="flex flex-col text-white p-8 bg-[#003459] w-full md:w-96 rounded-lg"
+                  className="flex flex-col dark:text-white p-8 dark:bg-[#003459] w-full md:w-96 rounded-lg"
                   key={playerTeam.player.player}
                 >
                   <div className="flex justify-start items-center gap-4">
@@ -40,7 +40,7 @@ const ListPlayers = ({ faTracker, handleDelete }: ListPlayersProps) => {
                       {playerTeam.player.pos}
                     </span>
                   </div>
-                  <div className="flex flex-col text-white font-extralight pl-4 w-full pt-4">
+                  <div className="flex flex-col dark:text-white font-extralight pl-4 w-full pt-4">
                     {playerTeam.availableInLeague.length > 0 ? (
                       playerTeam.availableInLeague.map((league: League) => (
                         <div

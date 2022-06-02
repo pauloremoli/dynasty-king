@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 const About = () => {
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center pt-24 text-white">
+      <div className="flex flex-col w-full h-full items-center pt-24 dark:text-white">
         <h1 className="text-4xl font-bold text-center pb-20">About</h1>
         <h2>Work in progress...</h2>
       </div>

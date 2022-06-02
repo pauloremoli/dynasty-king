@@ -103,8 +103,8 @@ const ForgotPassword = () => {
     }
   }, [actionData]);
   return (
-    <div className="flex flex-col items-center justify-center text-white w-full max-w-md animate-fadeIn">
-      <h1 className="text-xl text-white md:pt-10 ">Forgot Password</h1>
+    <div className="flex flex-col items-center justify-center dark:text-white w-full max-w-md animate-fadeIn">
+      <h1 className="text-xl dark:text-white md:pt-10 ">Forgot Password</h1>
       <Form method="post" className="flex justify-center w-full pt-16">
         <fieldset
           disabled={transition.state === "submitting"}
@@ -136,7 +136,7 @@ const ForgotPassword = () => {
             </div>
             <button
               type="submit"
-              className="w-full rounded bg-blue-500 my-2 py-2 px-12 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
+              className="w-full rounded bg-blue-500 my-2 py-2 px-12 dark:text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
             >
               {transition.state === "submitting" ? "Loading..." : "OK"}
             </button>

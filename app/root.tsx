@@ -48,10 +48,10 @@ export function ErrorBoundary({ error }) {
       <body>
         <Layout>
           <div className="h-full flex">
-            <p className="text-2xl text-center text-white">
+            <p className="text-2xl text-center dark:text-white">
               Oops, something went wrong
             </p>
-            <p className="text-2xl text-center text-white">
+            <p className="text-2xl text-center dark:text-white">
               try reloading the page
             </p>
           </div>

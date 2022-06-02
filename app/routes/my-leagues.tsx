@@ -44,7 +44,7 @@ const MyLeagues = () => {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen w-full h-full items-center md:pt-12 text-white animate-fadeIn">
+      <div className="flex flex-col min-h-screen w-full h-full items-center md:pt-12 dark:text-white animate-fadeIn">
         <h1 className="font-semibold text-3xl">My Leagues</h1>
         <div className="md:pt-10 flex gap-20">
           <div>
@@ -74,7 +74,7 @@ const MyLeagues = () => {
               type="submit"
               name="formName"
               value="$addleague"
-              className="w-full rounded bg-blue-500 my-2 py-2 px-12 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
+              className="w-full rounded bg-blue-500 my-2 py-2 px-12 dark:text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
             >
               Add League
             </button>

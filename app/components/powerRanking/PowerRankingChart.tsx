@@ -50,7 +50,7 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
     plugins: {
       legend: {
         labels: {
-          color: "rgb(240,240,240)",
+          color: "gray",
           font: {
             size: 10,
           },
@@ -110,7 +110,7 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
       x: {
         stacked: true,
         ticks: {
-          color: "rgb(240,240,240)",
+          color: "gray",
           font: {
             size: 16,
           },
@@ -119,7 +119,7 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
       y: {
         stacked: true,
         ticks: {
-          color: "rgb(240,240,240)",
+          color: "gray",
           font: {
             size: 16,
           },

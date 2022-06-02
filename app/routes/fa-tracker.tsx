@@ -212,7 +212,7 @@ const FATracker = () => {
   `;
 
   return (
-    <div className="flex flex-col w-full h-full items-center pt-10 max-w-5xl px-4 md:px-0 text-white animate-fadeIn">
+    <div className="flex flex-col w-full h-full items-center py-12 max-w-5xl px-4 md:px-0 dark:text-gray-100 animate-fadeIn">
       <h1 className="text-2xl font-bold text-center pb-10 ">
         Free Agent Tracker
       </h1>

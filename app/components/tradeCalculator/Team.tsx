@@ -52,7 +52,7 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
 
   return (
     <>
-      <div className="flex flex-col w-full bg-[#003459] rounded-2xl py-4 px-4 md:py-8 md:px-12">
+      <div className="flex flex-col w-full dark:bg-[#003459] rounded-2xl py-4 px-4 md:py-8 md:px-12">
         <h2
           className={`pb-8 text-2xl font-semibold text-center ${
             team === "A" ? "text-blue-400" : "text-red-400"
@@ -80,7 +80,7 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
         />
         {total !== 0 && (
           <div className="mt-auto flex items-center justify-between text-xl pt-16">
-            <h3 className="font-semibold items-center text-blue-300">
+            <h3 className="font-semibold items-center dark:text-blue-300">
               Total value:{" "}
             </h3>{" "}
             <h3 className=" font-semibold justify-end">{total} </h3>

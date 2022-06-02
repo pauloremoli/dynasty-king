@@ -7,19 +7,18 @@ const Layout: React.FC<{}> = ({ children }: any) => {
   return (
     <>
       <div
-        className={`min-h-screen w-full h-full flex flex-col bg-slate-900 ${
+        className={`min-h-screen w-full h-full flex flex-col dark:bg-slate-900 bg-gray-100 ${
           darkMode && "dark"
         }`}
       >
-        <Navbar />
-        <div className="flex flex-col min-h-screen">
+        <Navbar setDarkMode={setDarkMode} />
+        <div className="flex flex-col min-h-screen dark:bg-[#0A1931] bg-gray-100">
           <div className="flex justify-center h-full w-full mb-auto">
             {children}
           </div>
-
-          <div className="flex justify-center h-full w-full">
-            <Footer />
-          </div>
+        <div className="flex justify-center h-full w-full dark:bg-slate-900 bg-gray-100">
+          <Footer />
+        </div>
         </div>
       </div>
     </>

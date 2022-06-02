@@ -17,7 +17,7 @@ const YearlyFinishItem: React.FC<YearlyFinishItemProps> = ({
 }) => {
   return (
     <div key={stats.name} className="flex flex-col rounded-lg w-full mb-2 ">
-      <div className="flex  text-lg  text-gray-100">
+      <div className="flex  text-lg  dark:text-gray-100">
         <div key={stats.name} className="flex flex-wrap gap-3">
           <div className="flex gap-1">
             <p>{stats.finish!.length}</p>

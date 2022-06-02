@@ -17,7 +17,7 @@ const ListPlayers = ({ players, format, handleDelete }: ListPlayersProps) => {
       {players.length > 0 && (
         <div className="py-4">
           {/* <h3 className="pt-4 font-semibold text-blue-300">Players:</h3> */}
-          <ul className="text-gray-100">
+          <ul className="dark:text-gray-100">
             {players.map((player: Player) => (
               <li key={player.fp_id}>
                 <div className="flex gap-2 py-2 items-center">

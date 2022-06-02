@@ -100,7 +100,7 @@ const PowerRanking = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center md:pt-10 text-white  max-w-5xl p-4 animate-fadeIn">
+      <div className="flex flex-col w-full h-full items-center md:pt-10 dark:text-white  max-w-5xl p-4 animate-fadeIn">
         <h1 className="text-2xl font-bold text-center">{`Power Ranking${
           selectedLeagueName ? " - " + selectedLeagueName : ""
         }`}</h1>
@@ -109,7 +109,7 @@ const PowerRanking = () => {
             <SelectLeague teams={teams} handleSelection={handleSelection} />
           </Form>
         </div>
-        <div className="flex flex-col text-white font-light pt-12 w-full">
+        <div className="flex flex-col dark:text-white font-light pt-12 w-full">
           {transition.state === "submitting" ||
           transition.state === "loading" ? (
             <div className="flex w-full h-full items-center justify-center">

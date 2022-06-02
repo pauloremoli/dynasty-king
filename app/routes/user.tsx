@@ -89,7 +89,7 @@ const User = () => {
   }, [actionData]);
 
   return (
-    <div className="flex flex-col text-white max-w-5xl w-full animate-fadeIn">
+    <div className="flex flex-col dark:text-white max-w-5xl w-full animate-fadeIn">
       <h1 className="text-xl font-semibold text-center md:pt-10">User</h1>
       <div className="flex flex-col gap-4 font-extralight md:pt-10 w-full">
         <p className="font-semibold">Username:</p>
@@ -133,7 +133,7 @@ const User = () => {
 
           <button
             type="submit"
-            className="w-full rounded bg-blue-500 my-2 py-2 px-12 mt-8 text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
+            className="w-full rounded bg-blue-500 my-2 py-2 px-12 mt-8 dark:text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
           >
             Save
           </button>
