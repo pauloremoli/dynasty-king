@@ -3,12 +3,17 @@ import { Transition } from "@headlessui/react";
 import { Form } from "@remix-run/react";
 import { useOptionalUser } from "~/utils/userUtils";
 import { FaCrown } from "react-icons/fa";
+import {
+  MdDarkMode,
+  MdOutlineDarkMode,
+  MdOutlineLightMode,
+} from "react-icons/md";
 
 interface NavProps {
-  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  darkMode: Boolean;
+  toogleDarkMode: () => void;
 }
-
-const Nav : React.FC<NavProps> = ({setDarkMode}) => {
+const Nav: React.FC<NavProps> = ({ darkMode, toogleDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const user = useOptionalUser();
   return (
@@ -95,6 +100,18 @@ const Nav : React.FC<NavProps> = ({setDarkMode}) => {
                         </a>
                       </div>
                     )}
+                    <button
+                      id="theme-toggle"
+                      type="button"
+                      className="ml-8 text-gray-400 hover:text-white rounded-lg text-sm p-2.5"
+                      onClick={toogleDarkMode}
+                    >
+                      {darkMode ? (
+                        <MdOutlineLightMode size={30} />
+                      ) : (
+                        <MdOutlineDarkMode size={30} />
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -185,40 +202,54 @@ const Nav : React.FC<NavProps> = ({setDarkMode}) => {
                 >
                   About
                 </a>
-
-                {user ? (
-                  <>
-                    <a
-                      href="/user"
-                      className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      {user.username}
-                    </a>
-                    <Form action="/logout" method="post">
-                      <button
-                        type="submit"
-                        className="mx-4 text-white dark:bg-slate-500 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0  dark:hover:bg-slate-700 dark:focus:ring-slate-800"
+                <div className="flex">
+                  {user ? (
+                    <>
+                      <a
+                        href="/user"
+                        className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                       >
-                        Logout
-                      </button>
-                    </Form>
-                  </>
-                ) : (
-                  <>
-                    <a
-                      href="/login"
-                      className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      Login
-                    </a>
-                    <a
-                      href="/signup"
-                      className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                    >
-                      Sign Up
-                    </a>
-                  </>
-                )}
+                        {user.username}
+                      </a>
+                      <Form action="/logout" method="post">
+                        <button
+                          type="submit"
+                          className="mx-4 text-white dark:bg-slate-500 bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 text-center mr-3 md:mr-0  dark:hover:bg-slate-700 dark:focus:ring-slate-800"
+                        >
+                          Logout
+                        </button>
+                      </Form>
+                    </>
+                  ) : (
+                    <>
+                      <a
+                        href="/login"
+                        className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                      >
+                        Login
+                      </a>
+                      <a
+                        href="/signup"
+                        className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                      >
+                        Sign Up
+                      </a>
+                    </>
+                  )}
+                </div>
+
+                <button
+                  id="theme-toggle"
+                  type="button"
+                  className="text-gray-400 hover:text-white rounded-lg text-sm p-2.5"
+                  onClick={toogleDarkMode}
+                >
+                  {darkMode ? (
+                    <MdOutlineLightMode size={30} />
+                  ) : (
+                    <MdOutlineDarkMode size={30} />
+                  )}
+                </button>
               </div>
             </div>
           )}
@@ -226,6 +257,6 @@ const Nav : React.FC<NavProps> = ({setDarkMode}) => {
       </nav>
     </div>
   );
-}
+};
 
 export default Nav;
