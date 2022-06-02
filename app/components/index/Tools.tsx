@@ -12,7 +12,7 @@ import { MdFindInPage } from "react-icons/md";
 
 const Tools = () => {
   return (
-    <div className=" ml-auto mr-auto w-full justify-center md:py-20 bg-[#36327a]">
+    <div className=" ml-auto mr-auto w-full justify-center py-8 md:py-20 bg-[#36327a]">
       <p className="text-center text-2xl font-bold text-gray-100 pb-6 ">Tools</p>
       <div className="flex flex-col items-center justify-center ">
         <div className="flex md:flex-row flex-col gap-4 p-4 w-full justify-center">
