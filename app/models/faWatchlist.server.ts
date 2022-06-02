@@ -4,10 +4,12 @@ import { prisma } from "~/db.server";
 export async function getWatchlist(
   userId: FaWatchlist["userId"]
 ): Promise<FaWatchlist | null> {
-  return prisma.faWatchlist.findUnique({ where: { userId } });
+  const watchlsit = await prisma.faWatchlist.findUnique({ where: { userId } });
+  console.log(watchlsit);
+  return watchlsit;
 }
 
-export async function addPlayer(
+export async function createOrUpdatePlayers(
   userId: FaWatchlist["userId"],
   playersId: FaWatchlist["playersId"]
 ) {
