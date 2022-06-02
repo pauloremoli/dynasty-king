@@ -9,7 +9,7 @@
     "start": "cross-env NODE_ENV=production netlify dev",
     "build:css": "npm run generate:css -- --minify",
     "build:remix": "remix build",
-    "build:prisma": "npm i @prisma/client",
+    "build:prisma": "prisma generate",
     "dev": "run-p dev:*",
     "dev:css": "npm run generate:css -- --watch",
     "dev:remix": "cross-env NODE_ENV=development netlify dev",

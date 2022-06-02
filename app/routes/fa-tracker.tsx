@@ -143,7 +143,6 @@ const FATracker = () => {
 
   useEffect(() => {
     setSelectedPlayers(faTracker);
-    console.log(faTracker);
   }, [faTracker]);
 
   const playersSSO: SelectSearchOption[] = players?.map((item: Player) => ({
