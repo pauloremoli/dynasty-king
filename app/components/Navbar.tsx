@@ -41,28 +41,28 @@ const Nav: React.FC<{}> = () => {
                 <div>
                   <a
                     href="/"
-                    className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     Home
                   </a>
 
                   <a
                     href="/tools"
-                    className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     Tools
                   </a>
 
                   <a
                     href="/my-leagues"
-                    className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     My Leagues
                   </a>
 
                   <a
                     href="/about"
-                    className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     About
                   </a>
@@ -74,7 +74,7 @@ const Nav: React.FC<{}> = () => {
                       <h3 className="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0">
                         <a
                           href="/user"
-                          className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                          className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                         >
                           {user.username}
                         </a>
@@ -92,7 +92,7 @@ const Nav: React.FC<{}> = () => {
                     <div className="mt-4 md:flex-row  md:mt-0 ">
                       <a
                         href="/login"
-                        className="mx-4 text-white bg-indigo-400 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#003459] dark:dark:hover:bg-[#003459d0] dark:hover:border-2 dark:hover:border-blue-100"
+                        className="mx-4 text-white bg-indigo-400 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#6c63ff] dark:dark:hover:bg-[#003459d0] dark:hover:border-2 dark:hover:border-blue-100"
                       >
                         Log In
                       </a>
@@ -107,7 +107,7 @@ const Nav: React.FC<{}> = () => {
                   <button
                     id="theme-toggle"
                     type="button"
-                    className="ml-8 text-gray-400 hover:text-white rounded-lg text-sm p-2.5"
+                    className="ml-8 text-gray-100 hover:text-gray-300 rounded-lg text-sm p-2.5"
                     onClick={toggleTheme}
                   >
                     {theme == Theme.LIGHT ? (
@@ -181,28 +181,28 @@ const Nav: React.FC<{}> = () => {
             <div ref={ref} className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               <a
                 href="/"
-                className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 Home
               </a>
 
               <a
                 href="/tools"
-                className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 Tools
               </a>
 
               <a
                 href="/my-leagues"
-                className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 My Leagues
               </a>
 
               <a
                 href="/about"
-                className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 About
               </a>
@@ -211,7 +211,7 @@ const Nav: React.FC<{}> = () => {
                   <>
                     <a
                       href="/user"
-                      className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                      className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                     >
                       {user.username}
                     </a>
@@ -228,13 +228,13 @@ const Nav: React.FC<{}> = () => {
                   <>
                     <a
                       href="/login"
-                      className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                      className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                     >
                       Login
                     </a>
                     <a
                       href="/signup"
-                      className="text-gray-300 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                      className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                     >
                       Sign Up
                     </a>
@@ -245,7 +245,7 @@ const Nav: React.FC<{}> = () => {
               <button
                 id="theme-toggle"
                 type="button"
-                className="ml-8 text-gray-400 hover:text-white rounded-lg text-sm p-2.5"
+                className="ml-8 text-gray-100 hover:text-white rounded-lg text-sm p-2.5"
                 onClick={toggleTheme}
               >
                 {theme == Theme.LIGHT ? (

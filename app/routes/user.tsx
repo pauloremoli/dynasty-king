@@ -133,7 +133,7 @@ const User = () => {
 
           <button
             type="submit"
-            className="w-full rounded bg-blue-500 my-2 py-2 px-12 mt-8 dark:text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
+            className="w-full rounded text-white dark:bg-blue-500 bg-indigo-700 my-2 py-2 px-12 dark:hover:bg-blue-600 dark:focus:bg-blue-400 hover:bg-indigo-600 focus:bg-indigo-400 flex-grow-1"
           >
             Save
           </button>

@@ -27,6 +27,7 @@ import { Player, PlayerTeam } from "~/types/Player";
 import { Roster } from "~/types/Roster";
 import { League } from "~/types/Team";
 import { searchPlayer } from "~/utils/players";
+import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 type LeagueRosters = {
   league: League;
@@ -138,6 +139,7 @@ export function ErrorBoundary({ error }: any) {
 const FATracker = () => {
   const { players, faTracker } = useLoaderData<LoaderData>();
   const [selectedPlayers, setSelectedPlayers] = useState(faTracker);
+  const [theme] = useTheme();
 
   const fetcher = useFetcher();
 
@@ -234,7 +236,7 @@ const FATracker = () => {
       {fetcher.state === "submitting" || fetcher.state === "loading" ? (
         <div className="flex w-full h-full items-center justify-center pt-10">
           <GridLoader
-            color={"#ffffff"}
+            color={theme == Theme.LIGHT ? "black" : "#ffffff"}
             loading={true}
             css={override}
             size={15}

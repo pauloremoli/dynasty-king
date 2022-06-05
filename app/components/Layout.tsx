@@ -10,7 +10,7 @@ const Layout: React.FC<{}> = ({ children }: any) => {
       >
         <Navbar />
         <div className="flex flex-col min-h-screen dark:bg-[#0A1931] bg-gray-100">
-          <div className="flex justify-center h-full w-full">{children}</div>
+          <div className="flex justify-center h-full w-full min-h-screen">{children}</div>
           <div className="flex justify-center h-full w-full dark:bg-slate-900 bg-gray-100">
             <Footer />
           </div>

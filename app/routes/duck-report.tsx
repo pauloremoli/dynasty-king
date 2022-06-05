@@ -23,6 +23,7 @@ import { requireUserId } from "~/session.server";
 import styles from "~/styles/customSelect.css";
 import { css } from "@emotion/react";
 import { GridLoader } from "react-spinners";
+import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -84,6 +85,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 const DuckReport = () => {
   const { teams, stats, leagueSettings } = useLoaderData();
+  const [theme] = useTheme();
   const [selectedLeagueName, setSelectedLeagueName] = useState(
     teams.length > 0 ? teams[0].leagueName : ""
   );
@@ -123,7 +125,7 @@ const DuckReport = () => {
           transition.state === "loading" ? (
             <div className="flex w-full h-full items-center justify-center">
               <GridLoader
-                color={"#ffffff"}
+                color={theme == Theme.LIGHT ? "black" : "#ffffff"}
                 loading={true}
                 css={override}
                 size={15}

@@ -95,7 +95,7 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen h-full flex-col justify-center max-w-md w-full animate-fadeIn">
       <div className="mx-auto w-full px-8">
-        <h1 className="text-2xl text-center py-4 md:py-12 dark:text-gray-100 text-gray-900">
+        <h1 className="text-2xl text-center py-4 dark:text-gray-100 text-gray-900">
           Log In
         </h1>
         <Form method="post" className="space-y-6">
@@ -156,7 +156,7 @@ export default function LoginPage() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full rounded bg-blue-500  py-2 px-4 dark:text-white hover:bg-blue-600 focus:bg-blue-400"
+            className="w-full rounded text-white dark:bg-blue-500 bg-indigo-700 my-2 py-2 px-12 dark:hover:bg-blue-600 dark:focus:bg-blue-400 hover:bg-indigo-600 focus:bg-indigo-400"
           >
             Log in
           </button>

@@ -21,6 +21,7 @@ import { requireUserId } from "~/session.server";
 import { useTransition } from "@remix-run/react";
 import { GridLoader } from "react-spinners";
 import { css } from "@emotion/react";
+import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 interface ActionData {
   errors?: {
@@ -75,7 +76,7 @@ export const meta: MetaFunction = () => {
 const PowerRanking = () => {
   const { teams, data, leagueSettings } = useLoaderData();
   const transition = useTransition();
-
+  const [theme] = useTheme();
   const actionData = useActionData();
 
   const [selectedLeagueName, setSelectedLeagueName] = useState(
@@ -114,7 +115,7 @@ const PowerRanking = () => {
           transition.state === "loading" ? (
             <div className="flex w-full h-full items-center justify-center">
               <GridLoader
-                color={"#ffffff"}
+                color={theme == Theme.LIGHT ? "black" : "#ffffff"}
                 loading={true}
                 css={override}
                 size={15}

@@ -18,6 +18,7 @@ import H2HRecord from "~/components/h2h/H2HRecord";
 import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
 import { requireUserId } from "~/session.server";
+import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 interface ActionData {
   errors?: {
@@ -73,6 +74,7 @@ const H2H = () => {
   const submit = useSubmit();
   const transition = useTransition();
   const actionData = useActionData();
+  const [theme] = useTheme();
 
   const handleSelection = (e: ChangeEventHandler<HTMLSelectElement>) => {
     const { leagueName } = JSON.parse(e.target.value);
@@ -104,7 +106,7 @@ const H2H = () => {
             transition.state === "loading" ? (
               <div className="flex w-full h-full items-center justify-center">
                 <GridLoader
-                  color={"#ffffff"}
+                  color={theme == Theme.LIGHT ? "black" : "#ffffff"}
                   loading={true}
                   css={override}
                   size={15}
