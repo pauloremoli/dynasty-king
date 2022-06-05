@@ -10,9 +10,43 @@ export const meta: MetaFunction = () => {
 const About = () => {
   return (
     <>
-      <div className="flex min-h-screen flex-col w-full h-full items-center pt-20 dark:text-white">
-        <h1 className="text-2xl font-bold text-center pb-20">About</h1>
-        <h2>Work in progress...</h2>
+      <div className="flex min-h-screen flex-col w-full h-full items-center justify-start pt-20 dark:text-white max-w-5xl font-extralight text-left">
+        <h1 className="text-2xl font-bold text-center pb-10">About</h1>
+        <p className="w-full">
+          This project is open source on{" "}
+          <a
+            href="https://github.com/pauloremoli/dynasty-king/issues"
+            className="underline pl-1"
+          >
+            GitHub
+          </a>
+          , feel free to contribute =D
+        </p>
+        <p className="w-full">
+          If you have any ideas for new tools or suggestions on how to improve
+          current tools, please let me know.
+        </p>
+        <p className="font-semibold w-full pt-8">Data</p>
+        <p className=" w-full">
+          Data used for rankings are based on
+          <a
+            href="https://github.com/dynastyprocess/data"
+            className="underline pl-1"
+          >
+            Dynasty Process
+          </a>
+        </p>
+        <p className="font-semibold w-full pt-8 ">Bug reports</p>
+        <p className="w-full">
+          Issues can be reported on{" "}
+          <a
+            href="https://github.com/pauloremoli/dynasty-king/issues"
+            className="underline pl-1"
+          >
+            GitHub Issues
+          </a>
+          .
+        </p>
       </div>
     </>
   );

@@ -23,7 +23,7 @@ const H2HRecord: React.FC<H2HRecordProps> = ({ h2h }) => {
             <p className="font-semibold text-lg dark:text-blue-300">
               {h2h[key].teamName}
             </p>
-            <p className="text-green-200 pl-3">
+            <p className="text-green-600 dark:text-green-200 pl-3">
               {h2h[key].standings.wins + "W"}
             </p>
             {h2h[key].standings.ties && h2h[key].standings.ties !== 0 ? (
@@ -31,7 +31,7 @@ const H2HRecord: React.FC<H2HRecordProps> = ({ h2h }) => {
             ) : (
               ""
             )}
-            <p className="text-red-200 pl-3">
+            <p className="text-red-600 dark:text-red-200 pl-3">
               {h2h[key].standings.losses + "L"}
             </p>
 

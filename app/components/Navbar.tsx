@@ -92,7 +92,7 @@ const Nav: React.FC<{}> = () => {
                     <div className="mt-4 md:flex-row  md:mt-0 ">
                       <a
                         href="/login"
-                        className="mx-4 text-white bg-indigo-400 hover:bg-indigo-500 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#6c63ff] dark:dark:hover:bg-[#003459d0] dark:hover:border-2 dark:hover:border-blue-100"
+                        className="mx-4 text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#6c63ff] dark:dark:hover:bg-indigo-700 dark:hover:border-2 dark:hover:border-blue-100"
                       >
                         Log In
                       </a>
@@ -228,13 +228,13 @@ const Nav: React.FC<{}> = () => {
                   <>
                     <a
                       href="/login"
-                      className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                      className="text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-2.5 text-center mr-3 md:mr-0 dark:bg-[#6c63ff] dark:dark:hover:bg-indigo-700 dark:hover:border-2 dark:hover:border-blue-100"
                     >
                       Login
                     </a>
                     <a
                       href="/signup"
-                      className="text-gray-100 dark:hover:bg-gray-700 hover:bg-indigo-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                      className="bg-white text-indigo-800 hover:bg-indigo-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg px-5 py-2.5 text-center mr-3 md:mr-0"
                     >
                       Sign Up
                     </a>
@@ -245,7 +245,7 @@ const Nav: React.FC<{}> = () => {
               <button
                 id="theme-toggle"
                 type="button"
-                className="ml-8 text-gray-100 hover:text-white rounded-lg text-sm p-2.5"
+                className="md:ml-8 text-gray-100 hover:text-white rounded-lg text-sm p-2.5"
                 onClick={toggleTheme}
               >
                 {theme == Theme.LIGHT ? (
