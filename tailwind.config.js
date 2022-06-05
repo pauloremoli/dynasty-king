@@ -4,7 +4,7 @@ module.exports = {
     extend: {
       // that is animation class
       animation: {
-        fadeIn: "fadeIn 1.5s ease-in-out",
+        fadeIn: "fadeIn 2s ease-in-out",
       },
 
       // that is actual animation
@@ -19,3 +19,4 @@ module.exports = {
   plugins: [require("@tailwindcss/forms")],
   darkMode: "class",
 };
+  

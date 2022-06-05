@@ -12,7 +12,7 @@ const Index = () => {
   return (
     <>
       <div className="flex justify-center h-full w-full ">
-        <div className="flex h-full w-full flex-col animate-fadeIn ">
+        <div className="flex h-full w-full flex-col ">
           <Hero />
           <Tools />
         </div>

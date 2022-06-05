@@ -4,7 +4,7 @@ import { FaCrown } from "react-icons/fa";
 const Hero = () => {
   return (
     <div className="flex flex-col md:flex-row bg-[#36327a] dark:bg-slate-900 h-full w-full md:py-32 px-4 items-center justify-center text-white">
-      <div className="flex flex-col md:flex-row max-w-5xl items-center  h-full ">
+      <div className="flex flex-col md:flex-row max-w-5xl items-center h-full animate-fadeIn ">
         <div className="flex flex-col h-full w-full justify-center  max-w-5xl items-center">
           <div className="flex max-w-5xl mx-auto my-auto flex-col pt-10 md:pt-0 justify-center ">
             <h1 className="text-3xl md:text-6xl font-extrabold tracking-wider dark:text-white md:text-left text-center first-letter:text-[#ffff00] uppercase">
