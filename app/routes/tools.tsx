@@ -47,7 +47,7 @@ const Tools = () => {
             </div>
           </div>
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
-            <h1 className="text-xl font-semibold text-gray-100 pb-4">
+            <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/trade-calculator/format/1QB">Trade Calculator</a>
             </h1>
             <p className="">
@@ -57,7 +57,7 @@ const Tools = () => {
           </div>
 
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
-            <h1 className="text-xl font-semibold text-gray-100 pb-4">
+            <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/duck-report">Duck Report</a>
             </h1>
             <p>Cool statistics about your league history</p>
@@ -69,14 +69,14 @@ const Tools = () => {
             </ul>
           </div>
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
-            <h1 className="text-xl font-semibold text-gray-100 pb-4">
+            <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/h2h">H2H Report</a>
             </h1>
             <p>All time H2H record against your league mates.</p>
           </div>
 
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
-            <h1 className="text-xl font-semibold text-gray-100 pb-4">
+            <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/power-ranking">Power Ranking</a>
             </h1>
             <p>
@@ -85,13 +85,13 @@ const Tools = () => {
             </p>
           </div>
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
-            <h1 className="text-xl font-semibold text-gray-100 pb-4">
+            <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/draft-report">Draft Report</a>
             </h1>
             <p>Evaluate your Hit/Miss rate based on your drafted rookies.</p>
           </div>
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
-            <h1 className="text-xl font-semibold text-gray-100 pb-4">
+            <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/fa-tracker">Free Agent Tracker</a>
             </h1>
             <p>
@@ -100,7 +100,7 @@ const Tools = () => {
             </p>
           </div>
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
-            <h1 className="text-xl font-semibold text-gray-100 pb-4">
+            <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/lineup-tracker">Lineup Tracker</a>
             </h1>
             <p>Check all your lineups for inactive players.</p>

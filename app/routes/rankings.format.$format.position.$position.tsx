@@ -16,7 +16,7 @@ export const loader = async ({ params }) => {
   const { format, position } = params;
 
   const response = await fetch(
-    "https://raw.githubusercontent.com/dynastyprocess/data/master/files/values.csv"
+    "https://raw.githubusercontent.com/dynastyprocess/data/master/files/values-players.csv"
   );
 
   let result = csvToJson(await response.text());

@@ -56,7 +56,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
         {...getTableProps()}
         className="min-w-full divide-y divide-gray-600"
       >
-        <thead className="bg-slate-800">
+        <thead className="dark:bg-slate-800 bg-slate-200">
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {}

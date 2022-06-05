@@ -93,8 +93,8 @@ export default function LoginPage() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full h-full md:mt-20 flex-col justify-center max-w-md w-full animate-fadeIn">
-      <div className="mx-auto w-full  px-8">
+    <div className="flex min-h-screen h-full flex-col justify-center max-w-md w-full animate-fadeIn">
+      <div className="mx-auto w-full px-8">
         <h1 className="text-2xl text-center py-4 md:py-12 dark:text-gray-100 text-gray-900">
           Log In
         </h1>

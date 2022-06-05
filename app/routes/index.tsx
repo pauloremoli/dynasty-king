@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 const Index = () => {
   return (
     <>
-      <div className="flex justify-center h-full w-full dark:bg-slate-900 ">
+      <div className="flex justify-center h-full w-full ">
         <div className="flex h-full w-full flex-col animate-fadeIn ">
           <Hero />
           <Tools />
