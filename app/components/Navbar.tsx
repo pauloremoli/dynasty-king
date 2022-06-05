@@ -245,10 +245,10 @@ const Nav: React.FC<{}> = () => {
               <button
                 id="theme-toggle"
                 type="button"
-                className="text-gray-400 hover:text-white rounded-lg text-sm p-2.5"
-                onClick={toogleDarkMode}
+                className="ml-8 text-gray-400 hover:text-white rounded-lg text-sm p-2.5"
+                onClick={toggleTheme}
               >
-                {darkMode ? (
+                {theme == Theme.LIGHT ? (
                   <MdOutlineLightMode size={30} />
                 ) : (
                   <MdOutlineDarkMode size={30} />

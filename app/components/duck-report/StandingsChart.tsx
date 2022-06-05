@@ -1,16 +1,15 @@
-import React from "react";
-import { TeamStats } from "~/types/TeamStats";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
+  Bar,
+  BarChart,
+  CartesianGrid,
   Legend,
-  DatasetChartOptions,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import { TeamStats } from "~/types/TeamStats";
+import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 interface StandingsChartProps {
   teamStats: TeamStats[];
@@ -20,97 +19,46 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
   teamStats,
   isPostseason,
 }) => {
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-  );
-  const options = {
-    indexAxis: "y" as const,
-    elements: {
-      bar: {
-        borderWidth: 2,
-      },
-    },
-    responsive: true,
-    scales: {
-      x: {
-        stacked: true,
-        ticks: {
-          color: "gray",
-          font: {
-            size: 16,
-          },
-        },
-      },
-      y: {
-        stacked: true,
-        ticks: {
-          color: "gray",
-          font: {
-            size: 16,
-          },
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        position: "bottom" as const,
-        labels: {
-          color: "gray",
-          font: {
-            size: 12,
-          },
-        },
-      },
-    },
-  };
-
-  const labels = teamStats.map((value: TeamStats) => value.name);
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Wins",
-        data: teamStats.map((stats: TeamStats) =>
-          isPostseason ? stats.postseason.wins : stats.regularSeason.wins
-        ),
-        fontColor: "gray",
-        borderColor: "rgb(75, 192, 192)",
-        backgroundColor: "rgba(75, 192, 192, 0.7)",
-      },
-      {
-        label: "Ties",
-        data: teamStats.map((stats: TeamStats) =>
-          isPostseason ? stats.postseason.ties : stats.regularSeason.ties
-        ),
-        fontColor: "gray",
-        borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.7)",
-      },
-      {
-        label: "Losses",
-        fontColor: "gray",
-        data: teamStats.map((stats: TeamStats) =>
-          isPostseason ? stats.postseason.losses : stats.regularSeason.losses
-        ),
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.7)",
-      },
-    ],
-  };
-
-  if (isPostseason) {
-    data.datasets = data.datasets.filter((dataset) => dataset.label !== "Ties");
-  }
+  const data = teamStats.map((stats: TeamStats) => ({
+    teamName: stats.name,
+    wins: isPostseason ? stats.postseason.wins : stats.regularSeason.wins,
+    losses: isPostseason ? stats.postseason.losses : stats.regularSeason.losses,
+    ties: isPostseason ? 0 : stats.regularSeason.ties,
+  }));
+  const [theme] = useTheme();
 
   return (
-    <div className="font-lg dark:text-white w-full">
-      <Bar options={options} data={data} />
+    <div style={{ width: "100%", height: data.length <= 12 ? 600 : 800 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          width={800}
+          height={data.length <= 12 ? 600 : 800}
+          data={data}
+          layout="vertical"
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <XAxis
+            type="number"
+            fontSize={16}
+            tick={{ fill: theme == Theme.LIGHT ? "black" : "white" }}
+          />
+          <YAxis
+            type="category"
+            dataKey="teamName"
+            fontSize={16}
+            width={120}
+            tick={{ fill: theme == Theme.LIGHT ? "black" : "white" }}
+          />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip labelStyle={{ color: "black" }} />
+          <Legend />
+          <Bar dataKey="wins" stackId="a" fill="#82ca9d" />
+          {!isPostseason && (
+            <Bar dataKey="ties" stackId="a" fill="rgb(53, 162, 235)" />
+          )}
+          <Bar dataKey="losses" stackId="a" fill="rgb(255, 99, 132)" />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 };

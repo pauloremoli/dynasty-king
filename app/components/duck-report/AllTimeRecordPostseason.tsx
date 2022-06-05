@@ -2,6 +2,7 @@ import React from "react";
 import { TeamStats } from "~/types/TeamStats";
 import Standings from "./Standings";
 import StandingsChart from "./StandingsChart";
+import StandingsChartV from "./StandingsChartV";
 
 const sortByMostWins = (first: TeamStats, second: TeamStats) => {
   if (first.postseason.wins > second.postseason.wins) {

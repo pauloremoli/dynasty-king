@@ -18,7 +18,7 @@ const DuckReportComponent: React.FC<DuckReportProps> = ({
   if (!stats || stats.length === 0)
     return (
       <div>
-        <p className="text-white text-2xl text-center">No data available</p>
+        <p className="dark:text-white text-2xl text-center">No data available</p>
       </div>
     );
   return (
