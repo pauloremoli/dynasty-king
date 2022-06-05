@@ -42,11 +42,8 @@ const TeamSelection = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center pt-24 dark:text-white animate-fadeIn">
-        
-        <h1 className="text-2xl font-bold text-center pb-10">
-          Add League
-        </h1>
+      <div className="flex flex-col min-h-screen w-full h-full items-center pt-24 dark:text-white animate-fadeIn">
+        <h1 className="text-2xl font-bold text-center pb-10">Add League</h1>
 
         <div className="flex flex-col">
           <Form method="post" className="space-y-6">
@@ -77,7 +74,7 @@ const TeamSelection = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full rounded bg-blue-500 my-2 py-2 px-12 dark:text-white hover:bg-blue-600 focus:bg-blue-400 flex-grow-1"
+                  className="w-full rounded text-white dark:bg-blue-500 bg-indigo-700 my-2 py-2 px-12 dark:hover:bg-blue-600 dark:focus:bg-blue-400 hover:bg-indigo-600 focus:bg-indigo-400 dark:text-white  flex-grow-1"
                 >
                   {transition.state === "submitting" ? "Loading..." : "Load"}
                 </button>

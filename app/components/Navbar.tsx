@@ -8,14 +8,19 @@ import {
   MdOutlineDarkMode,
   MdOutlineLightMode,
 } from "react-icons/md";
+import { Theme, useTheme } from "~/utils/ThemeProvider";
 
-interface NavProps {
-  darkMode: Boolean;
-  toogleDarkMode: () => void;
-}
-const Nav: React.FC<NavProps> = ({ darkMode, toogleDarkMode }) => {
+const Nav: React.FC<{}> = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [theme, setTheme] = useTheme();
   const user = useOptionalUser();
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) =>
+      prevTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT
+    );
+  };
+
   return (
     <nav className="flex flex-col md:flex-row w-full dark:bg-slate-900 bg-[#36327a] dark:text-white  items-center">
       <div className="flex flex-col md:flex-row w-full max-w-7xl mx-auto sm:px-6 lg:px-8 items-center px-4">
@@ -103,9 +108,9 @@ const Nav: React.FC<NavProps> = ({ darkMode, toogleDarkMode }) => {
                     id="theme-toggle"
                     type="button"
                     className="ml-8 text-gray-400 hover:text-white rounded-lg text-sm p-2.5"
-                    onClick={toogleDarkMode}
+                    onClick={toggleTheme}
                   >
-                    {darkMode ? (
+                    {theme == Theme.LIGHT ? (
                       <MdOutlineLightMode size={30} />
                     ) : (
                       <MdOutlineDarkMode size={30} />

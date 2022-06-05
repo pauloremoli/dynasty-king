@@ -100,7 +100,7 @@ const PowerRanking = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full h-full items-center md:pt-10 dark:text-white  max-w-5xl p-4 animate-fadeIn">
+      <div className="flex flex-col w-full h-full min-h-screen items-center md:pt-10 dark:text-white  max-w-5xl p-4 animate-fadeIn">
         <h1 className="text-2xl font-bold text-center">{`Power Ranking${
           selectedLeagueName ? " - " + selectedLeagueName : ""
         }`}</h1>
