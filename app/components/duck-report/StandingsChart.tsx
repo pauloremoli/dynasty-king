@@ -35,7 +35,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
           height={data.length <= 12 ? 600 : 800}
           data={data}
           layout="vertical"
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
         >
           <XAxis
             type="number"
@@ -45,8 +45,8 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
           <YAxis
             type="category"
             dataKey="teamName"
-            fontSize={16}
-            width={120}
+            fontSize={14}
+            width={100}
             tick={{ fill: theme == Theme.LIGHT ? "black" : "white" }}
           />
           <CartesianGrid strokeDasharray="3 3" />
