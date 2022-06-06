@@ -1,30 +1,84 @@
 import React from "react";
-import { RosterValue } from "~/types/Roster";
-
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
+  Bar,
+  BarChart,
+  CartesianGrid,
   Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { Player } from "~/types/Player";
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { LeagueSettings } from "~/types/LeagueSettings";
-import { getPlayerValue, getRound } from "~/utils/players";
-import { Pick } from "~/types/Picks";
+import { Player } from "~/types/Player";
+import { Roster, RosterValue } from "~/types/Roster";
+import { TotalValue } from "~/types/RosterValue";
+import { getPlayerValue } from "~/utils/players";
+import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 interface PowerRankingChartProps {
   value: RosterValue[];
   leagueSetttings: LeagueSettings;
 }
 
+interface ChartData extends TotalValue {
+  teamName: string;
+}
+
+interface CustomTooltipProps {
+  active: boolean;
+  payload: any;
+  label: string;
+}
+
+const CustomTooltip: React.FC<CustomTooltipProps> = ({
+  active,
+  payload,
+  label,
+}) => {
+  if (active && payload && payload.length) {
+    return (
+      <div
+        className="flex flex-col dark:bg-slate-900 bg-white dark:text-white p-4 rounded-lg"
+        key={payload[0].payload.teamName}
+      >
+        <p className="font-semibold">{payload[0].payload.teamName}</p>
+        <p>
+          <span className="font-semibold">QBs: </span>{" "}
+          {payload[0].payload.totalQB}
+        </p>
+        <p>
+          <span className="font-semibold">RBs: </span>{" "}
+          {payload[0].payload.totalRB}
+        </p>
+        <p>
+          <span className="font-semibold">WRs: </span>{" "}
+          {payload[0].payload.totalWR}
+        </p>
+        <p>
+          <span className="font-semibold">TEs: </span>{" "}
+          {payload[0].payload.totalTE}
+        </p>
+        <p>
+          <span className="font-semibold">Picks: </span>{" "}
+          {payload[0].payload.totalPicks}
+        </p>
+        <p>
+          <span className="font-semibold ">Total value: </span>{" "}
+          {payload[0].payload.total}
+        </p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
 const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
   value,
   leagueSetttings,
 }) => {
+  const [theme] = useTheme();
   if (!value || value.length === 0)
     return (
       <div>
@@ -36,132 +90,69 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
     (a: RosterValue, b: RosterValue) => b.value.total - a.value.total
   );
 
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
+  const data: ChartData[] = sortedData.map((value: RosterValue) => ({
+    ...value.value,
+    teamName: value.roster.teamName,
+  }));
+
+  return (
+    <div style={{ width: "100%", height: data.length <= 12 ? 600 : 800 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          width={800}
+          height={data.length <= 12 ? 600 : 800}
+          data={data}
+          layout="vertical"
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
+          <XAxis
+            type="number"
+            dataKey="total"
+            fontSize={16}
+            tick={{ fill: theme == Theme.LIGHT ? "black" : "white" }}
+          />
+          <YAxis
+            type="category"
+            dataKey="teamName"
+            fontSize={14}
+            width={70}
+            tick={{ fill: theme == Theme.LIGHT ? "black" : "white" }}
+          />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip
+            labelStyle={{ color: "black" }}
+            content={<CustomTooltip />}
+          />
+          <Legend />
+          <Bar dataKey="totalQB" name="QBs" stackId="a" fill="#82ca9d" />
+          <Bar
+            dataKey="totalRB"
+            name="RBs"
+            stackId="a"
+            fill="rgb(53, 162, 235)"
+          />
+          <Bar
+            dataKey="totalWR"
+            name="WRs"
+            stackId="a"
+            fill="rgb(100, 100, 255)"
+          />
+          <Bar
+            dataKey="totalTE"
+            name="TEs"
+            stackId="a"
+            fill="rgb(50, 0, 255)"
+          />
+          <Bar
+            dataKey="totalPicks"
+            name="Picks"
+            stackId="a"
+            fill="rgb(255, 99, 132)"
+          />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
   );
-
-  const options = {
-    indexAxis: "y" as const,
-    plugins: {
-      legend: {
-        labels: {
-          color: "gray",
-          font: {
-            size: 10,
-          },
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: (context: any) => {
-            let label: string[] = [];
-
-            const team = context?.label;
-            const position = context?.dataset?.label;
-            const selectedTeam = value.filter(
-              (item: RosterValue) => item.roster.teamName === team
-            );
-
-            if (context?.parsed?.y) {
-              label.push(position + " value: " + context.parsed.y);
-              label.push("");
-            }
-            if (selectedTeam.length > 0) {
-              const players = selectedTeam[0].roster.players.sort(
-                (a: Player, b: Player) =>
-                  getPlayerValue(b, leagueSetttings.format) -
-                  getPlayerValue(a, leagueSetttings.format)
-              );
-
-              players.forEach((current: Player) => {
-                if (current.pos === position) {
-                  label.push(
-                    current.player +
-                      " - Value: " +
-                      getPlayerValue(current, leagueSetttings.format)
-                  );
-                }
-              });
-            }
-
-            if ("PICKS" === position) {
-              selectedTeam[0].roster.picks.forEach((pick: Pick) => {
-                label.push(
-                  pick.season +
-                    " " +
-                    getRound(pick.round) +
-                    " - Value: " +
-                    pick.value
-                );
-              });
-            }
-            return label;
-          },
-        },
-      },
-    },
-    responsive: true,
-    scales: {
-      x: {
-        stacked: true,
-        ticks: {
-          color: "gray",
-          font: {
-            size: 16,
-          },
-        },
-      },
-      y: {
-        stacked: true,
-        ticks: {
-          color: "gray",
-          font: {
-            size: 16,
-          },
-        },
-      },
-    },
-  };
-
-  const labels = sortedData.map((item: RosterValue) => item.roster.teamName);
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "QB",
-        data: sortedData.map((item: RosterValue) => item.value.totalQB),
-        backgroundColor: "rgb(255, 99, 132)",
-      },
-      {
-        label: "RB",
-        data: sortedData.map((item: RosterValue) => item.value.totalRB),
-        backgroundColor: "rgb(75, 192, 192)",
-      },
-      {
-        label: "WR",
-        data: sortedData.map((item: RosterValue) => item.value.totalWR),
-        backgroundColor: "rgb(53, 162, 235)",
-      },
-      {
-        label: "TE",
-        data: sortedData.map((item: RosterValue) => item.value.totalTE),
-        backgroundColor: "yellow",
-      },
-      {
-        label: "PICKS",
-        data: sortedData.map((item: RosterValue) => item.value.totalPicks),
-        backgroundColor: "orange",
-      },
-    ],
-  };
-
-  return <Bar options={options} data={data} />;
 };
 
 export default PowerRankingChart;

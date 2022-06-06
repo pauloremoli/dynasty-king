@@ -84,11 +84,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 
           if (!("owner" in ffPlayer)) {
             player.fleaflickerId = ffPlayer.proPlayer.id;
-            console.log(
-              "player.fleaflickerId",
-              player.fleaflickerId,
-              ffPlayer.proPlayer.nameFull
-            );
             playerTeam.availableInLeague.push({
               id: team.leagueId,
               name: team.leagueName,
@@ -137,8 +132,6 @@ const FATracker = () => {
   const fetcher = useFetcher();
 
   useEffect(() => {
-    console.log(faTracker);
-
     setSelectedPlayers(faTracker);
   }, [faTracker]);
 
