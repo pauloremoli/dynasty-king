@@ -13,7 +13,7 @@ import SelectSearch, {
   SelectSearchOption,
 } from "react-select-search";
 import { GridLoader } from "react-spinners";
-import { getPlayers, getRosters } from "~/api/fleaflicker";
+import { getPlayer, getPlayers, getRosters } from "~/api/fleaflicker";
 import ErrorScreen from "~/components/ErrorScreen";
 import ListPlayers from "~/components/fa-tracker/ListPlayers";
 import {
@@ -68,48 +68,41 @@ export const loader: LoaderFunction = async ({ request }) => {
   let allLeaguesRosters: LeagueRosters[] = [];
 
   await Promise.all(
-    teams.map(async (team: Team) => {
-      const leagueId = team.leagueId;
-      const rosters = await getRosters(leagueId);
-      allLeaguesRosters.push({
-        league: { id: team.leagueId, name: team.leagueName },
-        rosters,
-      });
+    watchlist?.playersId.map(async (playerId: string) => {
+      const player: Player = players.data.find(
+        (player: Player) => player.fp_id == playerId
+      );
 
-      return team;
+      const playerTeam: PlayerTeam = {
+        player,
+        availableInLeague: [],
+      };
+
+      await Promise.all(
+        teams.map(async (team: Team) => {
+          const ffPlayer = await getPlayer(team.leagueId, player);
+
+          if (!("owner" in ffPlayer)) {
+            player.fleaflickerId = ffPlayer.proPlayer.id;
+            console.log(
+              "player.fleaflickerId",
+              player.fleaflickerId,
+              ffPlayer.proPlayer.nameFull
+            );
+            playerTeam.availableInLeague.push({
+              id: team.leagueId,
+              name: team.leagueName,
+            });
+          }
+        })
+      );
+
+      faTracker.push(playerTeam);
+      return playerId;
     })
   );
 
-  watchlist?.playersId.forEach((playerId: string) => {
-    const player = players.data.find(
-      (player: Player) => player.fp_id == playerId
-    );
-
-    const playerTeam: PlayerTeam = {
-      player,
-      availableInLeague: [],
-    };
-
-    allLeaguesRosters.forEach((leagueRosters: LeagueRosters) => {
-      let found: Boolean = false;
-      leagueRosters.rosters.forEach((roster: Roster) => {
-        const result = searchPlayer(player, roster.players);
-        if (result && result.playerInRoster) {
-          found = true;
-          playerTeam.player = result.player;
-          playerTeam.player.fp_id = result.playerInRoster.fp_id;
-          return;
-        }
-      });
-      if (!found) {
-        playerTeam.availableInLeague.push(leagueRosters.league);
-      }
-    });
-
-    faTracker.push(playerTeam);
-  });
-
-  return { userId, teams, players: players.data, faTracker, allLeaguesRosters };
+  return { userId, teams, players: players.data, faTracker };
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -144,6 +137,8 @@ const FATracker = () => {
   const fetcher = useFetcher();
 
   useEffect(() => {
+    console.log(faTracker);
+
     setSelectedPlayers(faTracker);
   }, [faTracker]);
 

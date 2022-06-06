@@ -406,6 +406,19 @@ export const getPlayers = async () => {
   return { columns, data };
 };
 
+export const getPlayer = async (leagueId: number, player: Player) => {
+  const params = `FetchPlayerListing?sport=NFL&league_id=${leagueId}&filter.query=${player.player}&filter.position_eligibility=${player.pos}`;
+  const url = `https://www.fleaflicker.com/api/${params}`;
+  return await fetch(url).then(async (response) => {
+    const data = await response.json();
+
+    if (data?.players && data.players.length > 0) {
+      return data.players[0];
+    }
+    return null;
+  });
+};
+
 export const getPicks = async (
   leagueId: number,
   teamId: number
