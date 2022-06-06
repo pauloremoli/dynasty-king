@@ -103,7 +103,7 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
           height={data.length <= 12 ? 600 : 800}
           data={data}
           layout="vertical"
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
         >
           <XAxis
             type="number"
@@ -115,7 +115,7 @@ const PowerRankingChart: React.FC<PowerRankingChartProps> = ({
             type="category"
             dataKey="teamName"
             fontSize={14}
-            width={70}
+            width={100}
             tick={{ fill: theme == Theme.LIGHT ? "black" : "white" }}
           />
           <CartesianGrid strokeDasharray="3 3" />

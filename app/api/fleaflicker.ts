@@ -21,6 +21,11 @@ interface ActionDataEmail {
   };
 }
 
+type Cell = {
+  player?: any;
+  slot?: { slot: number; overall: number; round: number };
+};
+
 function wasLeagueActive(team: any) {
   return team?.recordOverall.hasOwnProperty("wins");
 }
@@ -373,7 +378,12 @@ export const getRosters = async (leagueId: number): Promise<Roster[]> => {
     const rosters: Roster[] = [];
     data.rosters.forEach((roster: any) => {
       if (!roster?.players) return;
-      const players: Player[] = roster?.players?.map((player: any) => ({
+
+      roster.players = roster?.players.filter(
+        (player: Player) => !(player.pos in ["QB", "RB", "WR", "TE"])
+      );
+
+      let players: Player[] = roster?.players?.map((player: any) => ({
         fleaflickerId: player.proPlayer.id,
         player: player.proPlayer.nameFull,
         pos: player.proPlayer.position,
@@ -419,6 +429,56 @@ export const getPlayer = async (leagueId: number, player: Player) => {
   });
 };
 
+const getCurrentPick = async (
+  leagueId: number
+): Promise<null | { round: number; slot: number; overall: number }> => {
+  const params = `FetchLeagueDraftBoard?sport=NFL&league_id=${leagueId}`;
+  const url = `https://www.fleaflicker.com/api/${params}`;
+  return await fetch(url).then(async (response) => {
+    const data = await response.json();
+
+    if ("isInProgress" in data) {
+      let otc = {
+        round: 1,
+        slot: 1,
+        overall: 1,
+      };
+
+      let found = false;
+      data.rows.forEach(
+        (item: {
+          round: number;
+          cells: [
+            player?: any,
+            slot?: { slot?: number; overall: number; round: number }
+          ];
+        }) => {
+          item.cells.forEach((cell: Cell) => {
+            if ("onTheClock" in cell) {
+              found = true;
+              otc = {
+                round: cell.slot?.round ?? 1,
+                slot: cell.slot?.slot ?? 1,
+                overall: cell.slot?.overall ?? 1,
+              };
+              return;
+            }
+          });
+
+          if (found) {
+            return;
+          }
+        }
+      );
+
+      return otc;
+    }
+
+
+    return null;
+  });
+};
+
 export const getPicks = async (
   leagueId: number,
   teamId: number
@@ -427,6 +487,8 @@ export const getPicks = async (
 
   const filterYear = new Date().getFullYear() + 1;
 
+  const currentPick = await getCurrentPick(leagueId);
+
   const params = `FetchTeamPicks?sport=NFL&league_id=${leagueId}&team_id=${teamId}`;
   const url = `https://www.fleaflicker.com/api/${params}`;
   await fetch(url).then(async (response) => {
@@ -434,7 +496,20 @@ export const getPicks = async (
 
     if (data?.picks) {
       data?.picks.forEach((pick: any) => {
-        if (pick.season <= filterYear)
+        if (pick.season <= filterYear) {
+          if (pick.ownedBy.id !== teamId) {
+            // original pick with different owner
+            return;
+          }
+          if (
+            pick.season == new Date().getFullYear() &&
+            currentPick &&
+            pick.slot.overall < currentPick.overall
+          ) {
+            //draft in progress, picks should be ignored as selected player is already in roster
+            return;
+          }
+
           picks.push({
             originalOwner: pick.originalOwner?.id ?? undefined,
             originalOwnerName: pick.originalOwner?.name ?? undefined,
@@ -446,6 +521,7 @@ export const getPicks = async (
             traded: pick.traded ?? false,
             season: pick.season,
           });
+        }
       });
     }
   });
@@ -547,6 +623,7 @@ const getRosterValue = async (
   });
 
   const picks = await getPicks(leagueId, roster.teamId);
+  console.log(roster.teamName, picks);
 
   let currentYear = new Date().getFullYear();
   picks.forEach((pick: Pick) => {

@@ -12,7 +12,7 @@ const Tools = () => {
     <>
       <div className="flex flex-col w-full h-full items-center md:pt-10 pt-4 dark:bg-[#0A1931] dark:text-gray-100 animate-fadeIn px-4 pb-20">
         <div className="flex flex-col h-full w-full max-w-5xl">
-          <h1 className="text-2xl font-bold text-center pb-10">Tools</h1>
+          <h1 className="text-2xl font-bold text-center pb-10 dark:text-white">Tools</h1>
           <div className="flex flex-col w-full dark:text-gray-300 text-gray-800">
             <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/rankings/format/1QB/position/all">Dynasty Rankings</a>

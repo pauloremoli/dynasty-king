@@ -15,7 +15,7 @@ const Settings: React.FC<SettingsProps> = ({ format }) => {
           <Link
             to={"/trade-calculator/format/1QB"}
             className={`font-semibold hover:text-indigo-700 ${
-              format === Format.FORMAT_1QB ? "dark:text-blue-400" : "dark:text-blue-100"
+              format === Format.FORMAT_1QB ? "dark:text-blue-400 text-indigo-600" : "dark:text-blue-100"
             }`}
           >
             <span>1QB</span>
@@ -26,7 +26,7 @@ const Settings: React.FC<SettingsProps> = ({ format }) => {
           <Link
             to={"/trade-calculator/format/2QB"}
             className={`font-semibold hover:text-indigo-700 dark:hover:text-yellow-300 ${
-              format === Format.FORMAT_2QB ? "dark:text-blue-400" : "dark:text-blue-100"
+              format === Format.FORMAT_2QB ? "dark:text-blue-400 text-indigo-600" : "dark:text-blue-100"
             }`}
           >
             <span>SuperFlex (2QBs)</span>
