@@ -3,7 +3,12 @@ import { PlayerPosition, RosterValue } from "../types/Roster";
 import { json } from "@remix-run/node";
 import { Team } from "~/types/Team";
 import { H2HStats, Standings, TeamStats } from "~/types/TeamStats";
-import { LeagueSettings } from "~/types/LeagueSettings";
+import {
+  LeagueSettings,
+  ScoringCategory,
+  ScoringRule,
+  ScoringRules,
+} from "~/types/LeagueSettings";
 import { Roster } from "~/types/Roster";
 import { ImSteam } from "react-icons/im";
 import { FaColumns } from "react-icons/fa";
@@ -14,6 +19,7 @@ import { getPlayerValue, getRound, pad, searchPlayer } from "~/utils/players";
 import { Player } from "~/types/Player";
 import { Pick } from "~/types/Picks";
 import { getRounds } from "bcryptjs";
+import { Position } from "~/types/Position";
 
 interface ActionDataEmail {
   errors?: {
@@ -80,16 +86,14 @@ export const getScoreBoard = async (leagueId: number, year: number) => {
     });
 };
 
-export const getLeagueSettings = async (
-  leagueId: number
-): Promise<LeagueSettings> => {
+const fetchRules = async (leagueId: number): Promise<LeagueSettings> => {
   const url = `https://www.fleaflicker.com/nfl/leagues/${leagueId}/rules`;
 
   const rules: LeagueSettings = await fetch(url).then(async (response) => {
     const page = await response.text();
 
     // Format
-    let pos = page.search("QB</span>");
+    let pos = page.search("TE</span>");
     let qbCount = parseInt(page.slice(pos - 59, pos - 58));
     let format =
       qbCount > 1 || page.search("QB/RB") !== -1
@@ -115,7 +119,109 @@ export const getLeagueSettings = async (
 
     return { numberOfPlayoffTeams, firstWeek, lastWeek, format };
   });
+
   return rules;
+};
+
+const hasPremiumForTECatch = (rule: {
+  pointsPer?: { value: number };
+  points?: { value: number };
+  applyTo: string[];
+}): boolean => {
+  if (!rule.applyTo.find((item) => item === "TE")) return false;
+
+  return (rule.pointsPer?.value ?? rule?.points?.value ?? 0) > 1;
+};
+
+const fetchScoringRules = async (leagueId: number): Promise<ScoringRules> => {
+  const params = `FetchLeagueRules?sport=NFL&league_id=${leagueId}`;
+  const url = `https://www.fleaflicker.com/api/${params}`;
+
+  let isHalfPPR: boolean = false;
+  let isPPR: boolean = false;
+  let isTEPremium: boolean = false;
+
+  let scoringRules: ScoringRule[] = [];
+
+  await fetch(url).then(async (response) => {
+    const data = await response.json();
+    if (data) {
+      data?.groups.forEach((group: any) => {
+        if (group.label == "Passing") {
+          const passingRules: any[] = group?.scoringRules.filter(
+            (rule: any) => rule.category.nameSingular === "Passing TD"
+          );
+          if (passingRules.length > 0) {
+            const scoringRule: ScoringRule = {
+              category: ScoringCategory.PASSING_TD,
+              points: passingRules[0].points.value,
+              applyTo: passingRules[0].applyTo,
+            };
+            scoringRules?.push(scoringRule);
+          }
+        }
+
+        if (group.label == "Receiving") {
+          const receivingRules: any[] = group?.scoringRules.filter(
+            (rule: any) => rule.category.nameSingular === "Catch"
+          );
+          receivingRules.forEach((rule: any) => {
+            if ((rule?.pointsPer?.value ?? rule?.points?.value ?? 0) >= 1) {
+              isPPR = true;
+            }
+
+            if ((rule?.pointsPer?.value ?? rule?.points?.value ?? 0.) === 0.5) {
+              isHalfPPR = true;
+            }
+
+            isTEPremium = hasPremiumForTECatch(rule);
+
+            const scoringRule: ScoringRule = {
+              category: ScoringCategory.RECEPTION,
+              points: rule.pointsPer?.value ?? rule?.points?.value ?? 0,
+              applyTo: rule.applyTo,
+            };
+            scoringRules?.push(scoringRule);
+          });
+        }
+        if (group.label == "Rushing") {
+          const receivingRules: any[] = group?.scoringRules.filter(
+            (rule: any) => rule.category.nameSingular === "Rushing Attempt"
+          );
+          receivingRules.forEach((rule: any) => {
+            const scoringRule: ScoringRule = {
+              category: ScoringCategory.RUSH_ATTEMPT,
+              points: rule.pointsPer.value,
+              applyTo: rule.applyTo,
+            };
+            scoringRules?.push(scoringRule);
+          });
+        }
+      });
+    }
+    return scoringRules;
+  });
+
+  console.log({
+    isHalfPPR,
+    isPPR,
+    isTEPremium,
+  });
+
+  return {
+    scoringRules,
+    isHalfPPR,
+    isPPR,
+    isTEPremium,
+  };
+};
+
+export const getLeagueSettings = async (
+  leagueId: number
+): Promise<LeagueSettings> => {
+  const leagueSettings = await fetchRules(leagueId);
+  leagueSettings.scoringRules = await fetchScoringRules(leagueId);
+  return leagueSettings;
 };
 
 export const getStats = async (leagueId: number) => {
@@ -474,7 +580,6 @@ const getCurrentPick = async (
       return otc;
     }
 
-
     return null;
   });
 };
@@ -545,13 +650,6 @@ export const getRostersValues = async (
         const result = searchPlayer(playerInRoster, players.data);
 
         if (!result || !result.player) {
-          console.log(
-            "NOT FOUND",
-            playerInRoster.player,
-            playerInRoster.pos,
-            playerInRoster.team
-          );
-
           return {
             player: playerInRoster.player,
             pos: playerInRoster.pos,
@@ -623,7 +721,6 @@ const getRosterValue = async (
   });
 
   const picks = await getPicks(leagueId, roster.teamId);
-  console.log(roster.teamName, picks);
 
   let currentYear = new Date().getFullYear();
   picks.forEach((pick: Pick) => {
