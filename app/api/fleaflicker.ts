@@ -1,25 +1,21 @@
-import { csvToJson } from "./../utils/csvToJson";
-import { PlayerPosition, RosterValue } from "../types/Roster";
 import { json } from "@remix-run/node";
-import { Team } from "~/types/Team";
-import { H2HStats, Standings, TeamStats } from "~/types/TeamStats";
+import { Format } from "~/types/Format";
 import {
   LeagueSettings,
   ScoringCategory,
   ScoringRule,
-  ScoringRules,
+  ScoringRules
 } from "~/types/LeagueSettings";
-import { Roster } from "~/types/Roster";
-import { ImSteam } from "react-icons/im";
-import { FaColumns } from "react-icons/fa";
-import { Format } from "~/types/Format";
-import fuzzysort from "fuzzysort";
-import { TotalValue } from "~/types/RosterValue";
-import { getPlayerValue, getRound, pad, searchPlayer } from "~/utils/players";
-import { Player } from "~/types/Player";
 import { Pick } from "~/types/Picks";
-import { getRounds } from "bcryptjs";
-import { Position } from "~/types/Position";
+import { Player } from "~/types/Player";
+import { Roster } from "~/types/Roster";
+import { TotalValue } from "~/types/RosterValue";
+import { Team } from "~/types/Team";
+import { Standings, TeamStats } from "~/types/TeamStats";
+import { getPlayerValue, getRound, pad, searchPlayer } from "~/utils/players";
+import { RosterValue } from "../types/Roster";
+import { H2HStats } from "./../types/TeamStats";
+import { csvToJson } from "./../utils/csvToJson";
 
 interface ActionDataEmail {
   errors?: {
@@ -170,7 +166,7 @@ const fetchScoringRules = async (leagueId: number): Promise<ScoringRules> => {
               isPPR = true;
             }
 
-            if ((rule?.pointsPer?.value ?? rule?.points?.value ?? 0.) === 0.5) {
+            if ((rule?.pointsPer?.value ?? rule?.points?.value ?? 0) === 0.5) {
               isHalfPPR = true;
             }
 
@@ -281,8 +277,8 @@ const updateStandings = (result: string, standings: Standings): Standings => {
 export const getH2H = async (
   leagueId: number,
   teamId: number
-): Promise<H2HStats> => {
-  let h2h: H2HStats = {};
+): Promise<H2HStats[]> => {
+  let h2h: H2HStats[] = [];
   let year = new Date().getFullYear();
   let hasData = true;
 
@@ -316,33 +312,46 @@ export const getH2H = async (
           hasMoreWeeks = false;
           return;
         }
+
+        if (game.isConsolation) {
+          return;
+        }
+
         if (game.home.id === teamId) {
-          if (h2h.hasOwnProperty(game.away.id)) {
-            let standings: Standings = h2h[game.away.id].standings;
-            h2h[game.away.id].standings = updateStandings(
-              game.homeResult,
-              standings
-            );
+          let stats: H2HStats | undefined = h2h.find(
+            (stats: H2HStats) => stats.teamId === game.away.id
+          );
+          if (stats) {
+            let standings: Standings = stats.standings;
+
+            stats.standings = updateStandings(game.homeResult, standings);
           } else {
-            let standings: Standings = { wins: 0, losses: 0 };
-            h2h[game.away.id] = {
-              standings: updateStandings(game.homeResult, standings),
+            stats = {
+              standings: updateStandings(game.homeResult, {
+                wins: 0,
+                losses: 0,
+              }),
               teamName: game.away.name,
+              teamId: game.away.id,
             };
+            h2h.push(stats);
           }
         } else {
-          if (h2h.hasOwnProperty(game.home.id)) {
-            let standings: Standings = h2h[game.home.id].standings;
-            h2h[game.home.id].standings = updateStandings(
-              game.awayResult,
-              standings
-            );
+          let stats: H2HStats | undefined = h2h.find(
+            (stats: H2HStats) => stats.teamId === game.home.id
+          );
+          if (stats) {
+            stats.standings = updateStandings(game.awayResult, stats.standings);
           } else {
-            let standings: Standings = { wins: 0, losses: 0 };
-            h2h[game.home.id] = {
-              standings: updateStandings(game.awayResult, standings),
+            stats = {
+              standings: updateStandings(game.awayResult, {
+                wins: 0,
+                losses: 0,
+              }),
               teamName: game.home.name,
+              teamId: game.home.id,
             };
+            h2h.push(stats);
           }
         }
       });
@@ -535,7 +544,7 @@ export const getPlayer = async (leagueId: number, player: Player) => {
   });
 };
 
-const getCurrentPick = async (
+export const getPickOnTheClock = async (
   leagueId: number
 ): Promise<null | { round: number; slot: number; overall: number }> => {
   const params = `FetchLeagueDraftBoard?sport=NFL&league_id=${leagueId}`;
@@ -562,6 +571,8 @@ const getCurrentPick = async (
           item.cells.forEach((cell: Cell) => {
             if ("onTheClock" in cell) {
               found = true;
+              console.log("OTC", cell);
+
               otc = {
                 round: cell.slot?.round ?? 1,
                 slot: cell.slot?.slot ?? 1,
@@ -592,7 +603,7 @@ export const getPicks = async (
 
   const filterYear = new Date().getFullYear() + 1;
 
-  const currentPick = await getCurrentPick(leagueId);
+  const currentPick = await getPickOnTheClock(leagueId);
 
   const params = `FetchTeamPicks?sport=NFL&league_id=${leagueId}&team_id=${teamId}`;
   const url = `https://www.fleaflicker.com/api/${params}`;

@@ -14,6 +14,7 @@ import { ChangeEventHandler, default as React, useState } from "react";
 import { GridLoader } from "react-spinners";
 import { getH2H } from "~/api/fleaflicker";
 import ErrorScreen from "~/components/ErrorScreen";
+import H2HChart from "~/components/h2h/H2HChart";
 import H2HRecord from "~/components/h2h/H2HRecord";
 import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
@@ -113,7 +114,7 @@ const H2H = () => {
                 />
               </div>
             ) : (
-              <H2HRecord h2h={actionData?.h2h ?? h2h} />
+              <H2HChart h2h={actionData?.h2h ?? h2h} />
             )}
           </div>
         </div>

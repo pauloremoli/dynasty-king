@@ -28,8 +28,6 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
     setTotalValue(team, sum);
   }, [selectedPlayers, format]);
 
-
-
   const players: SelectSearchOption[] = allPlayers.map((item: Player) => ({
     name: `${item.player} - ${item.pos} ${item.team}`,
     value: item.player,
@@ -37,9 +35,17 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
 
   const handleSelection = (e: string) => {
     if (e) {
-      const player = allPlayers.find((player: Player) => player.player === e);
-      if (player) {
-        setSelectedPlayers([...selectedPlayers, player]);
+      const selectedPlayer = allPlayers.find(
+        (player: Player) => player.player === e
+      );
+      if (selectedPlayer) {
+        if (
+          !selectedPlayers.find(
+            (player: Player) => player.fp_id === selectedPlayer.fp_id
+          )
+        ) {
+          setSelectedPlayers([...selectedPlayers, selectedPlayer]);
+        }
       }
     }
   };

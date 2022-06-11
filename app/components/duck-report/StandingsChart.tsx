@@ -2,6 +2,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  LabelList,
   Legend,
   ResponsiveContainer,
   Tooltip,
@@ -11,10 +12,51 @@ import {
 import { TeamStats } from "~/types/TeamStats";
 import { Theme, useTheme } from "~/utils/ThemeProvider";
 
+interface CustomLabelProps {
+  x: number;
+  y: number;
+  fill: string;
+  width: number;
+  height: number;
+  stroke: string;
+  value: any;
+}
+const CustomLabel: React.FC<CustomLabelProps> = ({
+  x,
+  y,
+  fill,
+  width,
+  height,
+  value,
+  ...props
+}) => {
+  if (value === 0) {
+    return null;
+  }
+
+  console.log(props);
+  
+
+  return (
+    <text
+      x={x}
+      y={y}
+      dy={height / 2 + 6}
+      dx={width / 2}
+      fontSize="12"
+      fill={fill}
+      textAnchor="insideCenter"
+    >
+      {value}
+    </text>
+  );
+};
+
 interface StandingsChartProps {
   teamStats: TeamStats[];
   isPostseason: boolean;
 }
+
 const StandingsChart: React.FC<StandingsChartProps> = ({
   teamStats,
   isPostseason,
@@ -40,7 +82,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
           <XAxis
             type="number"
             fontSize={16}
-            tick={{ fill: theme == Theme.LIGHT ? "black" : "white" }}
+            tick={false}
           />
           <YAxis
             type="category"
@@ -52,11 +94,29 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
           <CartesianGrid strokeDasharray="3 3" />
           <Tooltip labelStyle={{ color: "black" }} />
           <Legend />
-          <Bar dataKey="wins" stackId="a" fill="#82ca9d" />
+          <Bar dataKey="wins" stackId="a" fill="#82ca9d">
+            <LabelList
+              dataKey="wins"
+              position="inside"
+              content={<CustomLabel />}
+            />
+          </Bar>
           {!isPostseason && (
-            <Bar dataKey="ties" stackId="a" fill="rgb(53, 162, 235)" />
+            <Bar dataKey="ties" stackId="a" fill="rgb(53, 162, 235)">
+              <LabelList
+                dataKey="ties"
+                position="inside"
+                content={<CustomLabel />}
+              />
+            </Bar>
           )}
-          <Bar dataKey="losses" stackId="a" fill="rgb(255, 99, 132)" />
+          <Bar dataKey="losses" stackId="a" fill="rgb(255, 99, 132)">
+            <LabelList
+              dataKey="losses"
+              position="inside"
+              content={<CustomLabel />}
+            />
+          </Bar>
         </BarChart>
       </ResponsiveContainer>
     </div>

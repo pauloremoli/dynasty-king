@@ -23,5 +23,7 @@ export type TeamStats = {
 };
 
 export type H2HStats = {
-  [key: number]: { teamName: string; standings: Standings };
+  teamId: number;
+  teamName: string;
+  standings: Standings;
 };

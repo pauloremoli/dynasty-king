@@ -31,11 +31,9 @@ const sortByMostWins = (first: TeamStats, second: TeamStats) => {
 
 interface AllTimeRecordPostseasonProps {
   teamStats: TeamStats[];
-  charts: boolean;
 }
 const AllTimeRecordPostseason: React.FC<AllTimeRecordPostseasonProps> = ({
   teamStats,
-  charts,
 }) => {
   teamStats = teamStats.filter(
     (team: TeamStats) =>
@@ -47,21 +45,7 @@ const AllTimeRecordPostseason: React.FC<AllTimeRecordPostseasonProps> = ({
       <h1 className="font-semibold text-xl text-blue-400 pb-6 ">
         All Time Record - Postseason
       </h1>
-      {charts ? (
-        <StandingsChart teamStats={teamStats} isPostseason={true} />
-      ) : (
-        stats.map((teamStat: TeamStats, index: number) => (
-          <div key={index}>
-            <Standings
-              name={teamStat.name}
-              wins={teamStat.postseason.wins}
-              losses={teamStat.postseason.losses}
-              owner={teamStat.owner}
-              index={index + 1}
-            />
-          </div>
-        ))
-      )}
+      <StandingsChart teamStats={teamStats} isPostseason={true} />
     </div>
   );
 };
