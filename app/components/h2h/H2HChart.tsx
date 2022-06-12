@@ -49,8 +49,6 @@ const CustomLabel: React.FC<CustomLabelProps> = ({
     return null;
   }
 
-  console.log(props);
-
   return (
     <text
       x={x}

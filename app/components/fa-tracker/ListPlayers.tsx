@@ -6,7 +6,7 @@ import { getTag } from "~/utils/players";
 
 interface ListPlayersProps {
   faTracker: PlayerTeam[];
-  handleDelete: (e: MouseEvent) => void;
+  handleDelete: (e: React.ChangeEvent<HTMLButtonElement>) => void;
 }
 
 const ListPlayers = ({ faTracker, handleDelete }: ListPlayersProps) => {

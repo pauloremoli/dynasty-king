@@ -1,26 +1,25 @@
+import { css } from "@emotion/react";
 import {
   ActionFunction,
   json,
   LoaderFunction,
   MetaFunction,
-  redirect,
+  redirect
 } from "@remix-run/node";
 import {
   Form,
   useActionData,
   useLoaderData,
-  useSubmit,
+  useSubmit, useTransition
 } from "@remix-run/react";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { useState } from "react";
+import { GridLoader } from "react-spinners";
 import { getLeagueSettings, getRostersValues } from "~/api/fleaflicker";
 import ErrorScreen from "~/components/ErrorScreen";
 import PowerRankingChart from "~/components/powerRanking/PowerRankingChart";
 import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
 import { requireUserId } from "~/session.server";
-import { useTransition } from "@remix-run/react";
-import { GridLoader } from "react-spinners";
-import { css } from "@emotion/react";
 import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 interface ActionData {
@@ -84,7 +83,7 @@ const PowerRanking = () => {
   );
   const submit = useSubmit();
 
-  const handleSelection = (e: ChangeEventHandler<HTMLSelectElement>) => {
+  const handleSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { leagueName } = JSON.parse(e.target.value);
     setSelectedLeagueName(leagueName);
   };

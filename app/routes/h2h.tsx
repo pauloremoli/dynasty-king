@@ -10,12 +10,11 @@ import {
   useSubmit,
   useTransition
 } from "@remix-run/react";
-import { ChangeEventHandler, default as React, useState } from "react";
+import { default as React, useState } from "react";
 import { GridLoader } from "react-spinners";
 import { getH2H } from "~/api/fleaflicker";
 import ErrorScreen from "~/components/ErrorScreen";
 import H2HChart from "~/components/h2h/H2HChart";
-import H2HRecord from "~/components/h2h/H2HRecord";
 import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
 import { requireUserId } from "~/session.server";
@@ -77,7 +76,7 @@ const H2H = () => {
   const actionData = useActionData();
   const [theme] = useTheme();
 
-  const handleSelection = (e: ChangeEventHandler<HTMLSelectElement>) => {
+  const handleSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { leagueName } = JSON.parse(e.target.value);
     setSelectedLeagueName(leagueName);
   };

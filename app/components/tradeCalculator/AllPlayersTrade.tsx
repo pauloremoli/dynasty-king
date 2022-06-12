@@ -5,17 +5,19 @@ import SelectSearch, {
 } from "react-select-search";
 import { Format } from "~/types/Format";
 import { Player } from "~/types/Player";
+import { Roster } from "~/types/Roster";
 import { getPlayerValue } from "~/utils/players";
 import ListPlayers from "./ListPlayers";
 
-interface TeamProps {
+interface AllPlayersTradeProps {
   allPlayers: Player[];
   format: Format;
+  roster?: Roster;
   team: string;
   setTotalValue: (team: string, total: number) => void;
 }
 
-const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
+const AllPlayersTrade = ({ allPlayers, format, team, setTotalValue }: AllPlayersTradeProps) => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [total, setTotal] = useState(0);
 
@@ -50,7 +52,7 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
     }
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = (e : React.ChangeEvent<HTMLButtonElement>) => {
     setSelectedPlayers((players) =>
       players.filter((player: Player) => player.player !== e.target.name)
     );
@@ -64,7 +66,7 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
             team === "A" ? "text-blue-400" : "text-red-400"
           }`}
         >
-          Team {team}
+          {team}
         </h2>
         <div className="flex w-full justify-start gap-4 items-center text-gray-900">
           <SelectSearch
@@ -97,4 +99,4 @@ const Team = ({ allPlayers, format, team, setTotalValue }: TeamProps) => {
   );
 };
 
-export default Team;
+export default AllPlayersTrade;

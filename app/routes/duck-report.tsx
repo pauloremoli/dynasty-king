@@ -93,7 +93,7 @@ const DuckReport = () => {
   const actionData = useActionData();
   const transition = useTransition();
 
-  const handleSelection = (e: ChangeEventHandler<HTMLSelectElement>) => {
+  const handleSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const league = e.target.value;
     const { leagueName } = JSON.parse(league);
     setSelectedLeagueName(leagueName);

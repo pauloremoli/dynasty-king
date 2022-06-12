@@ -172,7 +172,7 @@ const FATracker = () => {
     }
   };
 
-  const handleDelete = (e: { target: { name: string } }) => {
+  const handleDelete = (e: React.ChangeEvent<HTMLButtonElement>) => {
     const players = faTracker.filter(
       (playerTeam: PlayerTeam) => playerTeam.player.player !== e.target.name
     );

@@ -7,7 +7,7 @@ import { getPlayerValue, getTag } from "~/utils/players";
 interface ListPlayersProps {
   players: Player[];
   format: Format;
-  handleDelete: (e: MouseEvent) => void;
+  handleDelete: (e: React.ChangeEvent<HTMLButtonElement>) => void;
 }
 
 

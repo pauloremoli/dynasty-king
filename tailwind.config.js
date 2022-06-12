@@ -2,12 +2,10 @@ module.exports = {
   content: ["./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      // that is animation class
       animation: {
         fadeIn: "fadeIn 2s ease-in-out",
       },
 
-      // that is actual animation
       keyframes: (theme) => ({
         fadeIn: {
           "100%": { opacity: 1 },
@@ -16,7 +14,6 @@ module.exports = {
       }),
     },
   },
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [require("flowbite/plugin")],
   darkMode: "class",
 };
-  
