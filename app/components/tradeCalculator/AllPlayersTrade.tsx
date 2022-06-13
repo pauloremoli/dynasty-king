@@ -13,11 +13,12 @@ interface AllPlayersTradeProps {
   allPlayers: Player[];
   format: Format;
   roster?: Roster;
-  team: string;
+  teamName: string;
   setTotalValue: (team: string, total: number) => void;
+  isLeftTeam: boolean;
 }
 
-const AllPlayersTrade = ({ allPlayers, format, team, setTotalValue }: AllPlayersTradeProps) => {
+const AllPlayersTrade = ({ allPlayers, format, teamName, isLeftTeam, setTotalValue }: AllPlayersTradeProps) => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [total, setTotal] = useState(0);
 
@@ -27,7 +28,7 @@ const AllPlayersTrade = ({ allPlayers, format, team, setTotalValue }: AllPlayers
       (current: Player) => (sum += getPlayerValue(current, format))
     );
     setTotal(sum);
-    setTotalValue(team, sum);
+    setTotalValue(teamName, sum);
   }, [selectedPlayers, format]);
 
   const players: SelectSearchOption[] = allPlayers.map((item: Player) => ({
@@ -63,10 +64,10 @@ const AllPlayersTrade = ({ allPlayers, format, team, setTotalValue }: AllPlayers
       <div className="flex flex-col w-full dark:bg-[#003459] rounded-2xl py-4 px-4 md:py-8 md:px-12">
         <h2
           className={`pb-8 text-2xl font-semibold text-center ${
-            team === "A" ? "text-blue-400" : "text-red-400"
+            isLeftTeam ? "text-blue-400" : "text-red-400"
           }`}
         >
-          {team}
+          {teamName}
         </h2>
         <div className="flex w-full justify-start gap-4 items-center text-gray-900">
           <SelectSearch

@@ -491,7 +491,7 @@ export const getRosters = async (leagueId: number): Promise<Roster[]> => {
   return await fetch(url).then(async (response): Promise<Roster[]> => {
     const data = await response.json();
     const rosters: Roster[] = [];
-    data.rosters.forEach((roster: any) => {
+    data.rosters.forEach(async (roster: any) => {
       if (!roster?.players) return;
 
       roster.players = roster?.players.filter(
@@ -600,6 +600,8 @@ export const getPicks = async (
   teamId: number
 ): Promise<Pick[]> => {
   let picks: Pick[] = [];
+  console.log(leagueId, teamId);
+  
 
   const filterYear = new Date().getFullYear() + 1;
 

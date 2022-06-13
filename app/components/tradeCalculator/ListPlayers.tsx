@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Format } from "~/types/Format";
 import { Player } from "~/types/Player";
 import { Position } from "~/types/Position";
@@ -10,13 +10,11 @@ interface ListPlayersProps {
   handleDelete: (e: React.ChangeEvent<HTMLButtonElement>) => void;
 }
 
-
 const ListPlayers = ({ players, format, handleDelete }: ListPlayersProps) => {
   return (
     <>
       {players.length > 0 && (
         <div className="py-4">
-          {/* <h3 className="pt-4 font-semibold text-blue-300">Players:</h3> */}
           <ul className="dark:text-gray-100">
             {players.map((player: Player) => (
               <li key={player.fp_id}>

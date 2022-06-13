@@ -8,7 +8,7 @@ import SelectLeague from "../SelectLeague";
 interface SettingsProps {
   format: Format;
   teams: Team[];
-  setTeam: (team: Team) => void;
+  setTeam: (team: Team | null) => void;
 }
 
 const Settings: React.FC<SettingsProps> = ({ teams, format, setTeam }) => {
@@ -17,6 +17,9 @@ const Settings: React.FC<SettingsProps> = ({ teams, format, setTeam }) => {
   const [leagueSize, setLeagueSize] = useState(12);
 
   const handleSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if(!e.target.value){
+      setTeam(null);
+    }
     const leagueStr = e.target.value;
     const team: Team = JSON.parse(leagueStr);
     setTeam(team);
