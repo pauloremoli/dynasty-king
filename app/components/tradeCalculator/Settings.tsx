@@ -1,6 +1,7 @@
 import { Team } from "@prisma/client";
 import { Link } from "@remix-run/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { CustomSettings } from "~/routes/trade-calculator.format.$format";
 import { Format } from "~/types/Format";
 import { useOptionalUser } from "~/utils/userUtils";
 import SelectLeague from "../SelectLeague";
@@ -9,21 +10,33 @@ interface SettingsProps {
   format: Format;
   teams: Team[];
   setTeam: (team: Team | null) => void;
+  setCustomSettings: React.Dispatch<
+    React.SetStateAction<CustomSettings | undefined>
+  >;
 }
 
-const Settings: React.FC<SettingsProps> = ({ teams, format, setTeam }) => {
+const Settings: React.FC<SettingsProps> = ({
+  teams,
+  format,
+  setTeam,
+  setCustomSettings,
+}) => {
   const user = useOptionalUser();
   const [pprTE, setPprTE] = useState(1);
   const [leagueSize, setLeagueSize] = useState(12);
 
   const handleSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if(!e.target.value){
+    if (!e.target.value) {
       setTeam(null);
     }
     const leagueStr = e.target.value;
     const team: Team = JSON.parse(leagueStr);
     setTeam(team);
   };
+
+  useEffect(() => {
+    setCustomSettings({ pprTE, leagueSize, format });
+  }, [pprTE, leagueSize, setCustomSettings, format]);
 
   return (
     <div className="flex flex-col md:flex-row max-w-5xl w-full rounded-2xl my-6 text-gray-900 dark:text-gray-100 md:gap-12 ">
@@ -78,6 +91,9 @@ const Settings: React.FC<SettingsProps> = ({ teams, format, setTeam }) => {
                 name="tePremium"
                 id="tePremium"
                 className="border-0 shadow-sm rounded-lg text-gray-900"
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  setPprTE(parseFloat(e.target.value));
+                }}
               >
                 <option value="0.5">0.5</option>
                 <option value="0.75">0.75</option>
@@ -119,15 +135,15 @@ const Settings: React.FC<SettingsProps> = ({ teams, format, setTeam }) => {
           </div>
           <div className="flex flex-col w-full">
             {!user && (
-              <>
+              <div className="flex">
                 <a
                   href={`/login?redirectTo=/trade-calculator/format/${format}`}
                   className="text-blue-500 underline pr-1"
                 >
                   Log In
                 </a>
-                <p>to create trades based on rosters from a specific league</p>
-              </>
+                <p>to use rosters from your leagues</p>
+              </div>
             )}
             {teams.length > 0 && (
               <>

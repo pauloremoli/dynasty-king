@@ -20,17 +20,17 @@ import styles from "~/styles/customSelect.css";
 import { Format } from "~/types/Format";
 import { LeagueSettings } from "~/types/LeagueSettings";
 import { Roster, RosterValue } from "~/types/Roster";
-import { filterDataByFormat } from "~/utils/players";
+import { sortByDataByFormat } from "~/utils/players";
 import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
 }
 
-interface ActionData {
-  errors?: {
-    league?: string;
-  };
+export interface CustomSettings {
+  pprTE: number;
+  format: Format;
+  leagueSize: number;
 }
 
 export const loader = async ({ params, request }) => {
@@ -44,7 +44,7 @@ export const loader = async ({ params, request }) => {
 
   const result = await getPlayers();
 
-  result.data = filterDataByFormat(result.data, format);
+  result.data = sortByDataByFormat(result.data, format);
   return { players: result.data, teams };
 };
 
@@ -85,10 +85,13 @@ const TradeCalculator = () => {
   );
   const [selectedTeam, setSelectedTeam] = useState<Team | null>();
   const [theme] = useTheme();
+  const [customSettings, setCustomSettings] = useState<CustomSettings>();
 
   useEffect(() => {
     setFormat(params.format as Format);
   }, [params]);
+
+  useEffect(() => {}, [customSettings]);
 
   useEffect(() => {
     if (!fetcher.data) {
@@ -137,8 +140,10 @@ const TradeCalculator = () => {
     );
   };
 
-  const setTotalValue = (team: string, total: number) => {
-    team === "A" ? setTotalValueA(total) : setTotalValueB(total);
+  const setTotalValue = (isLeftTeam: boolean, total: number) => {
+    console.log(total, isLeftTeam);
+
+    isLeftTeam ? setTotalValueA(total) : setTotalValueB(total);
   };
 
   const override = css`
@@ -155,7 +160,12 @@ const TradeCalculator = () => {
         </h1>
 
         <Accordion title="Settings">
-          <Settings format={format} teams={teams} setTeam={setTeam} />
+          <Settings
+            format={format}
+            teams={teams}
+            setTeam={setTeam}
+            setCustomSettings={setCustomSettings}
+          />
         </Accordion>
         <div className="flex flex-col md:flex-row max-w-5xl w-full justify-center gap-4 mb-4">
           {fetcher.state === "submitting" || fetcher.state === "loading" ? (
@@ -174,6 +184,8 @@ const TradeCalculator = () => {
                 teamName={myRoster ? myRoster.roster.teamName : "Team A"}
                 isLeftTeam={true}
                 format={leagueSettings!.format}
+                pprTE={leagueSettings?.scoringRules.pprTE ?? 0}
+                leagueSize={rosters.length}
                 setTotalValue={setTotalValue}
               />
               <LeagueTrade
@@ -191,6 +203,8 @@ const TradeCalculator = () => {
                 isLeftTeam={true}
                 format={format}
                 setTotalValue={setTotalValue}
+                pprTE={customSettings?.pprTE ?? 0}
+                leagueSize={customSettings?.leagueSize ?? 12}
               />
               <AllPlayersTrade
                 allPlayers={players}
@@ -198,6 +212,8 @@ const TradeCalculator = () => {
                 isLeftTeam={false}
                 format={format}
                 setTotalValue={setTotalValue}
+                pprTE={customSettings?.pprTE ?? 0}
+                leagueSize={customSettings?.leagueSize ?? 12}
               />
             </>
           )}

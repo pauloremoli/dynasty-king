@@ -136,6 +136,7 @@ const fetchScoringRules = async (leagueId: number): Promise<ScoringRules> => {
   let isHalfPPR: boolean = false;
   let isPPR: boolean = false;
   let isTEPremium: boolean = false;
+  let pprTE: number = 0;
 
   let scoringRules: ScoringRule[] = [];
 
@@ -171,6 +172,9 @@ const fetchScoringRules = async (leagueId: number): Promise<ScoringRules> => {
             }
 
             isTEPremium = hasPremiumForTECatch(rule);
+            if(isTEPremium){
+              pprTE = rule?.pointsPer?.value ?? rule?.points?.value ?? 0;
+            }
 
             const scoringRule: ScoringRule = {
               category: ScoringCategory.RECEPTION,
@@ -198,17 +202,12 @@ const fetchScoringRules = async (leagueId: number): Promise<ScoringRules> => {
     return scoringRules;
   });
 
-  console.log({
-    isHalfPPR,
-    isPPR,
-    isTEPremium,
-  });
-
   return {
     scoringRules,
     isHalfPPR,
     isPPR,
     isTEPremium,
+    pprTE
   };
 };
 

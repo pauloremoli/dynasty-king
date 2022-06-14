@@ -9,7 +9,7 @@ import { Position } from "~/types/Position";
 import { csvToJson } from "~/utils/csvToJson";
 import {
   createReactTableColumn,
-  filterDataByFormat,
+  sortByDataByFormat,
   filterDataByPosition,
   filterDataByRookie,
   sortMethod,
@@ -30,7 +30,7 @@ export const loader = async ({ params }) => {
 
   result.data = filterDataByRookie(result.data);
 
-  result.data = filterDataByFormat(result.data, format as Format);
+  result.data = sortByDataByFormat(result.data, format as Format);
   if (position && position !== Position.ALL) {
     result.data = filterDataByPosition(result.data, position as Position);
   }

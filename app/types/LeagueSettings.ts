@@ -18,6 +18,7 @@ export type ScoringRules = {
   isHalfPPR: boolean;
   isPPR: boolean;
   isTEPremium: boolean;
+  pprTE: number;
 }
 
 export type LeagueSettings = {

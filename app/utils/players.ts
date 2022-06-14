@@ -3,7 +3,7 @@ import { Format } from "~/types/Format";
 import { Player } from "~/types/Player";
 import { Position } from "~/types/Position";
 
-export const filterDataByFormat = (data: any, format: Format) => {
+export const sortByDataByFormat = (data: any, format: Format) => {
   if (format == Format.FORMAT_2QB) {
     data.sort(sortFor2QB);
   } else {
@@ -173,4 +173,17 @@ export const searchPlayer = (
       return null;
     }
   }
+};
+
+export const adjustValueToSettings = (
+  player: Player,
+  pprTE: number,
+  leagueSize: number
+): Player => {
+  if (player.pos === Position.TE && pprTE > 1) {
+    // te premium is 15% more value for each full premium point e.g. 2 PPR = 15%
+    player.value_1qb *= 1 + ((pprTE * 15 / 2) / 100);
+    player.value_2qb *= 1 + ((pprTE * 15 / 2) / 100);
+  }
+  return player;
 };

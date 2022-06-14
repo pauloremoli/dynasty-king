@@ -5,8 +5,9 @@ import SelectSearch, {
 } from "react-select-search";
 import { Format } from "~/types/Format";
 import { Player } from "~/types/Player";
+import { Position } from "~/types/Position";
 import { Roster } from "~/types/Roster";
-import { getPlayerValue } from "~/utils/players";
+import { adjustValueToSettings, getPlayerValue, sortByDataByFormat } from "~/utils/players";
 import ListPlayers from "./ListPlayers";
 
 interface AllPlayersTradeProps {
@@ -14,13 +15,29 @@ interface AllPlayersTradeProps {
   format: Format;
   roster?: Roster;
   teamName: string;
-  setTotalValue: (team: string, total: number) => void;
+  setTotalValue: (isLeftTeam: boolean, total: number) => void;
+  pprTE: number;
   isLeftTeam: boolean;
+  leagueSize: number;
 }
 
-const AllPlayersTrade = ({ allPlayers, format, teamName, isLeftTeam, setTotalValue }: AllPlayersTradeProps) => {
+const AllPlayersTrade = ({
+  allPlayers,
+  format,
+  teamName,
+  isLeftTeam,
+  setTotalValue,
+  leagueSize,
+  pprTE,
+}: AllPlayersTradeProps) => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [total, setTotal] = useState(0);
+  const [players, setPlayers] = useState<SelectSearchOption[]>(
+    allPlayers.map((item: Player) => ({
+      name: `${item.player} - ${item.pos} ${item.team}`,
+      value: item.player,
+    }))
+  );
 
   useEffect(() => {
     let sum = 0;
@@ -28,13 +45,23 @@ const AllPlayersTrade = ({ allPlayers, format, teamName, isLeftTeam, setTotalVal
       (current: Player) => (sum += getPlayerValue(current, format))
     );
     setTotal(sum);
-    setTotalValue(teamName, sum);
-  }, [selectedPlayers, format]);
+    setTotalValue(isLeftTeam, sum);
+  }, [selectedPlayers, format, setTotalValue, isLeftTeam]);
 
-  const players: SelectSearchOption[] = allPlayers.map((item: Player) => ({
-    name: `${item.player} - ${item.pos} ${item.team}`,
-    value: item.player,
-  }));
+  useEffect(() => {
+    let adjustedPlayers: Player[] = allPlayers.map((player: Player) =>
+      adjustValueToSettings(player, pprTE, leagueSize)
+    );
+    const searchOptions: SelectSearchOption[] = sortByDataByFormat(
+      adjustedPlayers,
+      format
+    ).map((item: Player) => ({
+      name: `${item.player} - ${item.pos} ${item.team}`,
+      value: item.player,
+    }));
+
+    setPlayers(searchOptions);
+  }, [leagueSize, pprTE, allPlayers, format]);
 
   const handleSelection = (e: string) => {
     if (e) {
@@ -53,7 +80,7 @@ const AllPlayersTrade = ({ allPlayers, format, teamName, isLeftTeam, setTotalVal
     }
   };
 
-  const handleDelete = (e : React.ChangeEvent<HTMLButtonElement>) => {
+  const handleDelete = (e: React.ChangeEvent<HTMLButtonElement>) => {
     setSelectedPlayers((players) =>
       players.filter((player: Player) => player.player !== e.target.name)
     );

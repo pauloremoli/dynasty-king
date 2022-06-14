@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import SelectSearch, {
-    fuzzySearch,
-    SelectSearchOption
+  fuzzySearch,
+  SelectSearchOption,
 } from "react-select-search";
 import { LeagueSettings } from "~/types/LeagueSettings";
 import { Player } from "~/types/Player";
 import { RosterValue } from "~/types/Roster";
-import { getPlayerValue } from "~/utils/players";
+import {
+  adjustValueToSettings,
+  getPlayerValue,
+  sortByDataByFormat,
+} from "~/utils/players";
 import ListPlayers from "./ListPlayers";
 
 interface LeagueTradeProps {
@@ -20,7 +24,7 @@ const LeagueTrade = ({
   rosters,
   leagueSettings,
   setTotalValue,
-  isLeftTeam
+  isLeftTeam,
 }: LeagueTradeProps) => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [total, setTotal] = useState(0);
@@ -38,18 +42,35 @@ const LeagueTrade = ({
       setTotal(sum);
       setTotalValue(isLeftTeam, sum);
     }
-  }, [selectedPlayers, leagueSettings, setTotalValue, selectedTeam, isLeftTeam]);
+  }, [
+    selectedPlayers,
+    leagueSettings,
+    setTotalValue,
+    selectedTeam,
+    isLeftTeam,
+  ]);
 
   useEffect(() => {
     if (!selectedTeam) return;
 
-    setPlayers(
-      selectedTeam.roster.players.map((player: Player) => ({
-        name: `${player.player} - ${player.pos} ${player.team}`,
-        value: player.player,
-      }))
+    let adjustedPlayers: Player[] = selectedTeam.roster.players.map(
+      (player: Player) =>
+        adjustValueToSettings(
+          player,
+          leagueSettings.scoringRules.pprTE,
+          rosters.length
+        )
     );
-  }, [selectedTeam]);
+    const searchOptions: SelectSearchOption[] = sortByDataByFormat(
+      adjustedPlayers,
+      leagueSettings.format
+    ).map((item: Player) => ({
+      name: `${item.player} - ${item.pos} ${item.team}`,
+      value: item.player,
+    }));
+
+    setPlayers(searchOptions);
+  }, [selectedTeam, leagueSettings, rosters]);
 
   const handleSelection = (e: string) => {
     if (e) {
