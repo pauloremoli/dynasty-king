@@ -156,7 +156,7 @@ const TradeCalculator = () => {
     <div className="w-full h-full flex justify-center md:min-h-screen  animate-fadeIn px-4">
       <div className="flex flex-col w-full max-w-5xl gap-4 dark:text-gray-200 ">
         <h1 className="text-2xl font-semibold tracking-wide text-center pb-8 md:pt-20 pt-8">
-          Trade Calculator
+          Trade Calculator{myRoster ? " - " + selectedTeam?.leagueName : ""}
         </h1>
 
         <Accordion title="Settings">
@@ -167,61 +167,68 @@ const TradeCalculator = () => {
             setCustomSettings={setCustomSettings}
           />
         </Accordion>
-        <div className="flex flex-col md:flex-row max-w-5xl w-full justify-center gap-4 mb-4">
-          {fetcher.state === "submitting" || fetcher.state === "loading" ? (
-            <div className="flex w-full h-full items-center justify-center">
-              <GridLoader
-                color={theme == Theme.LIGHT ? "black" : "#ffffff"}
-                loading={true}
-                css={override}
-                size={15}
+        {fetcher.state === "submitting" || fetcher.state === "loading" ? (
+          <div className="flex w-full h-full items-center justify-center">
+            <GridLoader
+              color={theme == Theme.LIGHT ? "black" : "#ffffff"}
+              loading={true}
+              css={override}
+              size={15}
+            />
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col md:flex-row max-w-5xl w-full justify-center gap-4 mb-4">
+              {rosters && rosters.length > 0 ? (
+                <>
+                  <AllPlayersTrade
+                    allPlayers={myRoster?.roster.players ?? []}
+                    teamName={myRoster ? myRoster.roster.teamName : "Team A"}
+                    isLeftTeam={true}
+                    format={leagueSettings!.format}
+                    pprTE={leagueSettings?.scoringRules.pprTE ?? 0}
+                    leagueSize={rosters.length}
+                    setTotalValue={setTotalValue}
+                  />
+                  <LeagueTrade
+                    rosters={rosters}
+                    setTotalValue={setTotalValue}
+                    leagueSettings={leagueSettings!}
+                    isLeftTeam={false}
+                  />
+                </>
+              ) : (
+                <>
+                  <AllPlayersTrade
+                    allPlayers={players}
+                    teamName={"Team A"}
+                    isLeftTeam={true}
+                    format={format}
+                    setTotalValue={setTotalValue}
+                    pprTE={customSettings?.pprTE ?? 0}
+                    leagueSize={customSettings?.leagueSize ?? 12}
+                  />
+                  <AllPlayersTrade
+                    allPlayers={players}
+                    teamName={"Team B"}
+                    isLeftTeam={false}
+                    format={format}
+                    setTotalValue={setTotalValue}
+                    pprTE={customSettings?.pprTE ?? 0}
+                    leagueSize={customSettings?.leagueSize ?? 12}
+                  />
+                </>
+              )}
+            </div>
+
+            <div className="flex flex-col md:flex-row max-w-5xl w-full justify-center gap-4 mb-4">
+              <TradeAnalysis
+                totalValueA={totalValueA}
+                totalValueB={totalValueB}
               />
             </div>
-          ) : rosters && rosters.length > 0 ? (
-            <>
-              <AllPlayersTrade
-                allPlayers={myRoster?.roster.players ?? []}
-                teamName={myRoster ? myRoster.roster.teamName : "Team A"}
-                isLeftTeam={true}
-                format={leagueSettings!.format}
-                pprTE={leagueSettings?.scoringRules.pprTE ?? 0}
-                leagueSize={rosters.length}
-                setTotalValue={setTotalValue}
-              />
-              <LeagueTrade
-                rosters={rosters}
-                setTotalValue={setTotalValue}
-                leagueSettings={leagueSettings!}
-                isLeftTeam={false}
-              />
-            </>
-          ) : (
-            <>
-              <AllPlayersTrade
-                allPlayers={players}
-                teamName={"Team A"}
-                isLeftTeam={true}
-                format={format}
-                setTotalValue={setTotalValue}
-                pprTE={customSettings?.pprTE ?? 0}
-                leagueSize={customSettings?.leagueSize ?? 12}
-              />
-              <AllPlayersTrade
-                allPlayers={players}
-                teamName={"Team B"}
-                isLeftTeam={false}
-                format={format}
-                setTotalValue={setTotalValue}
-                pprTE={customSettings?.pprTE ?? 0}
-                leagueSize={customSettings?.leagueSize ?? 12}
-              />
-            </>
-          )}
-        </div>
-
-        <div className="flex flex-col md:flex-row max-w-5xl w-full justify-center gap-4 mb-4">
-          <TradeAnalysis totalValueA={totalValueA} totalValueB={totalValueB} />
-        </div>
+          </>
+        )}
       </div>
     </div>
   );
