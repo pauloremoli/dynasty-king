@@ -12,7 +12,7 @@ import ListPlayers from "./ListPlayers";
 interface LeagueTradeProps {
   rosters: RosterValue[];
   leagueSettings: LeagueSettings;
-  setTotalValue: (team: string, total: number) => void;
+  setTotalValue: (isLeftTeam: boolean, total: number) => void;
   isLeftTeam: boolean;
 }
 
@@ -36,7 +36,7 @@ const LeagueTrade = ({
 
     if (selectedTeam?.roster.teamName) {
       setTotal(sum);
-      setTotalValue(isLeftTeam ? "A" : "B", sum);
+      setTotalValue(isLeftTeam, sum);
     }
   }, [selectedPlayers, leagueSettings, setTotalValue, selectedTeam, isLeftTeam]);
 
