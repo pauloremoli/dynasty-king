@@ -126,16 +126,6 @@ const H2HChart: React.FC<H2HChartProps> = ({ h2h }) => {
       (stats.standings?.ties ?? 0) +
       stats.standings.losses;
 
-    console.log({
-      ...stats.standings,
-      totalGames,
-      winsPercentage: (stats.standings.wins / totalGames) * 100,
-      tiesPercentage: ((stats.standings?.ties ?? 0) / totalGames) * 100,
-      lossesPercentage: (stats.standings.losses / totalGames) * 100,
-      teamName: stats.teamName,
-      teamId: stats.teamId,
-    });
-
     return {
       ...stats.standings,
       totalGames,

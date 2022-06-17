@@ -570,7 +570,6 @@ export const getPickOnTheClock = async (
           item.cells.forEach((cell: Cell) => {
             if ("onTheClock" in cell) {
               found = true;
-              console.log("OTC", cell);
 
               otc = {
                 round: cell.slot?.round ?? 1,
@@ -599,8 +598,6 @@ export const getPicks = async (
   teamId: number
 ): Promise<Pick[]> => {
   let picks: Pick[] = [];
-  console.log(leagueId, teamId);
-  
 
   const filterYear = new Date().getFullYear() + 1;
 

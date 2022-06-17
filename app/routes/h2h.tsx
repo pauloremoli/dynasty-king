@@ -97,7 +97,8 @@ const H2H = () => {
         <h1 className="text-2xl font-bold text-center">{`H2H${
           selectedLeagueName ? " - " + selectedLeagueName : ""
         }`}</h1>
-        <div className="flex flex-col w-full justify-start">
+        <div className="flex w-full flex-col justify-start px-4 pt-8 gap-4">
+          <label>Select a league:</label>
           <Form method="post" onChange={handleChange}>
             <SelectLeague teams={teams} handleSelection={handleSelection} />
           </Form>

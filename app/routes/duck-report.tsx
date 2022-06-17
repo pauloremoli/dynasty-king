@@ -36,7 +36,6 @@ interface ActionData {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-
   const userId = await requireUserId(request);
   const teams = await getTeamsByUserId(userId);
 
@@ -90,16 +89,27 @@ const DuckReport = () => {
     teams.length > 0 ? teams[0].leagueName : ""
   );
   const submit = useSubmit();
-  const actionData = useActionData();
+  let actionData = useActionData();
   const transition = useTransition();
 
   const handleSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const league = e.target.value;
+
+    if (!league) {
+      setSelectedLeagueName("");
+      actionData = {};
+      return;
+    }
     const { leagueName } = JSON.parse(league);
     setSelectedLeagueName(leagueName);
   };
 
   const handleChange = (event: any) => {
+    console.log(event.currentTarget);
+    if (selectedLeagueName === "") {
+      return;
+    }
+
     submit(event.currentTarget, { replace: true });
   };
 
@@ -115,7 +125,8 @@ const DuckReport = () => {
         <h1 className="text-2xl font-bold text-center">{`Duck Report${
           selectedLeagueName ? " - " + selectedLeagueName : ""
         }`}</h1>
-        <div className="flex w-full justify-start px-4">
+        <div className="flex w-full flex-col justify-start px-4 pt-8 gap-4">
+          <label>Select a league:</label>
           <Form method="post" onChange={handleChange} className="w-full">
             <SelectLeague teams={teams} handleSelection={handleSelection} />
           </Form>

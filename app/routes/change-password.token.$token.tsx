@@ -1,21 +1,21 @@
 import type {
   ActionFunction,
   LoaderFunction,
-  MetaFunction,
+  MetaFunction
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
   Form,
   useActionData,
   useLoaderData,
-  useSearchParams,
+  useSearchParams
 } from "@remix-run/react";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import {
   deleteToken,
   getEmailByToken,
-  isTokenValid,
+  isTokenValid
 } from "~/models/resetPassword.server";
 import { updatePassword } from "~/models/user.server";
 import { getUserId } from "~/session.server";
@@ -141,9 +141,6 @@ export default function ChangePassword() {
     }
   }, [actionData]);
 
-  React.useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <div className="flex min-h-full flex-col mt-20 justify-center max-w-md w-full px-2 animate-fadeIn">
