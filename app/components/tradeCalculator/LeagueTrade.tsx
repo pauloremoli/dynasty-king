@@ -8,20 +8,26 @@ import { Player } from "~/types/Player";
 import { RosterValue } from "~/types/Roster";
 import {
   adjustValueToSettings,
+  filterPicks,
   getPlayerValue,
+  getSearchOptions,
   sortByDataByFormat,
 } from "~/utils/players";
 import ListPlayers from "./ListPlayers";
 
 interface LeagueTradeProps {
-  rosters: RosterValue[];
+  allPlayers: Player[];
+  myRoster?: RosterValue | null;
+  rosters?: RosterValue[];
   leagueSettings: LeagueSettings;
   setTotalValue: (isLeftTeam: boolean, total: number) => void;
   isLeftTeam: boolean;
 }
 
 const LeagueTrade = ({
+  allPlayers,
   rosters,
+  myRoster,
   leagueSettings,
   setTotalValue,
   isLeftTeam,
@@ -30,6 +36,14 @@ const LeagueTrade = ({
   const [total, setTotal] = useState(0);
   const [selectedTeam, setSelectedTeam] = useState<RosterValue>();
   const [players, setPlayers] = useState<SelectSearchOption[]>([]);
+  const [picks, setPicks] = useState<SelectSearchOption[]>([]);
+
+  const [listedPicks, setListedPicks] = useState(
+    myRoster ? myRoster.roster.picks : selectedTeam?.roster.picks ?? []
+  );
+  const [listedPlayers, setListedPlayers] = useState(
+    myRoster ? myRoster.roster.players : selectedTeam?.roster.players ?? []
+  );
 
   useEffect(() => {
     let sum = 0;
@@ -38,7 +52,7 @@ const LeagueTrade = ({
         (sum += getPlayerValue(current, leagueSettings.format))
     );
 
-    if (selectedTeam?.roster.teamName) {
+    if (myRoster || selectedTeam?.roster.teamName) {
       setTotal(sum);
       setTotalValue(isLeftTeam, sum);
     }
@@ -48,33 +62,34 @@ const LeagueTrade = ({
     setTotalValue,
     selectedTeam,
     isLeftTeam,
+    myRoster,
   ]);
 
   useEffect(() => {
-    if (!selectedTeam) return;
-
-    let adjustedPlayers: Player[] = selectedTeam.roster.players.map(
-      (player: Player) =>
-        adjustValueToSettings(
-          player,
-          leagueSettings.scoringRules.pprTE,
-          rosters.length
-        )
+    const searchOptions = getSearchOptions(
+      listedPlayers,
+      leagueSettings.format,
+      leagueSettings.scoringRules.pprTE,
+      false
     );
-    const searchOptions: SelectSearchOption[] = sortByDataByFormat(
-      adjustedPlayers,
-      leagueSettings.format
-    ).map((item: Player) => ({
-      name: `${item.player} - ${item.pos} ${item.team}`,
-      value: item.player,
-    }));
 
     setPlayers(searchOptions);
-  }, [selectedTeam, leagueSettings, rosters]);
+  }, [listedPlayers, leagueSettings]);
 
-  const handleSelection = (e: string) => {
+  useEffect(() => {
+    const picksWithValue = filterPicks(listedPicks, allPlayers);
+    const picksSO = getSearchOptions(
+      picksWithValue,
+      leagueSettings.format,
+      leagueSettings.scoringRules.pprTE,
+      true
+    );
+    setPicks(picksSO);
+  }, [listedPicks, leagueSettings, allPlayers]);
+
+  const handleSelectionPLayer = (e: string) => {
     if (e) {
-      const selectedPlayer = selectedTeam?.roster.players.find(
+      const selectedPlayer = listedPlayers.find(
         (player: Player) => player.player === e
       );
       if (selectedPlayer) {
@@ -89,6 +104,17 @@ const LeagueTrade = ({
     }
   };
 
+  const handleSelectionPick = (e: string) => {
+    if (e) {
+      const selectedPick = allPlayers.find(
+        (player: Player) => player.player === e
+      );
+      if (selectedPick) {
+        setSelectedPlayers([...selectedPlayers, selectedPick]);
+      }
+    }
+  };
+
   const handleDelete = (e: React.ChangeEvent<HTMLButtonElement>) => {
     setSelectedPlayers((players) =>
       players.filter((player: Player) => player.player !== e.target.name)
@@ -98,45 +124,71 @@ const LeagueTrade = ({
   const handleTeamSelection = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedPlayers([]);
     setPlayers([]);
-    setSelectedTeam(
-      rosters.find(
-        (rosterValue: RosterValue) =>
-          rosterValue?.roster?.teamId === parseInt(event.target.value)
-      )
+
+    const selectedRoster: RosterValue | undefined = rosters?.find(
+      (rosterValue: RosterValue) =>
+        rosterValue?.roster?.teamId === parseInt(event.target.value)
     );
+
+    setSelectedTeam(selectedRoster);
+    setListedPlayers(selectedRoster?.roster.players ?? []);
+
+    const picks = selectedRoster?.roster.picks ?? [];
+    setListedPicks(picks);
   };
 
   return (
     <>
       <div className="flex flex-col w-full dark:bg-[#003459] rounded-2xl py-4 px-4 md:py-8 md:px-12">
-        <h2 className="pb-8 text-2xl font-semibold text-center text-red-400">
-          {selectedTeam?.roster.teamName ?? "Select a team"}
+        <h2
+          className={`pb-8 text-2xl font-semibold text-center ${
+            isLeftTeam ? "text-blue-400" : "text-red-400"
+          }`}
+        >
+          {myRoster
+            ? myRoster.roster.teamName
+            : selectedTeam?.roster.teamName ?? "Select a team"}
         </h2>
-        <div className="flex w-full justify-start gap-4 items-center text-gray-700">
-          <select
-            name="team"
-            onChange={handleTeamSelection}
-            placeholder="Select a team"
-            className="border-0 rounded shadow-sm w-full mb-4"
-          >
-            <option value={""}>Select a team</option>
-            {rosters.map((rosterValue: RosterValue) => (
-              <option
-                value={rosterValue.roster.teamId}
-                key={rosterValue.roster.teamId}
-              >
-                {rosterValue.roster.teamName}
-              </option>
-            ))}
-          </select>
-        </div>
+        {!isLeftTeam && (
+          <div className="flex w-full justify-start gap-4 items-center text-gray-700">
+            <select
+              name="team"
+              onChange={handleTeamSelection}
+              placeholder="Select a team"
+              className="border-0 rounded shadow-sm w-full mb-4"
+            >
+              <option value={""}>Select a team</option>
+              {rosters?.map((rosterValue: RosterValue) => (
+                <option
+                  value={rosterValue.roster.teamId}
+                  key={rosterValue.roster.teamId}
+                >
+                  {rosterValue.roster.teamName}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         <div className="flex w-full justify-start gap-4 items-center text-gray-700">
           <SelectSearch
             options={players}
             multiple={false}
             search
             placeholder="Select a player"
-            onChange={handleSelection}
+            onChange={handleSelectionPLayer}
+            filterOptions={(options) => {
+              const filter = fuzzySearch(options);
+              return (q) => filter(q);
+            }}
+          />
+        </div>
+        <div className="flex w-full justify-start gap-4 pt-8 items-center text-gray-700">
+          <SelectSearch
+            options={picks}
+            multiple={false}
+            search
+            placeholder="Select a pick"
+            onChange={handleSelectionPick}
             filterOptions={(options) => {
               const filter = fuzzySearch(options);
               return (q) => filter(q);

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { Team } from "@prisma/client";
-import { ActionFunction, json, MetaFunction } from "@remix-run/node";
+import { ActionFunction, MetaFunction } from "@remix-run/node";
 import { useFetcher, useLoaderData, useParams } from "@remix-run/react";
 import { useEffect, useState } from "react";
 import { GridLoader } from "react-spinners";
@@ -9,7 +9,6 @@ import {
   getPlayers,
   getRostersValues,
 } from "~/api/fleaflicker";
-import Accordion from "~/components/Accordion";
 import AllPlayersTrade from "~/components/tradeCalculator/AllPlayersTrade";
 import LeagueTrade from "~/components/tradeCalculator/LeagueTrade";
 import Settings from "~/components/tradeCalculator/Settings";
@@ -19,8 +18,9 @@ import { getUserId } from "~/session.server";
 import styles from "~/styles/customSelect.css";
 import { Format } from "~/types/Format";
 import { LeagueSettings } from "~/types/LeagueSettings";
-import { Roster, RosterValue } from "~/types/Roster";
-import { sortByDataByFormat } from "~/utils/players";
+import { Player } from "~/types/Player";
+import { RosterValue } from "~/types/Roster";
+import { adjustValueToSettings, sortByDataByFormat } from "~/utils/players";
 import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 export function links() {
@@ -30,7 +30,6 @@ export function links() {
 export interface CustomSettings {
   pprTE: number;
   format: Format;
-  leagueSize: number;
 }
 
 export const loader = async ({ params, request }) => {
@@ -78,6 +77,8 @@ const TradeCalculator = () => {
   const [format, setFormat] = useState(params.format as Format);
   const [totalValueA, setTotalValueA] = useState(0);
   const [totalValueB, setTotalValueB] = useState(0);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [teams, setTeams] = useState<Team[]>([]);
   const [rosters, setRosters] = useState<RosterValue[]>();
   const [myRoster, setMyRoster] = useState<RosterValue | null>();
   const [leagueSettings, setLeagueSettings] = useState<LeagueSettings | null>(
@@ -87,11 +88,20 @@ const TradeCalculator = () => {
   const [theme] = useTheme();
   const [customSettings, setCustomSettings] = useState<CustomSettings>();
 
+  const data = useLoaderData();
+
+  useEffect(() => {
+    setPlayers(data.players);
+    setTeams(data.teams);
+  }, [data]);
+
   useEffect(() => {
     setFormat(params.format as Format);
   }, [params]);
 
-  useEffect(() => {}, [customSettings]);
+  useEffect(() => {
+    setPlayers(adjustValueToSettings(data.players, customSettings?.pprTE ?? 1));
+  }, [format, customSettings, data.players]);
 
   useEffect(() => {
     if (!fetcher.data) {
@@ -128,8 +138,6 @@ const TradeCalculator = () => {
     setLeagueSettings(leagueSettings);
   }, [fetcher, selectedTeam]);
 
-  const { players, teams } = useLoaderData();
-
   const setTeam = (team: Team | null) => {
     setSelectedTeam(team);
     fetcher.submit(
@@ -141,8 +149,6 @@ const TradeCalculator = () => {
   };
 
   const setTotalValue = (isLeftTeam: boolean, total: number) => {
-    console.log(total, isLeftTeam);
-
     isLeftTeam ? setTotalValueA(total) : setTotalValueB(total);
   };
 
@@ -159,14 +165,12 @@ const TradeCalculator = () => {
           Trade Calculator{myRoster ? " - " + selectedTeam?.leagueName : ""}
         </h1>
 
-        <Accordion title="Settings">
-          <Settings
-            format={format}
-            teams={teams}
-            setTeam={setTeam}
-            setCustomSettings={setCustomSettings}
-          />
-        </Accordion>
+        <Settings
+          format={format}
+          teams={teams}
+          setTeam={setTeam}
+          setCustomSettings={setCustomSettings}
+        />
         {fetcher.state === "submitting" || fetcher.state === "loading" ? (
           <div className="flex w-full h-full items-center justify-center">
             <GridLoader
@@ -181,20 +185,19 @@ const TradeCalculator = () => {
             <div className="flex flex-col md:flex-row max-w-5xl w-full justify-center gap-4 mb-4">
               {rosters && rosters.length > 0 ? (
                 <>
-                  <AllPlayersTrade
-                    allPlayers={myRoster?.roster.players ?? []}
-                    teamName={myRoster ? myRoster.roster.teamName : "Team A"}
-                    isLeftTeam={true}
-                    format={leagueSettings!.format}
-                    pprTE={leagueSettings?.scoringRules.pprTE ?? 0}
-                    leagueSize={rosters.length}
+                  <LeagueTrade
+                    myRoster={myRoster}
                     setTotalValue={setTotalValue}
+                    leagueSettings={leagueSettings!}
+                    isLeftTeam={true}
+                    allPlayers={players}
                   />
                   <LeagueTrade
                     rosters={rosters}
                     setTotalValue={setTotalValue}
                     leagueSettings={leagueSettings!}
                     isLeftTeam={false}
+                    allPlayers={players}
                   />
                 </>
               ) : (
@@ -206,7 +209,6 @@ const TradeCalculator = () => {
                     format={format}
                     setTotalValue={setTotalValue}
                     pprTE={customSettings?.pprTE ?? 0}
-                    leagueSize={customSettings?.leagueSize ?? 12}
                   />
                   <AllPlayersTrade
                     allPlayers={players}
@@ -215,7 +217,6 @@ const TradeCalculator = () => {
                     format={format}
                     setTotalValue={setTotalValue}
                     pprTE={customSettings?.pprTE ?? 0}
-                    leagueSize={customSettings?.leagueSize ?? 12}
                   />
                 </>
               )}

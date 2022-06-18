@@ -599,7 +599,7 @@ export const getPicks = async (
 ): Promise<Pick[]> => {
   let picks: Pick[] = [];
 
-  const filterYear = new Date().getFullYear() + 1;
+  const filterYear = new Date().getFullYear() + 2;
 
   const currentPick = await getPickOnTheClock(leagueId);
 

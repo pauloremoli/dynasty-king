@@ -9,13 +9,14 @@ const Accordion = ({ title, children }: AccordionProps) => {
   const [theme] = useTheme();
   const [isOpened, setOpened] = useState<boolean>(false);
 
-  const HandleOpening = () => {
+  const handleOpening = () => {
     setOpened(!isOpened);
   };
+
   return (
     <div className="border border-gray-400 dark:border-slate-800">
       <div
-        onClick={HandleOpening}
+        onClick={handleOpening}
         className={
           "bg-gray-300 dark:bg-[hsl(205,100%,15%)] p-4 flex justify-between text-gray-900 items-center"
         }

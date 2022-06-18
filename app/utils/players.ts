@@ -1,7 +1,9 @@
 import fuzzysort from "fuzzysort";
+import { SelectSearchOption } from "react-select-search";
 import { Format } from "~/types/Format";
-import { Player } from "~/types/Player";
+import { Pick } from "~/types/Picks";
 import { Position } from "~/types/Position";
+import { Player } from "./../types/Player";
 
 export const sortByDataByFormat = (data: any, format: Format) => {
   if (format == Format.FORMAT_2QB) {
@@ -47,7 +49,7 @@ export const sortFor2QB = (a: any, b: any) => {
   return sortMethod(valueA, valueB);
 };
 
-export const getPlayerValue = (player: Player, format: Format) => {
+export const getPlayerValue = (player: Player, format: Format): number => {
   return parseInt(
     format === Format.FORMAT_1QB ? player.value_1qb : player.value_2qb
   );
@@ -176,14 +178,79 @@ export const searchPlayer = (
 };
 
 export const adjustValueToSettings = (
-  player: Player,
-  pprTE: number,
-  leagueSize: number
-): Player => {
-  if (player.pos === Position.TE && pprTE > 1) {
-    // te premium is 15% more value for each full premium point e.g. 2 PPR = 15%
-    player.value_1qb *= 1 + ((pprTE * 15 / 2) / 100);
-    player.value_2qb *= 1 + ((pprTE * 15 / 2) / 100);
+  players: Player[],
+  pprTE: number
+): Player[] => {
+  return players.map((player: Player) => {
+    const value = player.value_1qb;
+    if (player.pos === Position.TE && pprTE > 1) {
+      player.value_1qb *= 1 + (pprTE * 8) / 2 / 100;
+      player.value_2qb *= 1 + (pprTE * 8) / 2 / 100;
+    }
+    if (player.player === "Kyle Pitts") {
+      console.log(player.player, value, player.value_1qb);
+    }
+    return player;
+  });
+};
+
+const getRoundString = (round: number): string => {
+  switch (round) {
+    case 1:
+      return "1st";
+    case 2:
+      return "2nd";
+    case 3:
+      return "3rd";
+    default:
+      return round + "th";
   }
-  return player;
+};
+
+export const getPickStr = (pick: Pick) => {
+  const currentSeasson = new Date().getFullYear();
+  return pick.season === currentSeasson
+    ? pick.season + " Pick " + pick.round + "." + pick.slot
+    : pick.season + " " + getRoundString(pick.round);
+};
+
+export const filterPicks = (picks: Pick[], players: Player[]): Player[] => {
+  let filtered: Player[] = [];
+
+  picks.forEach((pick: Pick) => {
+    const pickStr = getPickStr(pick);
+    const pickAsPlayer: Player | undefined = players.find(
+      (player: Player) => player.player === pickStr
+    );
+    if (pickAsPlayer) {
+      filtered.push(pickAsPlayer);
+    } else {
+      filtered.push({
+        player: pickStr,
+        pos: "PICK",
+        team: "NA",
+        age: "NA",
+        value_1qb: 1,
+        value_2qb: 1,
+        fp_id: "NA",
+      });
+    }
+  });
+
+  return filtered;
+};
+
+export const getSearchOptions = (
+  players: Player[],
+  format: Format,
+  isPick: boolean = false
+): SelectSearchOption[] => {
+  const searchOptions: SelectSearchOption[] = sortByDataByFormat(
+    players,
+    format
+  ).map((item: Player) => ({
+    name: `${item.player} ${!isPick ? " - " + item.pos + " " + item.team : ""}`,
+    value: item.player,
+  }));
+  return searchOptions;
 };

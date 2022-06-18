@@ -7,7 +7,12 @@ import { Format } from "~/types/Format";
 import { Player } from "~/types/Player";
 import { Position } from "~/types/Position";
 import { Roster } from "~/types/Roster";
-import { adjustValueToSettings, getPlayerValue, sortByDataByFormat } from "~/utils/players";
+import {
+  adjustValueToSettings,
+  getPlayerValue,
+  getSearchOptions,
+  sortByDataByFormat,
+} from "~/utils/players";
 import ListPlayers from "./ListPlayers";
 
 interface AllPlayersTradeProps {
@@ -18,7 +23,6 @@ interface AllPlayersTradeProps {
   setTotalValue: (isLeftTeam: boolean, total: number) => void;
   pprTE: number;
   isLeftTeam: boolean;
-  leagueSize: number;
 }
 
 const AllPlayersTrade = ({
@@ -27,17 +31,18 @@ const AllPlayersTrade = ({
   teamName,
   isLeftTeam,
   setTotalValue,
-  leagueSize,
   pprTE,
 }: AllPlayersTradeProps) => {
+  const [updatedPlayers, setUpdatedPlayers] = useState(allPlayers);
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [total, setTotal] = useState(0);
   const [players, setPlayers] = useState<SelectSearchOption[]>(
-    allPlayers.map((item: Player) => ({
-      name: `${item.player} - ${item.pos} ${item.team}`,
-      value: item.player,
-    }))
+    getSearchOptions(updatedPlayers, format)
   );
+
+  useEffect(() => {
+    setUpdatedPlayers(allPlayers);
+  }, [allPlayers]);
 
   useEffect(() => {
     let sum = 0;
@@ -49,23 +54,14 @@ const AllPlayersTrade = ({
   }, [selectedPlayers, format, setTotalValue, isLeftTeam]);
 
   useEffect(() => {
-    let adjustedPlayers: Player[] = allPlayers.map((player: Player) =>
-      adjustValueToSettings(player, pprTE, leagueSize)
-    );
-    const searchOptions: SelectSearchOption[] = sortByDataByFormat(
-      adjustedPlayers,
-      format
-    ).map((item: Player) => ({
-      name: `${item.player} - ${item.pos} ${item.team}`,
-      value: item.player,
-    }));
-
+    const searchOptions = getSearchOptions(updatedPlayers, format, false);
     setPlayers(searchOptions);
-  }, [leagueSize, pprTE, allPlayers, format]);
+  }, [pprTE, updatedPlayers, format, isLeftTeam]);
+
 
   const handleSelection = (e: string) => {
     if (e) {
-      const selectedPlayer = allPlayers.find(
+      const selectedPlayer = updatedPlayers.find(
         (player: Player) => player.player === e
       );
       if (selectedPlayer) {
