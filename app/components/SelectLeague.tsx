@@ -15,7 +15,7 @@ const SelectLeague: React.FC<SelectLeagueProps> = ({
       <select onChange={handleSelection} name="league" className="rounded p-2 border-0 shadow">
         <option value=""></option>
         {teams.map((team: Team, index: number) => (
-          <option value={JSON.stringify(team)} key={team.leagueId} selected={index === 0}>
+          <option value={JSON.stringify(team)} key={team.leagueId}>
             {team.leagueName + " - " + team.teamName}
           </option>
         ))}

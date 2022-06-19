@@ -181,16 +181,15 @@ export const adjustValueToSettings = (
   players: Player[],
   pprTE: number
 ): Player[] => {
-  return players.map((player: Player) => {
-    const value = player.value_1qb;
-    if (player.pos === Position.TE && pprTE > 1) {
-      player.value_1qb *= 1 + (pprTE * 8) / 2 / 100;
-      player.value_2qb *= 1 + (pprTE * 8) / 2 / 100;
+
+  const bonusPerPremiumPPR = 8;
+  return  players.map((player: Player) => {
+    const updatedPlayer : Player = {...player};
+    if (updatedPlayer.pos === Position.TE && pprTE > 1) {
+      updatedPlayer.value_1qb *= 1 + (pprTE * bonusPerPremiumPPR) / 2 / 100;
+      updatedPlayer.value_2qb *= 1 + (pprTE * bonusPerPremiumPPR) / 2 / 100;
     }
-    if (player.player === "Kyle Pitts") {
-      console.log(player.player, value, player.value_1qb);
-    }
-    return player;
+    return updatedPlayer;
   });
 };
 

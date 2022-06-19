@@ -69,7 +69,6 @@ const LeagueTrade = ({
     const searchOptions = getSearchOptions(
       listedPlayers,
       leagueSettings.format,
-      leagueSettings.scoringRules.pprTE,
       false
     );
 
@@ -81,7 +80,6 @@ const LeagueTrade = ({
     const picksSO = getSearchOptions(
       picksWithValue,
       leagueSettings.format,
-      leagueSettings.scoringRules.pprTE,
       true
     );
     setPicks(picksSO);
@@ -169,7 +167,11 @@ const LeagueTrade = ({
             </select>
           </div>
         )}
-        <div className="flex w-full justify-start gap-4 items-center text-gray-700">
+        <div
+          className={`flex w-full justify-start gap-4 items-center text-gray-700 ${
+            !selectedTeam && !isLeftTeam ? "hidden" : ""
+          }`}
+        >
           <SelectSearch
             options={players}
             multiple={false}
@@ -182,7 +184,11 @@ const LeagueTrade = ({
             }}
           />
         </div>
-        <div className="flex w-full justify-start gap-4 pt-8 items-center text-gray-700">
+        <div
+          className={`flex w-full justify-start gap-4 items-center text-gray-700 pt-4 ${
+            !selectedTeam && !isLeftTeam ? "hidden" : ""
+          }`}
+        >
           <SelectSearch
             options={picks}
             multiple={false}

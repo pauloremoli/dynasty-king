@@ -45,6 +45,19 @@ const AllPlayersTrade = ({
   }, [allPlayers]);
 
   useEffect(() => {
+    setSelectedPlayers((selected: Player[]) =>
+      selected.map(
+        (current: Player) =>
+          updatedPlayers.find(
+            (updated: Player) =>
+              updated.player === current.player &&
+              updated.fp_id === current.fp_id
+          ) ?? current
+      )
+    );
+  }, [allPlayers, updatedPlayers]);
+
+  useEffect(() => {
     let sum = 0;
     selectedPlayers.map(
       (current: Player) => (sum += getPlayerValue(current, format))
@@ -57,7 +70,6 @@ const AllPlayersTrade = ({
     const searchOptions = getSearchOptions(updatedPlayers, format, false);
     setPlayers(searchOptions);
   }, [pprTE, updatedPlayers, format, isLeftTeam]);
-
 
   const handleSelection = (e: string) => {
     if (e) {

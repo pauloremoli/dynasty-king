@@ -96,12 +96,13 @@ const TradeCalculator = () => {
   }, [data]);
 
   useEffect(() => {
+    setPlayers(adjustValueToSettings(data.players, customSettings?.pprTE ?? 1));
+  }, [data, customSettings]);
+
+  useEffect(() => {
     setFormat(params.format as Format);
   }, [params]);
 
-  useEffect(() => {
-    setPlayers(adjustValueToSettings(data.players, customSettings?.pprTE ?? 1));
-  }, [format, customSettings, data.players]);
 
   useEffect(() => {
     if (!fetcher.data) {
