@@ -1,8 +1,9 @@
 import { Team } from "@prisma/client";
 import { Link } from "@remix-run/react";
 import React, { useEffect, useState } from "react";
-import { CustomSettings } from "~/routes/trade-calculator.format.$format";
+import { CustomSettings } from "~/types/CustomSettings";
 import { Format } from "~/types/Format";
+import { getFuturePickStr } from "~/utils/pick";
 import { useOptionalUser } from "~/utils/userUtils";
 import Accordion from "../Accordion";
 import SelectLeague from "../SelectLeague";
@@ -24,6 +25,7 @@ const Settings: React.FC<SettingsProps> = ({
 }) => {
   const user = useOptionalUser();
   const [pprTE, setPprTE] = useState(1);
+  const [futurePickValue, setFuturePickValue] = useState(3);
 
   const handleSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (!e.target.value) {
@@ -35,22 +37,29 @@ const Settings: React.FC<SettingsProps> = ({
   };
 
   useEffect(() => {
-    setCustomSettings({ pprTE, format });
-  }, [pprTE, setCustomSettings, format]);
+    const customSettings: CustomSettings = { pprTE, format, futurePickValue };
+    setCustomSettings(customSettings);
+    console.log(customSettings);
+  }, [pprTE, setCustomSettings, format, futurePickValue]);
 
   return (
     <Accordion title="Settings">
       <div className="flex flex-col md:flex-row max-w-5xl w-full rounded-2xl my-6 text-gray-900 dark:text-gray-100 md:gap-12 ">
         <div className="flex flex-col text-left flext-start  w-full">
-          <p className="text-left  font-semibold">Rookie Optimism:</p>
+          <p className="text-left  font-semibold">
+            Future pick value: <span className="font-normal">{getFuturePickStr(futurePickValue)}</span>
+          </p>
           <input
             type="range"
             className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 mt-4"
-            id="rookieOptmism"
+            id="futurePickValue"
             min={1}
-            defaultValue={3}
+            value={futurePickValue}
             max={5}
             step={1}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              setFuturePickValue(parseInt(e.target.value));
+            }}
           />
           <h1 className="text-lg pt-12 pb-8 font-semibold">League settings</h1>
           <div className="flex w-full">
@@ -128,7 +137,7 @@ const Settings: React.FC<SettingsProps> = ({
               )}
               {teams.length > 0 && (
                 <>
-                  <p className="">Create trade for a specific league</p>
+                  <p className="">Trade for a specific league</p>
                   <div className="flex w-full justify-start pt-4">
                     <SelectLeague
                       teams={teams}

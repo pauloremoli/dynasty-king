@@ -1,9 +1,11 @@
+import { FuturePickValue } from "./../types/CustomSettings";
 import fuzzysort from "fuzzysort";
 import { SelectSearchOption } from "react-select-search";
 import { Format } from "~/types/Format";
 import { Pick } from "~/types/Picks";
 import { Position } from "~/types/Position";
 import { Player } from "./../types/Player";
+import { getBonusFuturePickAdjustment } from "./pick";
 
 export const sortByDataByFormat = (data: any, format: Format) => {
   if (format == Format.FORMAT_2QB) {
@@ -179,15 +181,23 @@ export const searchPlayer = (
 
 export const adjustValueToSettings = (
   players: Player[],
-  pprTE: number
+  pprTE: number,
+  futurePickValue: FuturePickValue
 ): Player[] => {
-
-  const bonusPerPremiumPPR = 8;
-  return  players.map((player: Player) => {
-    const updatedPlayer : Player = {...player};
+  const bonusPerPremiumPPR = 10;
+  return players.map((player: Player) => {
+    const updatedPlayer: Player = { ...player };
     if (updatedPlayer.pos === Position.TE && pprTE > 1) {
       updatedPlayer.value_1qb *= 1 + (pprTE * bonusPerPremiumPPR) / 2 / 100;
       updatedPlayer.value_2qb *= 1 + (pprTE * bonusPerPremiumPPR) / 2 / 100;
+    } else if (
+      updatedPlayer.pos === "PICK" &&
+      !updatedPlayer.player.startsWith(new Date().getFullYear().toString())
+    ) {
+      updatedPlayer.value_1qb *=
+        1 + getBonusFuturePickAdjustment(futurePickValue) / 100;
+      updatedPlayer.value_2qb *=
+        1 + getBonusFuturePickAdjustment(futurePickValue) / 100;
     }
     return updatedPlayer;
   });

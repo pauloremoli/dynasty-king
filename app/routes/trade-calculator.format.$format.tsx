@@ -16,6 +16,7 @@ import TradeAnalysis from "~/components/tradeCalculator/TradeAnalysis";
 import { getTeamsByUserId } from "~/models/team.server";
 import { getUserId } from "~/session.server";
 import styles from "~/styles/customSelect.css";
+import { CustomSettings, FuturePickValue } from "~/types/CustomSettings";
 import { Format } from "~/types/Format";
 import { LeagueSettings } from "~/types/LeagueSettings";
 import { Player } from "~/types/Player";
@@ -25,11 +26,6 @@ import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
-}
-
-export interface CustomSettings {
-  pprTE: number;
-  format: Format;
 }
 
 export const loader = async ({ params, request }) => {
@@ -96,13 +92,18 @@ const TradeCalculator = () => {
   }, [data]);
 
   useEffect(() => {
-    setPlayers(adjustValueToSettings(data.players, customSettings?.pprTE ?? 1));
+    setPlayers(
+      adjustValueToSettings(
+        data.players,
+        customSettings?.pprTE ?? 1,
+        customSettings?.futurePickValue ?? FuturePickValue.MEDIUM
+      )
+    );
   }, [data, customSettings]);
 
   useEffect(() => {
     setFormat(params.format as Format);
   }, [params]);
-
 
   useEffect(() => {
     if (!fetcher.data) {
@@ -187,6 +188,7 @@ const TradeCalculator = () => {
               {rosters && rosters.length > 0 ? (
                 <>
                   <LeagueTrade
+                    futurePickValue={customSettings?.futurePickValue ?? FuturePickValue.MEDIUM}
                     myRoster={myRoster}
                     setTotalValue={setTotalValue}
                     leagueSettings={leagueSettings!}
@@ -194,6 +196,7 @@ const TradeCalculator = () => {
                     allPlayers={players}
                   />
                   <LeagueTrade
+                    futurePickValue={customSettings?.futurePickValue ?? FuturePickValue.MEDIUM}
                     rosters={rosters}
                     setTotalValue={setTotalValue}
                     leagueSettings={leagueSettings!}

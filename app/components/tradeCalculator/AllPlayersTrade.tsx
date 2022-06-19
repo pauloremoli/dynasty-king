@@ -79,7 +79,7 @@ const AllPlayersTrade = ({
       if (selectedPlayer) {
         if (
           !selectedPlayers.find(
-            (player: Player) => player.fp_id === selectedPlayer.fp_id
+            (player: Player) => player.fp_id === selectedPlayer.fp_id && player.player === selectedPlayer.player
           )
         ) {
           setSelectedPlayers([...selectedPlayers, selectedPlayer]);

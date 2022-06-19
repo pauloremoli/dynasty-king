@@ -3,6 +3,7 @@ import SelectSearch, {
   fuzzySearch,
   SelectSearchOption,
 } from "react-select-search";
+import { FuturePickValue } from "~/types/CustomSettings";
 import { LeagueSettings } from "~/types/LeagueSettings";
 import { Player } from "~/types/Player";
 import { RosterValue } from "~/types/Roster";
@@ -16,6 +17,7 @@ import {
 import ListPlayers from "./ListPlayers";
 
 interface LeagueTradeProps {
+  futurePickValue: FuturePickValue;
   allPlayers: Player[];
   myRoster?: RosterValue | null;
   rosters?: RosterValue[];
@@ -25,6 +27,7 @@ interface LeagueTradeProps {
 }
 
 const LeagueTrade = ({
+  futurePickValue,
   allPlayers,
   rosters,
   myRoster,
@@ -46,6 +49,19 @@ const LeagueTrade = ({
   );
 
   useEffect(() => {
+    setSelectedPlayers((selected: Player[]) =>
+      selected.map(
+        (current: Player) =>
+          allPlayers.find(
+            (updated: Player) =>
+              updated.player === current.player &&
+              updated.fp_id === current.fp_id
+          ) ?? current
+      )
+    );
+  }, [allPlayers]);
+
+  useEffect(() => {
     let sum = 0;
     selectedPlayers.map(
       (current: Player) =>
@@ -63,6 +79,7 @@ const LeagueTrade = ({
     selectedTeam,
     isLeftTeam,
     myRoster,
+    futurePickValue,
   ]);
 
   useEffect(() => {
@@ -93,7 +110,9 @@ const LeagueTrade = ({
       if (selectedPlayer) {
         if (
           !selectedPlayers.find(
-            (player: Player) => player.fp_id === selectedPlayer.fp_id
+            (player: Player) =>
+              player.fp_id === selectedPlayer.fp_id &&
+              player.player === selectedPlayer.player
           )
         ) {
           setSelectedPlayers([...selectedPlayers, selectedPlayer]);
