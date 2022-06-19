@@ -103,15 +103,21 @@ const Tools = () => {
           </div>
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
             <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
-              <a href="/lineup-tracker">Lineup Tracker</a>
+              <a href="#">Lineup Tracker</a>
             </h1>
             <p>Check all your lineups for inactive players.</p>
+            <p className="pt-4 font-bold text-gray-700 dark:text-gray-300">
+              COMING SOON
+            </p>
           </div>
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
             <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
-              <a href="/lineup-tracker">Live Score</a>
+              <a href="#">Live Score</a>
             </h1>
             <p>Check the score for all your leagues in one place.</p>
+            <p className="pt-4 font-bold text-gray-700 dark:text-gray-300">
+              COMING SOON
+            </p>
           </div>
         </div>
       </div>

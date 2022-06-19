@@ -1,6 +1,7 @@
 import { Link } from "@remix-run/react";
 import React from "react";
 import { AiOutlineAlert } from "react-icons/ai";
+import {HiViewGrid} from "react-icons/hi"
 import {
   GiAmericanFootballPlayer,
   GiDuck,
@@ -100,21 +101,6 @@ const Tools = () => {
                 </div>
               </div>
             </Link>
-            <Link to="/draft-report">
-              <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
-                <div className="px-6 py-10">
-                  <div className="mb-2 text-center text-xl font-semibold text-gray-800 dark:text-[rgb(227,221,255)] ">
-                    Draft Report
-                  </div>
-                  <div className="flex items-center justify-center py-2">
-                    <GiAmericanFootballPlayer size={40} color="#8f7eda" />
-                  </div>
-                  <p className="pt-4 text-base text-gray-700 dark:text-gray-300 text-center">
-                    Evaluate your Hit/Miss rate based on your drafted rookies.
-                  </p>
-                </div>
-              </div>
-            </Link>
             <Link to="/fa-tracker">
               <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
                 <div className="px-6 py-10">
@@ -131,8 +117,25 @@ const Tools = () => {
                 </div>
               </div>
             </Link>
-
-            <Link to="/lineup-tracker">
+            <Link to="#">
+              <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
+                <div className="px-6 py-10">
+                  <div className="mb-2 text-center text-xl font-semibold text-gray-800 dark:text-[rgb(227,221,255)] ">
+                    Live Score
+                  </div>
+                  <div className="flex items-center justify-center py-2">
+                    <HiViewGrid size={40} color="#8f7eda" />
+                  </div>
+                  <p className="pt-4 text-base text-gray-700 dark:text-gray-300 text-center">
+                    Check the score for all your leagues in one place.
+                  </p>
+                  <p className="pt-4 font-bold text-gray-700 dark:text-gray-300 text-center">
+                    COMING SOON
+                  </p>
+                </div>
+              </div>
+            </Link>
+            <Link to="#">
               <div className="flex h-64 w-full  flex-col overflow-hidden rounded-lg hover:scale-105 hover:border-2 hover:border-slate-100 hover:shadow-indigo-300 md:w-64">
                 <div className="px-6 py-10">
                   <div className="mb-2 text-center text-xl font-semibold text-gray-800 dark:text-[rgb(227,221,255)] ">
@@ -143,6 +146,10 @@ const Tools = () => {
                   </div>
                   <p className="pt-4 text-base text-gray-700 dark:text-gray-300 text-center">
                     Check all your lineups for inactive players.
+                  </p>
+
+                  <p className="pt-4 font-bold text-gray-700 dark:text-gray-300 text-center">
+                    COMING SOON
                   </p>
                 </div>
               </div>
