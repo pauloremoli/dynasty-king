@@ -12,7 +12,9 @@ const Tools = () => {
     <>
       <div className="flex flex-col w-full h-full items-center md:pt-10 pt-4 dark:bg-[#0A1931] dark:text-gray-100 animate-fadeIn px-4 pb-20">
         <div className="flex flex-col h-full w-full max-w-5xl">
-          <h1 className="text-2xl font-bold text-center pb-10 dark:text-white">Tools</h1>
+          <h1 className="text-2xl font-bold text-center pb-10 dark:text-white">
+            Tools
+          </h1>
           <div className="flex flex-col w-full dark:text-gray-300 text-gray-800">
             <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/rankings/format/1QB/position/all">Dynasty Rankings</a>
@@ -54,6 +56,11 @@ const Tools = () => {
               Adjust calculator according to your league settings and personal
               preferences.
             </p>
+            <ul className="px-4 list-disc">
+              <li>Future pick value adjustment</li>
+              <li>League format (1QB/Superflex)</li>
+              <li>TE Premium - values ajusted according to PPR for TE</li>
+            </ul>
           </div>
 
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
@@ -81,15 +88,10 @@ const Tools = () => {
             </h1>
             <p>
               Roster value analysis for all teams in your league according to
-              our rankings
+              our rankings.
             </p>
           </div>
-          <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
-            <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
-              <a href="/draft-report">Draft Report</a>
-            </h1>
-            <p>Evaluate your Hit/Miss rate based on your drafted rookies.</p>
-          </div>
+
           <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
             <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
               <a href="/fa-tracker">Free Agent Tracker</a>
@@ -104,6 +106,12 @@ const Tools = () => {
               <a href="/lineup-tracker">Lineup Tracker</a>
             </h1>
             <p>Check all your lineups for inactive players.</p>
+          </div>
+          <div className="flex flex-col w-full dark:text-gray-300  text-gray-800 md:pt-20 pt-8">
+            <h1 className="text-xl font-semibold dark:text-gray-100 pb-4">
+              <a href="/lineup-tracker">Live Score</a>
+            </h1>
+            <p>Check the score for all your leagues in one place.</p>
           </div>
         </div>
       </div>

@@ -47,7 +47,10 @@ const Settings: React.FC<SettingsProps> = ({
       <div className="flex flex-col md:flex-row max-w-5xl w-full rounded-2xl my-6 text-gray-900 dark:text-gray-100 md:gap-12 ">
         <div className="flex flex-col text-left flext-start  w-full">
           <p className="text-left  font-semibold">
-            Future pick value: <span className="font-normal">{getFuturePickStr(futurePickValue)}</span>
+            Future pick value:{" "}
+            <span className="font-normal">
+              {getFuturePickStr(futurePickValue)}
+            </span>
           </p>
           <input
             type="range"
@@ -62,38 +65,62 @@ const Settings: React.FC<SettingsProps> = ({
             }}
           />
           <h1 className="text-lg pt-12 pb-8 font-semibold">League settings</h1>
-          <div className="flex w-full">
-            <div className="flex flex-col justify-start w-full pb-8">
-              <div className="flex items-center w-full pb-8">
-                <h3 className=" font-semibold">Format:</h3>
-                <div className="px-4">
-                  <Link
-                    to={"/trade-calculator/format/1QB"}
-                    className={` hover:text-indigo-700 ${
-                      format === Format.FORMAT_1QB
-                        ? "dark:text-blue-400 text-indigo-600"
-                        : "dark:text-blue-100"
-                    }`}
+          <div className="flex w-full md:flex-row flex-col">
+            <div className="flex flex-col w-full pb-8 md:pr-8">
+              {!user && (
+                <div className="flex">
+                  <a
+                    href={`/login?redirectTo=/trade-calculator/format/${format}`}
+                    className="text-blue-500 underline pr-1"
                   >
-                    <span>1QB</span>
-                  </Link>
+                    Log In
+                  </a>
+                  <p>to use rosters from your leagues</p>
                 </div>
-
-                <div>
-                  <Link
-                    to={"/trade-calculator/format/2QB"}
-                    className={` hover:text-indigo-700 dark:hover:text-yellow-300 ${
-                      format === Format.FORMAT_2QB
-                        ? "dark:text-blue-400 text-indigo-600"
-                        : "dark:text-blue-100"
-                    }`}
-                  >
-                    <span>SuperFlex (2QBs)</span>
-                  </Link>
-                </div>
+              )}
+              {teams.length > 0 && (
+                <>
+                  <p className="">Import settings/rosters from your league</p>
+                  <div className="flex w-full justify-start pt-4">
+                    <SelectLeague
+                      teams={teams}
+                      handleSelection={handleSelection}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="flex md:flex-col justify-center py-0 my-0 h-full items-center">
+              <div className="md:border-l border-t border-indigo-900 dark:border-slate-400 w-full h-0 md:h-full md:w-0 mx-auto"></div>
+              <p className="font-bold py-4 mx-4 md:mx-0">OR</p>
+              <div className="md:border-l border-t border-indigo-900 dark:border-slate-400 w-full h-0 md:h-full md:w-0 mx-auto"></div>
+            </div>
+            <div className="flex flex-col justify-start w-full pb-8 md:pl-8">
+              <div className="flex flex-col md:flex-row md:items-center w-full pb-4 gap-4">
+                <h3 className="font-semibold">Format:</h3>
+                <Link
+                  to={"/trade-calculator/format/1QB"}
+                  className={` hover:text-indigo-700 ${
+                    format === Format.FORMAT_1QB
+                      ? "dark:text-blue-400 text-indigo-600"
+                      : "dark:text-blue-100"
+                  }`}
+                >
+                  <span>1QB</span>
+                </Link>
+                <Link
+                  to={"/trade-calculator/format/2QB"}
+                  className={` hover:text-indigo-700 dark:hover:text-yellow-300 ${
+                    format === Format.FORMAT_2QB
+                      ? "dark:text-blue-400 text-indigo-600"
+                      : "dark:text-blue-100"
+                  }`}
+                >
+                  <span>SuperFlex (2QBs)</span>
+                </Link>
               </div>
 
-              <div className="w-full gap-4 flex items-center text-left flext-start pb-8 ">
+              <div className="w-full gap-4 flex flex-col md:flex-row pt-4 md:items-center text-left flext-start">
                 <span className="text-left mix-w-xs font-semibold">
                   Points per reception - TEs:
                 </span>
@@ -116,36 +143,6 @@ const Settings: React.FC<SettingsProps> = ({
                   <option value="2">2</option>
                 </select>
               </div>
-            </div>
-
-            <div className="mx-8 flex flex-col justify-center py-0 my-0 h-full">
-              <div className="border-0 border-l border-indigo-900 dark:border-slate-400 h-full mx-auto"></div>
-              <p className="font-bold py-4">OR</p>
-              <div className="border-0 border-l border-indigo-900 dark:border-slate-400 h-full mx-auto"></div>
-            </div>
-            <div className="flex flex-col w-full">
-              {!user && (
-                <div className="flex">
-                  <a
-                    href={`/login?redirectTo=/trade-calculator/format/${format}`}
-                    className="text-blue-500 underline pr-1"
-                  >
-                    Log In
-                  </a>
-                  <p>to use rosters from your leagues</p>
-                </div>
-              )}
-              {teams.length > 0 && (
-                <>
-                  <p className="">Trade for a specific league</p>
-                  <div className="flex w-full justify-start pt-4">
-                    <SelectLeague
-                      teams={teams}
-                      handleSelection={handleSelection}
-                    />
-                  </div>
-                </>
-              )}
             </div>
           </div>
         </div>
