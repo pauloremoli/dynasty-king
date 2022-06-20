@@ -1,11 +1,11 @@
-import { adjustValueToSettings } from './../utils/players';
+import { adjustValueToSettings } from "./../utils/players";
 import { json } from "@remix-run/node";
 import { Format } from "~/types/Format";
 import {
   LeagueSettings,
   ScoringCategory,
   ScoringRule,
-  ScoringRules
+  ScoringRules,
 } from "~/types/LeagueSettings";
 import { Pick } from "~/types/Picks";
 import { Player } from "~/types/Player";
@@ -17,7 +17,8 @@ import { getPlayerValue, getRound, pad, searchPlayer } from "~/utils/players";
 import { RosterValue } from "../types/Roster";
 import { H2HStats } from "./../types/TeamStats";
 import { csvToJson } from "./../utils/csvToJson";
-import { FuturePickValue } from '~/types/CustomSettings';
+import { FuturePickValue } from "~/types/CustomSettings";
+import { InactivePlayer, InactivePlayerTeam } from "~/types/InactivePlayer";
 
 interface ActionDataEmail {
   errors?: {
@@ -115,7 +116,13 @@ const fetchRules = async (leagueId: number): Promise<LeagueSettings> => {
     const firstWeek = parseInt(first);
     const lastWeek = parseInt(last);
 
-    return { numberOfPlayoffTeams, firstWeek, lastWeek, format };
+    return {
+      numberOfPlayoffTeams,
+      firstWeek,
+      lastWeek,
+      format,
+      scoringRules: null,
+    };
   });
 
   return rules;
@@ -174,7 +181,7 @@ const fetchScoringRules = async (leagueId: number): Promise<ScoringRules> => {
             }
 
             isTEPremium = hasPremiumForTECatch(rule);
-            if(isTEPremium){
+            if (isTEPremium) {
               pprTE = rule?.pointsPer?.value ?? rule?.points?.value ?? 0;
             }
 
@@ -209,7 +216,7 @@ const fetchScoringRules = async (leagueId: number): Promise<ScoringRules> => {
     isHalfPPR,
     isPPR,
     isTEPremium,
-    pprTE
+    pprTE,
   };
 };
 
@@ -236,7 +243,7 @@ export const getStats = async (leagueId: number) => {
       const data = await response.json();
 
       if (data) {
-        let teams = [];
+        let teams: Team[] = [];
         data.divisions.forEach((division: { [x: string]: any }) => {
           teams.push(...division["teams"]);
         });
@@ -657,7 +664,6 @@ export const getRostersValues = async (
   const players = await getPlayers();
 
   rosters = rosters.map((roster: Roster) => {
-
     let updatedPlayers = roster.players.map((playerInRoster: Player) => {
       const result = searchPlayer(playerInRoster, players.data);
 
@@ -680,7 +686,11 @@ export const getRostersValues = async (
       return result.player;
     });
 
-    updatedPlayers = adjustValueToSettings(updatedPlayers, scoringRules.pprTE, FuturePickValue.MEDIUM);
+    updatedPlayers = adjustValueToSettings(
+      updatedPlayers,
+      scoringRules.pprTE,
+      FuturePickValue.MEDIUM
+    );
     return {
       ...roster,
       players: updatedPlayers,
@@ -769,4 +779,75 @@ const getRosterValue = async (
     roster,
     value,
   };
+};
+
+const fetchInactivePlayers = async (
+  teamId: number,
+  leagueId: number
+): Promise<InactivePlayer[]> => {
+  const params = `FetchRoster?sport=NFL&league_id=${leagueId}&team_id=${teamId}`;
+  const url = `https://www.fleaflicker.com/api/${params}`;
+  let inactivePlayers: InactivePlayer[] = [];
+  await fetch(url)
+    .then(async (response) => {
+      const data = await response.json();
+      if (data) {
+        const currentWeek = data?.lineupPeriod?.ordinal;
+        data?.groups?.forEach((group: any) => {
+          if (group?.group === "START") {
+            group?.slots.forEach((slot: any) => {
+              if (
+                slot?.leaguePlayer?.proPlayer?.injury?.severity === "OUT" ||
+                slot?.leaguePlayer?.proPlayer?.proTeam?.isFreeAgent ||
+                slot?.leaguePlayer?.proPlayer?.nflByeWeek === currentWeek
+              ) {
+                const proPlayer = slot?.leaguePlayer?.proPlayer;
+                const inactivePlayer: InactivePlayer = {
+                  position: slot?.position?.label,
+                  player: {
+                    fleaflickerId: proPlayer.id,
+                    player: proPlayer.nameFull,
+                    pos: proPlayer.position,
+                    team: proPlayer.proTeam.abbreviation,
+                  },
+                  isFreeAgent:
+                    slot?.leaguePlayer?.proPlayer?.proTeam?.isFreeAgent,
+                  isByeWeek:
+                    slot?.leaguePlayer?.proPlayer?.nflByeWeek === currentWeek,
+                  severity: slot?.leaguePlayer?.proPlayer?.injury?.severity,
+                  reason: slot?.leaguePlayer?.proPlayer?.injury?.description,
+                };
+                inactivePlayers.push(inactivePlayer);
+              }
+            });
+          }
+        });
+      }
+    })
+    .catch((reason: any) => {
+      console.log("error", reason);
+      return [];
+    });
+
+  return inactivePlayers;
+};
+
+export const getInactivePlayers = async (
+  teams: Team[]
+): Promise<InactivePlayerTeam[]> => {
+  let data: InactivePlayerTeam[] = [];
+  await Promise.all(
+    teams.map(async (team: Team) => {
+      const inactivePlayers: InactivePlayer[] = await fetchInactivePlayers(
+        team.teamId,
+        team.leagueId
+      );
+      if (inactivePlayers.length > 0) {
+        data.push({ inactivePlayers, team });
+      }
+      return team;
+    })
+  );
+
+  return data;
 };

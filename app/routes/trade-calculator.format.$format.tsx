@@ -85,7 +85,6 @@ const TradeCalculator = () => {
   const [theme] = useTheme();
   const [customSettings, setCustomSettings] = useState<CustomSettings>();
 
-
   const data = useLoaderData();
 
   useEffect(() => {
@@ -188,6 +187,7 @@ const TradeCalculator = () => {
                       customSettings?.futurePickValue ?? FuturePickValue.MEDIUM
                     }
                     myRoster={myRoster}
+                    setTeamB={setTeamB}
                     setTotalValue={setTotalValue}
                     leagueSettings={leagueSettings!}
                     isLeftTeam={true}

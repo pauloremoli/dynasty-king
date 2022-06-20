@@ -26,5 +26,5 @@ export type LeagueSettings = {
   numberOfPlayoffTeams: number;
   firstWeek: number;
   lastWeek: number;
-  scoringRules: ScoringRules;
+  scoringRules: ScoringRules | null;
 };

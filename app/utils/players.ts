@@ -52,7 +52,9 @@ export const sortFor2QB = (a: any, b: any) => {
 };
 
 export const getPlayerValue = (player: Player, format: Format): number => {
-  return format === Format.FORMAT_1QB ? player.value_1qb : player.value_2qb;
+  return format === Format.FORMAT_1QB
+    ? player?.value_1qb ?? 1
+    : player?.value_2qb ?? 1;
 };
 
 export const getTag = (position: Position) => {
@@ -185,12 +187,19 @@ export const adjustValueToSettings = (
   const bonusPerPremiumPPR = 10;
   return players.map((player: Player) => {
     const updatedPlayer: Player = { ...player };
-    if (updatedPlayer.pos === Position.TE && pprTE > 1) {
+    if (
+      updatedPlayer.pos === Position.TE &&
+      pprTE > 1 &&
+      updatedPlayer.value_1qb &&
+      updatedPlayer.value_2qb
+    ) {
       updatedPlayer.value_1qb *= 1 + (pprTE * bonusPerPremiumPPR) / 2 / 100;
       updatedPlayer.value_2qb *= 1 + (pprTE * bonusPerPremiumPPR) / 2 / 100;
     } else if (
       updatedPlayer.pos === "PICK" &&
-      !updatedPlayer.player.startsWith(new Date().getFullYear().toString())
+      !updatedPlayer.player.startsWith(new Date().getFullYear().toString()) &&
+      updatedPlayer.value_1qb &&
+      updatedPlayer.value_2qb
     ) {
       updatedPlayer.value_1qb *=
         1 + getBonusFuturePickAdjustment(futurePickValue) / 100;
