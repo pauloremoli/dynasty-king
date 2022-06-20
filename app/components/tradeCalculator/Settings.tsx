@@ -39,7 +39,6 @@ const Settings: React.FC<SettingsProps> = ({
   useEffect(() => {
     const customSettings: CustomSettings = { pprTE, format, futurePickValue };
     setCustomSettings(customSettings);
-    console.log(customSettings);
   }, [pprTE, setCustomSettings, format, futurePickValue]);
 
   return (

@@ -34,9 +34,6 @@ const CustomLabel: React.FC<CustomLabelProps> = ({
     return null;
   }
 
-  console.log(props);
-  
-
   return (
     <text
       x={x}
@@ -79,11 +76,7 @@ const StandingsChart: React.FC<StandingsChartProps> = ({
           layout="vertical"
           margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
         >
-          <XAxis
-            type="number"
-            fontSize={16}
-            tick={false}
-          />
+          <XAxis type="number" fontSize={16} tick={false} />
           <YAxis
             type="category"
             dataKey="teamName"

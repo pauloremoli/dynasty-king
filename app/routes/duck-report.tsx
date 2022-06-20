@@ -1,19 +1,19 @@
+import { css } from "@emotion/react";
 import {
   ActionFunction,
   json,
   LoaderFunction,
   MetaFunction,
-  redirect,
+  redirect
 } from "@remix-run/node";
 import {
-  Form,
-  Outlet,
-  useActionData,
+  Form, useActionData,
   useLoaderData,
   useSubmit,
-  useTransition,
+  useTransition
 } from "@remix-run/react";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { useState } from "react";
+import { GridLoader } from "react-spinners";
 import { getLeagueSettings, getStats } from "~/api/fleaflicker";
 import DuckReportComponent from "~/components/duck-report/DuckReportComponent";
 import ErrorScreen from "~/components/ErrorScreen";
@@ -21,8 +21,6 @@ import SelectLeague from "~/components/SelectLeague";
 import { getTeamsByUserId } from "~/models/team.server";
 import { requireUserId } from "~/session.server";
 import styles from "~/styles/customSelect.css";
-import { css } from "@emotion/react";
-import { GridLoader } from "react-spinners";
 import { Theme, useTheme } from "~/utils/ThemeProvider";
 
 export function links() {
@@ -105,7 +103,6 @@ const DuckReport = () => {
   };
 
   const handleChange = (event: any) => {
-    console.log(event.currentTarget);
     if (selectedLeagueName === "") {
       return;
     }

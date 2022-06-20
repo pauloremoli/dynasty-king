@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TradeAnalysisProps {
   totalValueA: number;
@@ -12,8 +12,6 @@ const TradeAnalysis = ({
   totalValueB,
   teamBName,
 }: TradeAnalysisProps) => {
-  console.log("Names", teamAName, teamBName);
-
   const [valueA, setValueA] = useState(totalValueA);
   const [valueB, setValueB] = useState(totalValueB);
   const [difference, setDifference] = useState(0);
@@ -21,8 +19,6 @@ const TradeAnalysis = ({
   useEffect(() => {
     const max = Math.max(valueA, valueB);
     setDifference((Math.abs(valueA - valueB) * 100) / max);
-    console.log(valueA > valueB);
-    
   }, [valueA, valueB]);
 
   useEffect(() => {

@@ -52,9 +52,7 @@ export const sortFor2QB = (a: any, b: any) => {
 };
 
 export const getPlayerValue = (player: Player, format: Format): number => {
-  return parseInt(
-    format === Format.FORMAT_1QB ? player.value_1qb : player.value_2qb
-  );
+  return format === Format.FORMAT_1QB ? player.value_1qb : player.value_2qb;
 };
 
 export const getTag = (position: Position) => {

@@ -1,17 +1,15 @@
 import { css } from "@emotion/react";
 import {
-  ActionFunction,
-  json,
-  LoaderFunction,
+  ActionFunction, LoaderFunction,
   MetaFunction,
-  redirect,
+  redirect
 } from "@remix-run/node";
 import {
   Form,
   useActionData,
   useLoaderData,
   useSubmit,
-  useTransition,
+  useTransition
 } from "@remix-run/react";
 import React, { useState } from "react";
 import { GridLoader } from "react-spinners";
@@ -54,11 +52,8 @@ export const action: ActionFunction = async ({ request }) => {
 
   const team = formData.get("league")?.toString();
 
-  console.log("team", team);
   if (!team) {
-    console.log("returning");
-
-    return { empty: true};
+    return { empty: true };
   }
 
   const { leagueId } = JSON.parse(team);
