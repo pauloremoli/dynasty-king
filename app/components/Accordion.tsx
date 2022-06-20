@@ -4,10 +4,11 @@ import { Theme, useTheme } from "~/utils/ThemeProvider";
 type AccordionProps = {
   title: string;
   children: ReactElement | ReactElement[];
+  isOpen?: boolean;
 };
-const Accordion = ({ title, children }: AccordionProps) => {
+const Accordion = ({ title, children, isOpen = true }: AccordionProps) => {
   const [theme] = useTheme();
-  const [isOpened, setOpened] = useState<boolean>(false);
+  const [isOpened, setOpened] = useState<boolean>(isOpen);
 
   const handleOpening = () => {
     setOpened(!isOpened);

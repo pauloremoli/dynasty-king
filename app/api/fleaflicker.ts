@@ -1,3 +1,4 @@
+import { adjustValueToSettings } from './../utils/players';
 import { json } from "@remix-run/node";
 import { Format } from "~/types/Format";
 import {
@@ -16,6 +17,7 @@ import { getPlayerValue, getRound, pad, searchPlayer } from "~/utils/players";
 import { RosterValue } from "../types/Roster";
 import { H2HStats } from "./../types/TeamStats";
 import { csvToJson } from "./../utils/csvToJson";
+import { FuturePickValue } from '~/types/CustomSettings';
 
 interface ActionDataEmail {
   errors?: {
@@ -650,32 +652,38 @@ export const getRostersValues = async (
 
   let rosters = await getRosters(leagueId);
 
+  const scoringRules = await fetchScoringRules(leagueId);
+
   const players = await getPlayers();
 
   rosters = rosters.map((roster: Roster) => {
+
+    let updatedPlayers = roster.players.map((playerInRoster: Player) => {
+      const result = searchPlayer(playerInRoster, players.data);
+
+      if (!result || !result.player) {
+        return {
+          player: playerInRoster.player,
+          pos: playerInRoster.pos,
+          team: playerInRoster.team,
+          age: "NA",
+          draft_year: "NA",
+          ecr_1qb: null,
+          ecr_2qb: null,
+          ecr_pos: null,
+          value_1qb: 1,
+          value_2qb: 1,
+          scrape_date: "NA",
+          fp_id: "NA",
+        };
+      }
+      return result.player;
+    });
+
+    updatedPlayers = adjustValueToSettings(updatedPlayers, scoringRules.pprTE, FuturePickValue.MEDIUM);
     return {
       ...roster,
-      players: roster.players.map((playerInRoster: Player) => {
-        const result = searchPlayer(playerInRoster, players.data);
-
-        if (!result || !result.player) {
-          return {
-            player: playerInRoster.player,
-            pos: playerInRoster.pos,
-            team: playerInRoster.team,
-            age: "NA",
-            draft_year: "NA",
-            ecr_1qb: null,
-            ecr_2qb: null,
-            ecr_pos: null,
-            value_1qb: 1,
-            value_2qb: 1,
-            scrape_date: "NA",
-            fp_id: "NA",
-          };
-        }
-        return result.player;
-      }),
+      players: updatedPlayers,
     };
   });
 

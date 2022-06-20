@@ -4,13 +4,14 @@ import {
   json,
   LoaderFunction,
   MetaFunction,
-  redirect
+  redirect,
 } from "@remix-run/node";
 import {
   Form,
   useActionData,
   useLoaderData,
-  useSubmit, useTransition
+  useSubmit,
+  useTransition,
 } from "@remix-run/react";
 import React, { useState } from "react";
 import { GridLoader } from "react-spinners";
@@ -53,11 +54,11 @@ export const action: ActionFunction = async ({ request }) => {
 
   const team = formData.get("league")?.toString();
 
+  console.log("team", team);
   if (!team) {
-    return json<ActionData>(
-      { errors: { league: "Team data is invalid" } },
-      { status: 400 }
-    );
+    console.log("returning");
+
+    return { empty: true};
   }
 
   const { leagueId } = JSON.parse(team);
@@ -121,11 +122,17 @@ const PowerRanking = () => {
                 size={15}
               />
             </div>
-          ) : (
+          ) : actionData && !actionData?.empty ? (
             <PowerRankingChart
               value={actionData?.data ?? data}
               leagueSetttings={actionData?.leagueSettings ?? leagueSettings}
             />
+          ) : (
+            <div>
+              <p className="dark:text-white text-2xl text-center">
+                No data available
+              </p>
+            </div>
           )}
         </div>
       </div>

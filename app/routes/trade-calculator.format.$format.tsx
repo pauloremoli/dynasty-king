@@ -162,17 +162,11 @@ const TradeCalculator = () => {
 
   return (
     <div className="w-full h-full flex justify-center md:min-h-screen  animate-fadeIn px-4">
-      <div className="flex flex-col w-full max-w-5xl gap-4 dark:text-gray-200 ">
+      <div className="flex flex-col w-full max-w-5xl gap-4 dark:text-gray-200 pb-20">
         <h1 className="text-2xl font-semibold tracking-wide text-center pb-8 md:pt-20 pt-8">
           Trade Calculator{myRoster ? " - " + selectedTeam?.leagueName : ""}
         </h1>
 
-        <Settings
-          format={format}
-          teams={teams}
-          setTeam={setTeam}
-          setCustomSettings={setCustomSettings}
-        />
         {fetcher.state === "submitting" || fetcher.state === "loading" ? (
           <div className="flex w-full h-full items-center justify-center">
             <GridLoader
@@ -188,7 +182,9 @@ const TradeCalculator = () => {
               {rosters && rosters.length > 0 ? (
                 <>
                   <LeagueTrade
-                    futurePickValue={customSettings?.futurePickValue ?? FuturePickValue.MEDIUM}
+                    futurePickValue={
+                      customSettings?.futurePickValue ?? FuturePickValue.MEDIUM
+                    }
                     myRoster={myRoster}
                     setTotalValue={setTotalValue}
                     leagueSettings={leagueSettings!}
@@ -196,7 +192,9 @@ const TradeCalculator = () => {
                     allPlayers={players}
                   />
                   <LeagueTrade
-                    futurePickValue={customSettings?.futurePickValue ?? FuturePickValue.MEDIUM}
+                    futurePickValue={
+                      customSettings?.futurePickValue ?? FuturePickValue.MEDIUM
+                    }
                     rosters={rosters}
                     setTotalValue={setTotalValue}
                     leagueSettings={leagueSettings!}
@@ -234,6 +232,12 @@ const TradeCalculator = () => {
             </div>
           </>
         )}
+        <Settings
+          format={format}
+          teams={teams}
+          setTeam={setTeam}
+          setCustomSettings={setCustomSettings}
+        />
       </div>
     </div>
   );
