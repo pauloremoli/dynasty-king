@@ -2,15 +2,36 @@ import React, { useEffect, useState } from "react";
 
 interface TradeAnalysisProps {
   totalValueA: number;
+  teamAName: string;
   totalValueB: number;
+  teamBName: string;
 }
-const TradeAnalysis = ({ totalValueA, totalValueB }: TradeAnalysisProps) => {
+const TradeAnalysis = ({
+  totalValueA,
+  teamAName,
+  totalValueB,
+  teamBName,
+}: TradeAnalysisProps) => {
+  console.log("Names", teamAName, teamBName);
+
+  const [valueA, setValueA] = useState(totalValueA);
+  const [valueB, setValueB] = useState(totalValueB);
   const [difference, setDifference] = useState(0);
 
   useEffect(() => {
-    const max = Math.max(totalValueA, totalValueB);
-    setDifference((Math.abs(totalValueA - totalValueB) * 100) / max);
-  }, [totalValueB, totalValueA]);
+    const max = Math.max(valueA, valueB);
+    setDifference((Math.abs(valueA - valueB) * 100) / max);
+    console.log(valueA > valueB);
+    
+  }, [valueA, valueB]);
+
+  useEffect(() => {
+    setValueA(totalValueA);
+  }, [totalValueA]);
+
+  useEffect(() => {
+    setValueB(totalValueB);
+  }, [totalValueB]);
 
   if (totalValueA == 0 || totalValueB == 0) return null;
 
@@ -37,12 +58,10 @@ const TradeAnalysis = ({ totalValueA, totalValueB }: TradeAnalysisProps) => {
               <span>in favor of</span>
               <span
                 className={`text-center pl-2 text-3xl ${
-                  totalValueA > totalValueB
-                    ? "dark:text-blue-400"
-                    : "dark:text-red-400"
+                  valueA < valueB ? "dark:text-blue-400" : "dark:text-red-400"
                 }`}
               >
-                Team {totalValueA > totalValueB ? "A" : "B"}
+                {valueA < valueB ? teamAName : teamBName}
               </span>
             </>
           )}

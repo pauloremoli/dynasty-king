@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import SelectSearch, {
   fuzzySearch,
-  SelectSearchOption,
+  SelectSearchOption
 } from "react-select-search";
 import { FuturePickValue } from "~/types/CustomSettings";
 import { LeagueSettings } from "~/types/LeagueSettings";
 import { Player } from "~/types/Player";
 import { RosterValue } from "~/types/Roster";
 import {
-  adjustValueToSettings,
   filterPicks,
   getPlayerValue,
-  getSearchOptions,
-  sortByDataByFormat,
+  getSearchOptions
 } from "~/utils/players";
 import ListPlayers from "./ListPlayers";
 
@@ -24,6 +22,7 @@ interface LeagueTradeProps {
   leagueSettings: LeagueSettings;
   setTotalValue: (isLeftTeam: boolean, total: number) => void;
   isLeftTeam: boolean;
+  setTeamB: React.Dispatch<React.SetStateAction<string | null | undefined>>;
 }
 
 const LeagueTrade = ({
@@ -34,6 +33,7 @@ const LeagueTrade = ({
   leagueSettings,
   setTotalValue,
   isLeftTeam,
+  setTeamB,
 }: LeagueTradeProps) => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
   const [total, setTotal] = useState(0);
@@ -152,6 +152,7 @@ const LeagueTrade = ({
 
     const picks = selectedRoster?.roster.picks ?? [];
     setListedPicks(picks);
+    setTeamB(selectedRoster?.roster.teamName);
   };
 
   return (

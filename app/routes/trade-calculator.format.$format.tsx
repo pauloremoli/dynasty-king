@@ -81,8 +81,10 @@ const TradeCalculator = () => {
     fetcher?.data?.leagueSettings
   );
   const [selectedTeam, setSelectedTeam] = useState<Team | null>();
+  const [teamB, setTeamB] = useState<string | null>();
   const [theme] = useTheme();
   const [customSettings, setCustomSettings] = useState<CustomSettings>();
+
 
   const data = useLoaderData();
 
@@ -196,6 +198,7 @@ const TradeCalculator = () => {
                       customSettings?.futurePickValue ?? FuturePickValue.MEDIUM
                     }
                     rosters={rosters}
+                    setTeamB={setTeamB}
                     setTotalValue={setTotalValue}
                     leagueSettings={leagueSettings!}
                     isLeftTeam={false}
@@ -227,7 +230,9 @@ const TradeCalculator = () => {
             <div className="flex flex-col md:flex-row max-w-5xl w-full justify-center gap-4 mb-4">
               <TradeAnalysis
                 totalValueA={totalValueA}
+                teamAName={selectedTeam?.teamName ?? "Team A"}
                 totalValueB={totalValueB}
+                teamBName={teamB ?? "Team B"}
               />
             </div>
           </>
