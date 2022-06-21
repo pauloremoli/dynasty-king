@@ -799,25 +799,42 @@ const fetchInactivePlayers = async (
               if (
                 slot?.leaguePlayer?.proPlayer?.injury?.severity === "OUT" ||
                 slot?.leaguePlayer?.proPlayer?.proTeam?.isFreeAgent ||
-                slot?.leaguePlayer?.proPlayer?.nflByeWeek === currentWeek
+                slot?.leaguePlayer?.proPlayer?.nflByeWeek === currentWeek ||
+                !slot?.leaguePlayer
               ) {
-                const proPlayer = slot?.leaguePlayer?.proPlayer;
-                const inactivePlayer: InactivePlayer = {
-                  position: slot?.position?.label,
-                  player: {
-                    fleaflickerId: proPlayer.id,
-                    player: proPlayer.nameFull,
-                    pos: proPlayer.position,
-                    team: proPlayer.proTeam.abbreviation,
-                  },
-                  isFreeAgent:
-                    slot?.leaguePlayer?.proPlayer?.proTeam?.isFreeAgent,
-                  isByeWeek:
-                    slot?.leaguePlayer?.proPlayer?.nflByeWeek === currentWeek,
-                  severity: slot?.leaguePlayer?.proPlayer?.injury?.severity,
-                  reason: slot?.leaguePlayer?.proPlayer?.injury?.description,
-                };
-                inactivePlayers.push(inactivePlayer);
+                const position: string = slot?.position?.label;
+                let inactivePlayer: InactivePlayer | null = null;
+
+                if (!slot?.leaguePlayer) {
+                  inactivePlayer = {
+                    isEmptySlot: true,
+                    position,
+                  };
+                } else {
+                  const proPlayer = slot?.leaguePlayer?.proPlayer;
+
+                  inactivePlayer = {
+                    isEmptySlot: false,
+                    position,
+                    player: {
+                      fleaflickerId: proPlayer.id,
+                      player: proPlayer.nameFull,
+                      pos: proPlayer.position,
+                      team: proPlayer.proTeam.abbreviation,
+                    },
+                    isFreeAgent:
+                      slot?.leaguePlayer?.proPlayer?.proTeam?.isFreeAgent ??
+                      false,
+                    isByeWeek:
+                      slot?.leaguePlayer?.proPlayer?.nflByeWeek === currentWeek,
+                    severity: slot?.leaguePlayer?.proPlayer?.injury?.severity,
+                    reason: slot?.leaguePlayer?.proPlayer?.injury?.description,
+                  };
+                }
+
+                if (inactivePlayer) {
+                  inactivePlayers.push(inactivePlayer);
+                }
               }
             });
           }

@@ -10,9 +10,10 @@ import ErrorScreen from "~/components/ErrorScreen";
 import { requireUserId } from "~/session.server";
 import { getTeamsByUserId } from "~/models/team.server";
 import { getInactivePlayers } from "~/api/fleaflicker";
-import { Team } from "~/types/Team";
 import { InactivePlayer, InactivePlayerTeam } from "~/types/InactivePlayer";
 import { useLoaderData } from "@remix-run/react";
+import { getTag } from "~/utils/players";
+import { Position } from "~/types/Position";
 
 export const meta: MetaFunction = () => {
   return {
@@ -69,23 +70,42 @@ const LineupTracker = () => {
                   </h1>
                   <div>
                     {item.inactivePlayers.map(
-                      (inactivePlayer: InactivePlayer) => {
+                      (inactivePlayer: InactivePlayer, index: number) => {
                         return (
                           <div
-                            className="flex gap-4 font-light pt-2 pb-2"
-                            key={inactivePlayer.player.fleaflickerId}
+                            className="flex gap-4 font-light pt-2 pb-2 items-center"
+                            key={inactivePlayer?.player?.fleaflickerId ?? index}
                           >
-                            <p>{inactivePlayer.position}</p>
-                            <p className="font-medium">
-                              {inactivePlayer.player.player}
-                            </p>
-                            <p className="font-medium text-red-400">
-                              {inactivePlayer.isByeWeek
-                                ? "BYE"
-                                : inactivePlayer.isFreeAgent
-                                ? "Free Agent"
-                                : inactivePlayer.reason}
-                            </p>
+                            {inactivePlayer.position.includes("/") ? (
+                              <p className="text-xs inline-flex items-center justify-center font-bold leading-sm uppercase py-1 p-2 rounded-full bg-lime-200 text-gray-700">
+                                {inactivePlayer.position}
+                              </p>
+                            ) : (
+                              <p
+                                key={inactivePlayer.position}
+                                className={`${getTag(
+                                  inactivePlayer.position as Position
+                                )}`}
+                              >
+                                {inactivePlayer.position}
+                              </p>
+                            )}
+                            {inactivePlayer?.player && (
+                              <p className="font-medium">
+                                {inactivePlayer?.player?.player}
+                              </p>
+                            )}
+                            {inactivePlayer.isEmptySlot ? (
+                              <p className="font-medium">Empty</p>
+                            ) : (
+                              <p className="font-medium text-red-500">
+                                {inactivePlayer.isByeWeek
+                                  ? "BYE"
+                                  : inactivePlayer.isFreeAgent
+                                  ? "Free Agent"
+                                  : inactivePlayer.reason}
+                              </p>
+                            )}
                           </div>
                         );
                       }
