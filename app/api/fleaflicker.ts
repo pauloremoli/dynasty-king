@@ -532,10 +532,16 @@ export const getPlayers = async () => {
 
   let { columns, data } = csvToJson(await response.text());
   columns.push("str");
-  data = data.map((player: any) => ({
-    ...player,
-    str: player.player + "/" + player.pos + "/" + player.team,
-  }));
+  data = data.map((player: any) => {
+    player.value_1qb = parseInt(player.value_1qb);
+    player.value_2qb = parseInt(player.value_2qb);
+
+    return {
+      ...player,
+      str: player.player + "/" + player.pos + "/" + player.team,
+    };
+  });
+
   return { columns, data };
 };
 

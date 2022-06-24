@@ -30,7 +30,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   }
 
   const inactivePlayersTeam = await getInactivePlayers(teams);
-  console.log(inactivePlayersTeam);
 
   return { inactivePlayersTeam };
 };
