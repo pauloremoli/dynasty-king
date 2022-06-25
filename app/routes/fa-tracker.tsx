@@ -82,7 +82,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         teams.map(async (team: Team) => {
           const ffPlayer = await getPlayer(team.leagueId, player);
 
-          if (!("owner" in ffPlayer)) {
+          if (ffPlayer && !("owner" in ffPlayer)) {
             player.fleaflickerId = ffPlayer.proPlayer.id;
             playerTeam.availableInLeague.push({
               id: team.leagueId,
