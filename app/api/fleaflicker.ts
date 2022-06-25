@@ -198,12 +198,14 @@ const fetchScoringRules = async (leagueId: number): Promise<ScoringRules> => {
             (rule: any) => rule.category.nameSingular === "Rushing Attempt"
           );
           receivingRules.forEach((rule: any) => {
-            const scoringRule: ScoringRule = {
-              category: ScoringCategory.RUSH_ATTEMPT,
-              points: rule.pointsPer.value,
-              applyTo: rule.applyTo,
-            };
-            scoringRules?.push(scoringRule);
+            if (rule?.pointsPer?.value) {
+              const scoringRule: ScoringRule = {
+                category: ScoringCategory.RUSH_ATTEMPT,
+                points: rule.pointsPer?.value,
+                applyTo: rule.applyTo,
+              };
+              scoringRules?.push(scoringRule);
+            }
           });
         }
       });
