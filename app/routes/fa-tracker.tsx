@@ -62,40 +62,40 @@ export const loader: LoaderFunction = async ({ request }) => {
   const userId = await requireUserId(request);
   const teams = await getTeamsByUserId(userId);
   const players = await getPlayers();
-
   const watchlist = await getWatchlist(userId);
   const faTracker: PlayerTeam[] = [];
-  let allLeaguesRosters: LeagueRosters[] = [];
 
-  await Promise.all(
-    watchlist?.playersId.map(async (playerId: string) => {
-      const player: Player = players.data.find(
-        (player: Player) => player.fp_id == playerId
-      );
+  if (watchlist) {
+    await Promise.all(
+      watchlist?.playersId.map(async (playerId: string) => {
+        const player: Player = players.data.find(
+          (player: Player) => player.fp_id == playerId
+        );
 
-      const playerTeam: PlayerTeam = {
-        player,
-        availableInLeague: [],
-      };
+        const playerTeam: PlayerTeam = {
+          player,
+          availableInLeague: [],
+        };
 
-      await Promise.all(
-        teams.map(async (team: Team) => {
-          const ffPlayer = await getPlayer(team.leagueId, player);
+        await Promise.all(
+          teams.map(async (team: Team) => {
+            const ffPlayer = await getPlayer(team.leagueId, player);
 
-          if (ffPlayer && !("owner" in ffPlayer)) {
-            player.fleaflickerId = ffPlayer.proPlayer.id;
-            playerTeam.availableInLeague.push({
-              id: team.leagueId,
-              name: team.leagueName,
-            });
-          }
-        })
-      );
+            if (ffPlayer && !("owner" in ffPlayer)) {
+              player.fleaflickerId = ffPlayer.proPlayer.id;
+              playerTeam.availableInLeague.push({
+                id: team.leagueId,
+                name: team.leagueName,
+              });
+            }
+          })
+        );
 
-      faTracker.push(playerTeam);
-      return playerId;
-    })
-  );
+        faTracker.push(playerTeam);
+        return playerId;
+      })
+    );
+  }
 
   return { userId, teams, players: players.data, faTracker };
 };
